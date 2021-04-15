@@ -1,4 +1,5 @@
 import { Input, Button } from "antd";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { showLoginModal } from "../store/actionTypes";
 
@@ -7,6 +8,14 @@ interface IProps {
 }
 
 const Home: React.FC<IProps> = ({ showLoginModal }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const joinNow: () => void = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
   return (
     <div className="app-home">
       <div className="container app-home-body">
@@ -24,7 +33,12 @@ const Home: React.FC<IProps> = ({ showLoginModal }) => {
           />
         </div>
         <div className="home-join">
-          <Button type="primary" style={{ marginRight: "10rem" }}>
+          <Button
+            type="primary"
+            style={{ marginRight: "10rem" }}
+            loading={loading}
+            onClick={() => joinNow()}
+          >
             立刻加入
           </Button>
           <Button
