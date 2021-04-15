@@ -17,6 +17,7 @@ import {
 import { LockOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { showLoginModal, hideLoginModal } from "../store/actionTypes";
+import { Link } from "react-router-dom";
 
 const { TabPane } = Tabs;
 interface IProps {
@@ -52,23 +53,32 @@ const Header: React.FC<IProps> = ({
     <>
       <div className="app-header">
         <div className="app-header-left">
-          <img src={logo} alt="dota2" className="app-logo" />
+          <Link
+            to="/"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <img src={logo} alt="dota2" className="app-logo" />
+          </Link>
           <div className="menu">
             <Space size="middle">
               <Tooltip placement="bottom" title="物品" className="tooltip">
-                <a href="/" className="menu-item">
+                <Link to="/goods" className="menu-item">
                   <img src={sj} alt="sj" style={{ width: "80%" }} />
-                </a>
+                </Link>
               </Tooltip>
               <Tooltip placement="bottom" title="英雄" className="tooltip">
-                <a href="/" className="menu-item">
+                <Link to="/heros" className="menu-item">
                   <img src={gg} alt="gg" style={{ width: "80%" }} />
-                </a>
+                </Link>
               </Tooltip>
               <Tooltip placement="bottom" title="搞笑锦集" className="tooltip">
-                <a href="/" className="menu-item">
+                <Link to="/funny" className="menu-item">
                   <img src={puck} alt="puck" style={{ width: "80%" }} />
-                </a>
+                </Link>
               </Tooltip>
             </Space>
           </div>
