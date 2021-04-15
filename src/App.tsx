@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import MyHeader from "./components/MyHeader";
 import MyHome from "./components/MyHome";
 import { Switch, Route } from "react-router-dom";
-import NotFound from "./components/NotFound";
+import MyError from "./components/MyError";
 
 const { Header, Content, Footer } = Layout;
 
@@ -15,10 +15,10 @@ function App() {
           <MyHeader />
         </Header>
         <Content className="content">
-          <Switch>
-            <Route path="/" exact component={MyHome} />
-            <Route path="*" component={NotFound} />
-          </Switch>
+              <Switch>
+                <Route path="/" exact component={MyHome} />
+                <Route path="*" component={()=>(<MyError code={404}/>)} />
+              </Switch>
         </Content>
         <Footer className="footer">dota2 刀圈欢乐多 by duc @2021.</Footer>
       </Layout>
