@@ -24,14 +24,14 @@ const Home: React.FC<IProps> = ({ showLoginModal }) => {
           />
         </div>
         <div className="home-join">
-          <Button
-            type="primary"
-            style={{ marginRight: "10rem" }}
-            onClick={() => showLoginModal()}
-          >
+          <Button type="primary" style={{ marginRight: "10rem" }}>
             立刻加入
           </Button>
-          <Button type="ghost" className="my-ghost">
+          <Button
+            type="ghost"
+            className="my-ghost"
+            onClick={() => showLoginModal()}
+          >
             已有账号，立即登录
           </Button>
         </div>
