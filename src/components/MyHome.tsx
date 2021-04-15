@@ -1,6 +1,6 @@
 import { Input, Button } from "antd";
 import { connect } from "react-redux";
-import { showLoginModal, hideLoginModal } from "../store/actionTypes";
+import { showLoginModal } from "../store/actionTypes";
 
 interface IProps {
   showLoginModal: () => void;
