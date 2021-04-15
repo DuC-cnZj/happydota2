@@ -1,0 +1,54 @@
+.app-home{
+    background: url(../dota2/nw.jpeg);
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: @content-min-height;
+}
+.app-home-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.titles{
+    padding-top: 100rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30rem;
+}
+
+.title-1{
+    font-weight: 700;
+    font-size: 24rem;
+}
+.title-2{
+    font-weight: 700;
+    font-size: 48rem;
+}
+.title-3{
+    font-weight: 500;
+    font-size: 20rem;
+    border-bottom: 1px solid white;
+    padding-bottom: 10rem;
+}
+.home-search {
+    max-width: 420rem;
+    border-radius: @border-radius-600;
+    background: white;
+    margin-bottom: 30rem;
+    &> input {
+        background: white;
+    }
+}
+.home-join{
+    display: flex;
+    align-items: center;
+    .my-ghost {
+        color: @main-color;
+        box-shadow: 0 0 3px @main-color;
+    }
+}

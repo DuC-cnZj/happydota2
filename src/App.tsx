@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Layout } from "antd";
+import MyHeader from './components/MyHeader'
+import MyHome from './components/MyHome'
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Layout>
+        <Header className="ant-header">
+          <MyHeader/>
+        </Header>
+        <Content className="content">
+          <MyHome/>
+        </Content>
+        <Footer className="footer">
+            dota2 刀圈欢乐多 by duc @2021.
+        </Footer>
+      </Layout>
+    </>
   );
 }
 
