@@ -13,7 +13,7 @@ const Home: React.FC<IProps> = ({ showLoginModal }) => {
         <div className="titles">
           <span className="title-1">刀圈欢乐多</span>
           <span className="title-2">dota2 玩家聚集地</span>
-          <span className="title-3">念念不忘，必有回响</span>
+          <span className="title-3">长鞭在手，天下我有</span>
         </div>
         <div
           style={{ width: "100%", display: "flex", justifyContent: "center" }}
