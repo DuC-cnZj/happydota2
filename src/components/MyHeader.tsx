@@ -15,18 +15,27 @@ import {
   Checkbox,
 } from "antd";
 import { LockOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
+import { connect } from "react-redux";
+import { showLoginModal, hideLoginModal } from "../store/actionTypes";
 
 const { TabPane } = Tabs;
+interface IProps {
+  loginModalVisible: boolean;
+  showLoginModal: () => void;
+  hideLoginModal: () => void;
+}
 
-const Header: React.FC = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
+const Header: React.FC<IProps> = ({
+  loginModalVisible,
+  showLoginModal,
+  hideLoginModal,
+}) => {
   const showModal = () => {
-    setIsModalVisible(true);
+    showLoginModal();
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    hideLoginModal();
   };
 
   const [form] = Form.useForm();
@@ -87,7 +96,7 @@ const Header: React.FC = () => {
           </div>
 
           <Modal
-            visible={isModalVisible}
+            visible={loginModalVisible}
             closable={false}
             footer={null}
             onCancel={handleCancel}
@@ -185,4 +194,18 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+interface State {
+  loginModal: {
+    visible: boolean;
+  };
+}
+
+export default connect(
+  (state: State) => ({
+    loginModalVisible: state.loginModal.visible,
+  }),
+  {
+    showLoginModal,
+    hideLoginModal,
+  }
+)(Header);
