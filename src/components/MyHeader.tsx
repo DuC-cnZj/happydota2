@@ -66,7 +66,7 @@ const Header: React.FC<IProps> = ({
           <div className="menu">
             <Space size="middle">
               <Tooltip placement="bottom" title="物品" className="tooltip">
-                <Link to="/goods" className="menu-item">
+                <Link to="/equipment" className="menu-item">
                   <img src={sj} alt="sj" style={{ width: "80%" }} />
                 </Link>
               </Tooltip>

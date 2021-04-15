@@ -1,7 +1,9 @@
 import React from "react";
 import { Layout } from "antd";
 import MyHeader from "./components/MyHeader";
-import MyHome from "./components/MyHome";
+import MyFooter from "./pages/Footer";
+import MyHome from "./pages/Home";
+import Equipment from "./pages/Equipment";
 import { Switch, Route } from "react-router-dom";
 import MyError from "./components/MyError";
 
@@ -15,12 +17,15 @@ function App() {
           <MyHeader />
         </Header>
         <Content className="content">
-              <Switch>
-                <Route path="/" exact component={MyHome} />
-                <Route path="*" component={()=>(<MyError code={404}/>)} />
-              </Switch>
+          <Switch>
+            <Route path="/" exact component={MyHome} />
+            <Route path="/equipment" component={Equipment} />
+            <Route path="*" component={() => <MyError code={404} />} />
+          </Switch>
         </Content>
-        <Footer className="footer">dota2 刀圈欢乐多 by duc @2021.</Footer>
+        <Footer className="footer">
+          <MyFooter />
+        </Footer>
       </Layout>
     </>
   );

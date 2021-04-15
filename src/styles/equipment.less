@@ -1,0 +1,50 @@
+.equipment {
+    .search-result-fixed {
+        display: none;   
+    }
+
+    min-height: @content-min-height;
+    background: @bg-700;
+
+    .equipment-search {
+        margin-top: 36rem;
+        margin-bottom: 10rem;
+    }
+
+    .search-result {
+        width: 100%;
+        font-size: 14rem;
+        letter-spacing: 0.1em;
+        color: @main-text-color;
+    }
+}
+
+@media screen and (max-width: 768px) { 
+    .equipment {
+        .search-result-fixed {
+            padding: 16rem;
+            display: block;
+            position: fixed;   
+            background: @bg-300;
+            top: 64rem;
+            width: 100%;
+            font-size: 15rem;
+            letter-spacing: 0.15em;
+            color: @main-text-color;
+
+            .search-result-fixed-list {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .equipment-search {
+            display: none;
+        }
+
+        .search-result {
+            display: none;
+        }
+    }
+}

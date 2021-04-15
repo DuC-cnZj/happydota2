@@ -18,8 +18,34 @@
 }
 
 .footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 70rem;
   width: 100%;
-  text-align: center;
   background: @bg-500;
+  .footer-sm {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 768px) { 
+  .footer{
+    .footer-md {
+      display: none;
+    }
+    .footer-sm {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .footer-item{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+      }
+    }
+  }
 }
