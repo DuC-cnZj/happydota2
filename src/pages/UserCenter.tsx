@@ -31,58 +31,100 @@ const HomePage: React.FC = () => {
   );
 };
 
-const UserCenter: React.FC = () => {
+const TopBg: React.FC = () => {
+  return (
+    <div
+      className="user-top-bg"
+      style={{
+        backgroundImage:
+          "url('http://dicetower.oss-cn-heyuan.aliyuncs.com/mod/6042637db2d6e3001de64077/202103192104407.jpg')",
+      }}
+    ></div>
+  );
+};
+
+const TopMenu: React.FC = () => {
+  return (
+    <div className="author-menu">
+      <div className="author-menu-item">
+        <span>24</span>
+        <span>粉丝</span>
+      </div>
+      <Divider type="vertical" plain />
+
+      <div className="author-menu-item">
+        <span>27</span>
+        <span>关注</span>
+      </div>
+      <Divider type="vertical" plain />
+      <div className="author-menu-item">
+        <span>30</span>
+        <span>获赞</span>
+      </div>
+    </div>
+  );
+};
+
+const TopTabs: React.FC = () => {
   let { url } = useRouteMatch();
 
   return (
+    <div className="author-tabs">
+      <NavLink to={`${url}/home`} activeClassName="author-tab-active">
+        <span>主页</span>
+      </NavLink>
+      <NavLink to={`${url}/comments`} activeClassName="author-tab-active">
+        <span>评论</span>
+      </NavLink>
+      <NavLink to={`${url}/posts`} activeClassName="author-tab-active">
+        <span>帖子</span>
+      </NavLink>
+    </div>
+  );
+};
+
+const TopAvatar: React.FC = () => {
+  return (
+    <img
+      className="avatar"
+      src="https://file.dicecho.com/media/20210329/08582482.jpg"
+      alt="avatar"
+    />
+  );
+};
+
+const UserCenter: React.FC = () => {
+  let { url } = useRouteMatch();
+  return (
     <>
       <div className="user-center">
-        <div
-          className="user-top-bg"
-          style={{
-            backgroundImage:
-              "url('http://dicetower.oss-cn-heyuan.aliyuncs.com/mod/6042637db2d6e3001de64077/202103192104407.jpg')",
-          }}
-        ></div>
-
-        <img
-          className="avatar"
-          src="https://file.dicecho.com/media/20210329/08582482.jpg"
-          alt="avatar"
-        />
-        <p className="author-name">Catko</p>
-        <span className="author-desc">我头像真可爱</span>
-        <div className="author-menu">
-          <div className="author-menu-item">
-            <span>24</span>
-            <span>粉丝</span>
-          </div>
-          <Divider type="vertical" plain />
-
-          <div className="author-menu-item">
-            <span>27</span>
-            <span>关注</span>
-          </div>
-          <Divider type="vertical" plain />
-          <div className="author-menu-item">
-            <span>30</span>
-            <span>获赞</span>
-          </div>
+        <TopBg />
+        <div className="show-md">
+          <TopAvatar />
+          <p className="author-name">Catko</p>
+          <span className="author-desc">我头像真可爱</span>
+          <TopMenu />
+          <Button type="ghost" className="follow">
+            关注
+          </Button>
+          <TopTabs />
         </div>
-        <Button type="ghost" className="follow">
-          关注
-        </Button>
 
-        <div className="author-tabs">
-          <NavLink to={`${url}/home`} activeClassName="author-tab-active">
-            <span>主页</span>
-          </NavLink>
-          <NavLink to={`${url}/comments`} activeClassName="author-tab-active">
-            <span>评论</span>
-          </NavLink>
-          <NavLink to={`${url}/posts`} activeClassName="author-tab-active">
-            <span>帖子</span>
-          </NavLink>
+        <div className="show-sm container">
+          <div className="sm-group-am">
+            <TopAvatar />
+            <div style={{width:"100%"}} className="sm-group-tb">
+              <TopMenu />
+              <Button type="ghost" className="follow">
+                关注
+              </Button>
+            </div>
+          </div>
+          <div className="text-group">
+            <p className="author-name">Catko</p>
+            <span className="author-desc">我头像真可爱</span>
+          </div>
+          <TopTabs />
         </div>
 
         <Switch>

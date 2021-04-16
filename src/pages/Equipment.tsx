@@ -199,8 +199,7 @@ const Equipment: React.FC = () => {
       <div className="search-result-fixed">
         <div className="search-result-fixed-list">
           <span>搜索到xxx条数据</span>
-          <div>
-            <svg
+          <svg
               onClick={() => showDrawer()}
               style={{
                 display: "flex",
@@ -223,7 +222,6 @@ const Equipment: React.FC = () => {
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-
             <Drawer
               title={
                 <span style={{ fontSize: "18rem", letterSpacing: "2rem" }}>
@@ -294,7 +292,6 @@ const Equipment: React.FC = () => {
                 <Button style={{ width: "100%" }}>清除</Button>
               </Space>
             </Drawer>
-          </div>
         </div>
       </div>
       <div className="container">
@@ -318,7 +315,7 @@ const Equipment: React.FC = () => {
             </div>
             <div className="list-items">
               <List
-                grid={{ gutter: 16, sm: 3, md: 4, lg: 4, xl: 4 }}
+                grid={{ gutter: 16, xs: 1, sm: 3, md: 4, lg: 4, xl: 4 }}
                 dataSource={data}
                 renderItem={(item: cardItem) => (
                   <List.Item>

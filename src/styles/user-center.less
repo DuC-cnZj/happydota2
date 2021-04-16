@@ -7,6 +7,16 @@
   background: @bg-700;
 
   z-index: 10;
+  .show-md {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .show-sm {
+    display: none;
+  }
   .user-top-bg {
     position: absolute;
     z-index: -1;
@@ -99,6 +109,58 @@
 
 @media screen and (max-width: 768px) {
   .user-center {
+    .show-md {
+      display: none;
+    }
+
+    .show-sm {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .text-group {
+        padding-bottom: 10rem;
+        border-bottom: 1px solid @border-color-base;
+    }
+
+    .sm-group-am {
+      display: flex;
+      margin-top: 30rem;
+      align-items: center;
+      justify-content: space-between;
+
+      .avatar {
+          margin-right: 15rem;
+      }
+
+      .sm-group-tb {
+        max-width: 500rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .follow {
+          width: 100%;
+        }
+
+        .author-menu {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .author-menu-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
+
     .user-body {
       margin-bottom: 120rem;
     }

@@ -1,10 +1,19 @@
+@import "~antd/dist/antd.less";
+@import "./theme.less";
+@import "./app.less";
+@import "./my_header.less";
+@import "./home.less";
+@import "./my-error.less";
+@import "./equipment.less";
+@import "./user-center.less";
+
 html {
   font-size: 6.25%;
 }
 
 body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media screen and (max-width: 768px) {
@@ -25,7 +34,14 @@ body {
 }
 
 .container {
+  max-width: 320px;
   margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 576px;
+  }
 }
 @media (min-width: 640px) {
   .container {
@@ -48,15 +64,6 @@ body {
   }
 }
 
-@import "~antd/dist/antd.less";
-@import "./theme.less";
-@import "./app.less";
-@import "./my_header.less";
-@import "./home.less";
-@import "./my-error.less";
-@import "./equipment.less";
-@import "./user-center.less";
-
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
@@ -68,6 +75,6 @@ body {
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.font-serif	{
-    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
