@@ -1,9 +1,75 @@
-import { Input, Drawer, Button, Col, Row, Divider, Select, Space } from "antd";
+import {
+  Input,
+  Drawer,
+  Button,
+  Col,
+  Row,
+  Divider,
+  Select,
+  Space,
+  List,
+  Card,
+  Rate,
+} from "antd";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 
+import jugg from "../dota2/hero-jugg.jpeg";
+import luna from "../dota2/hero-luna.jpeg";
+import yemo from "../dota2/hero-ym.jpeg";
+import houzi from "../dota2/hero-hz.jpeg";
+import xuemo from "../dota2/hero-xm.jpeg";
+
 const { Search } = Input;
 const { Option } = Select;
+
+interface cardItem {
+  rate: number;
+  name: string;
+  description?: string;
+  imgPath: string;
+}
+
+const CardItem: React.FC<cardItem> = ({rate,name, description = "这个英雄很安静",imgPath}) => {
+  return (
+    <Card
+      hoverable
+      style={{ width: "100%", border: "none" }}
+      cover={
+        <div className="card-item-img">
+          <div
+            className="card-item-bg"
+            style={{ backgroundImage: "url(" + imgPath + ")" }}
+          ></div>
+          <div className="card-item-mask"></div>
+        </div>
+      }
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <h2 style={{ textAlign: "center", fontSize: "18rem" }}>
+          <span>{name}</span>
+          <div  style={{ display: "flex" }}>
+            <Space>
+              <span style={{fontSize: "10rem"}}>难易程度:</span>
+              <Rate style={{ fontSize: "10rem" }} disabled defaultValue={rate} />
+            </Space>
+          </div>
+        </h2>
+        <span style={{ fontSize: "6rem" }}>
+          {description}
+        </span>
+      </div>
+    </Card>
+  );
+};
+
+type listItem = cardItem[]
 
 const Equipment: React.FC = () => {
   const [state, setState] = useState<{ visible?: boolean; placement?: string }>(
@@ -37,6 +103,39 @@ const Equipment: React.FC = () => {
   const onSearch = (val: any) => {
     console.log("search:", val);
   };
+
+  const data: listItem = [
+    {
+      name: "剑圣",
+      rate: 3,
+      description: "我的刀可以切穿盔甲，切到里面的番茄",
+      imgPath: jugg,
+    },
+    {
+      name: "露娜",
+      rate: 4,
+      description: "夜色下的天空更加开阔",
+      imgPath: luna,
+    },
+    {
+      name: "暗夜魔王",
+      rate: 4,
+      description: "恐惧使魔法更有效",
+      imgPath: yemo,
+    },
+    {
+      name: "幻影长矛手",
+      rate: 5,
+      description: "把你抓走真是一点问题都没有啊",
+      imgPath: houzi,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+  ];
 
   return (
     <div className="equipment">
@@ -135,7 +234,7 @@ const Equipment: React.FC = () => {
                     </div>
                   </Option>
                 </Select>
-                <Button style={{width: "100%"}}>清除</Button>
+                <Button style={{ width: "100%" }}>清除</Button>
               </Space>
             </Drawer>
           </div>
@@ -143,16 +242,16 @@ const Equipment: React.FC = () => {
       </div>
       <div className="container">
         <Row gutter={[16, 16]}>
-          <Col md={16}>
+          <Col md={16} sm={24} xs={24}>
             <div className="equipment-search">
               <Search
-                size="large"
                 placeholder="输入英雄/物品/比赛来搜索"
+                allowClear
+                size="large"
                 enterButton={
-                  <>
-                    <SearchOutlined />
-                    &nbsp;&nbsp;搜索
-                  </>
+                  <Button type="primary" icon={<SearchOutlined />}>
+                    搜索
+                  </Button>
                 }
               />
             </div>
@@ -160,8 +259,21 @@ const Equipment: React.FC = () => {
               搜索到xxx条数据aa
               <Divider />
             </div>
+            <div className="list-items">
+              <List
+                grid={{ gutter: 16, sm: 3, md: 4, lg: 4, xl: 4 }}
+                dataSource={data}
+                renderItem={(item: cardItem) => (
+                  <List.Item>
+                    <CardItem name={item.name} rate={item.rate} imgPath={item.imgPath} description={item.description} />
+                  </List.Item>
+                )}
+              />
+            </div>
           </Col>
-          <Col md={8}></Col>
+          <Col md={8} sm={0} xs={0}>
+            right
+          </Col>
         </Row>
       </div>
     </div>
