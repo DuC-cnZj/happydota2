@@ -10,9 +10,10 @@ import {
   List,
   Card,
   Rate,
+  Affix,
 } from "antd";
 import { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, SortDescendingOutlined } from "@ant-design/icons";
 
 import jugg from "../dota2/hero-jugg.jpeg";
 import luna from "../dota2/hero-luna.jpeg";
@@ -66,9 +67,9 @@ const CardItem: React.FC<cardItem> = ({
           <span>{name}</span>
           <div style={{ display: "flex" }}>
             <Space>
-              <span style={{ fontSize: "10rem" }}>难易程度:</span>
+              <span style={{ fontSize: "12rem" }}>难易程度:</span>
               <Rate
-                style={{ fontSize: "10rem" }}
+                style={{ fontSize: "12rem" }}
                 disabled
                 defaultValue={rate}
               />
@@ -138,8 +139,7 @@ const Equipment: React.FC = () => {
     {
       name: "幻影长矛手",
       rate: 5,
-      description:
-        "把你抓走真是一点问题都没有啊",
+      description: "把你抓走真是一点问题都没有啊",
       imgPath: houzi,
     },
     {
@@ -148,7 +148,51 @@ const Equipment: React.FC = () => {
       description: "开始收集鲜血",
       imgPath: xuemo,
     },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
+    {
+      name: "血魔",
+      rate: 2,
+      description: "开始收集鲜血",
+      imgPath: xuemo,
+    },
   ];
+  const children = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(
+      <Option value={i} key={i.toString(36) + i}>
+        {i.toString(36) + i}
+      </Option>
+    );
+  }
 
   return (
     <div className="equipment">
@@ -254,8 +298,8 @@ const Equipment: React.FC = () => {
         </div>
       </div>
       <div className="container">
-        <Row gutter={[16, 16]}>
-          <Col md={16} sm={24} xs={24}>
+        <Row gutter={[16, 16]} style={{ paddingTop: "36rem", paddingBottom: "100rem" }}>
+          <Col md={17} sm={24} xs={24}>
             <div className="equipment-search">
               <Search
                 placeholder="输入英雄/物品/比赛来搜索"
@@ -289,8 +333,95 @@ const Equipment: React.FC = () => {
               />
             </div>
           </Col>
-          <Col md={8} sm={0} xs={0}>
-            right
+          <Col md={7} sm={0} xs={0}>
+            <Affix offsetTop={90}>
+              <Card title="筛选" bordered={false} style={{ width: "100%" }}>
+              <Space
+                direction="vertical"
+                style={{ width: "100%" }}
+              >
+                <Select
+                  style={{ width: "100%" }}
+                  showSearch
+                  allowClear
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                >
+                  <Option value="jack">近战</Option>
+                  <Option value="lucy">远程</Option>
+                  <Option value="tom">法师</Option>
+                </Select>
+                <Select
+                  style={{ width: "100%" }}
+                  showSearch
+                  allowClear
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                >
+                  <Option value="jack">近战</Option>
+                  <Option value="lucy">远程</Option>
+                  <Option value="tom">法师</Option>
+                </Select>
+                <div
+                  className="right-sort"
+                  style={{ display: "inline-flex", width: "100%" }}
+                >
+                  <Select
+                    size="middle"
+                    defaultValue="a1"
+                    style={{
+                      flex: "1",
+                      borderTopRightRadius: "0",
+                      borderBottomRightRadius: "0",
+                    }}
+                  >
+                    {children}
+                  </Select>
+                  <Button
+                    type="default"
+                    style={{
+                      borderTopLeftRadius: "0",
+                      borderBottomLeftRadius: "0",
+                    }}
+                    icon={<SortDescendingOutlined />}
+                  ></Button>
+                </div>
+                <Select
+                  mode="multiple"
+                  style={{ width: "100%" }}
+                  placeholder="select one country"
+                  defaultValue={["力量"]}
+                  onChange={() => ({})}
+                  optionLabelProp="label"
+                >
+                  <Option value="力量" label="力量">
+                    <div className="demo-option-label-item">力量</div>
+                  </Option>
+                  <Option value="智力" label="智力">
+                    <div className="demo-option-label-item">智力</div>
+                  </Option>
+                  <Option value="敏捷" label="敏捷">
+                    <div className="demo-option-label-item">敏捷</div>
+                  </Option>
+                </Select>
+
+                <Button style={{ width: "100%" }}>清空筛选</Button>
+              </Space>
+              <div>
+                <ul className="contact">
+                  <li className="contact-item"><a href="/">社区规则</a></li>
+                  <li className="contact-item"><a href="/">关于我们</a></li>
+                  <li className="contact-item"><a href="/">开发日志</a></li>
+                  <li className="contact-item"><a href="/">评价规则</a></li>
+                  <li className="contact-item"><a href="/">联系我们</a></li>
+                  <li className="contact-item"><a href="/">使用条款与协议</a></li>
+                </ul>
+              </div>
+              <span className="copyright-text">© 2021 刀圈欢乐多</span>
+            </Card>
+            </Affix>
           </Col>
         </Row>
       </div>

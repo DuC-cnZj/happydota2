@@ -154,7 +154,7 @@ const Header: React.FC<IProps> = ({
                           justifyContent: "space-between",
                         }}
                       >
-                        <Checkbox>Checkbox</Checkbox>
+                        <Checkbox>记住我</Checkbox>
                         <a href="/" className="forget-pwd">
                           忘记密码
                         </a>
