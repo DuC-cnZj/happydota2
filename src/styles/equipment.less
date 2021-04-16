@@ -30,6 +30,9 @@
     .card-item-mask {
       opacity: 1;
     }
+    .level {
+        font-size: 12rem;
+    }
   }
 
   .card-item-img:hover {
@@ -47,6 +50,10 @@
       bottom: 0;
       background: rgba(0, 0, 0, 0.6);
     }
+  }
+
+  .level {
+      font-size: 12rem;
   }
 
   .card-item-desc {
@@ -92,6 +99,12 @@
 
 @media screen and (max-width: 768px) {
   .equipment {
+    .level {
+        display: none;
+    }
+    .card-item-desc {
+        font-size: 8rem;
+    }
     .search-result-fixed {
       z-index: 888;
       height: 56rem;

@@ -41,7 +41,6 @@ const CardItem: React.FC<cardItem> = ({
     <Card
       hoverable
       style={{
-        width: "100%",
         border: "none",
         height: "350rem",
         overflow: "hidden",
@@ -67,7 +66,7 @@ const CardItem: React.FC<cardItem> = ({
           <span>{name}</span>
           <div style={{ display: "flex" }}>
             <Space>
-              <span style={{ fontSize: "12rem" }}>难易程度:</span>
+              <span className="level">难易程度:</span>
               <Rate
                 style={{ fontSize: "12rem" }}
                 disabled
@@ -315,7 +314,7 @@ const Equipment: React.FC = () => {
             </div>
             <div className="list-items">
               <List
-                grid={{ gutter: 16, xs: 1, sm: 3, md: 4, lg: 4, xl: 4 }}
+                grid={{ gutter: 16, column: 4, xs: 2, md: 4, sm: 3 }}
                 dataSource={data}
                 renderItem={(item: cardItem) => (
                   <List.Item>
