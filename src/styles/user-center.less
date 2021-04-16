@@ -1,0 +1,106 @@
+.user-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: @content-min-height;
+  background: @bg-700;
+
+  z-index: 10;
+  .user-top-bg {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    min-height: 400rem;
+    background-size: cover;
+    background-position: center;
+    &::after {
+      content: "";
+      background: linear-gradient(180deg, transparent, #323c4b);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .avatar {
+    margin-top: 20rem;
+    transition: 0.2s;
+    box-shadow: 2px 2px 8px @main-color;
+    width: 100rem;
+    height: 100rem;
+    border-radius: 50%;
+    margin-bottom: 10rem;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .author-name {
+    color: #ffffffd9;
+    font-weight: bold;
+    font-size: 28rem;
+    margin-bottom: 10rem;
+  }
+
+  .author-desc {
+    color: #ffffffa6;
+    font-size: 16rem;
+  }
+
+  .author-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10rem;
+
+    .author-menu-item {
+      display: flex;
+      padding: 10rem 15rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .follow {
+    margin-bottom: 10rem;
+  }
+
+  .author-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 30rem;
+    font-size: 14rem;
+
+    a {
+      transition: 0.2s;
+      padding: 10rem 15rem;
+      color: @main-text-color;
+      border-bottom: 2px solid transparent;
+      &:hover {
+        border-bottom: 2px solid @main-color;
+      }
+    }
+
+    .author-tab-active {
+      border-bottom: 2px solid @main-color;
+    }
+  }
+
+  .user-body {
+    margin-bottom: 50rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-center {
+    .user-body {
+      margin-bottom: 120rem;
+    }
+  }
+}
