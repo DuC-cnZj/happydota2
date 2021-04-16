@@ -11,17 +11,17 @@
   background: @bg-500;
 }
 
-.tooltip{
+.tooltip {
   border-radius: @border-radius-600;
 }
 
-.content{
+.content {
   width: 100%;
   margin-top: 64rem;
   min-height: @content-min-height;
 }
 
-.footer{
+.footer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,9 +33,11 @@
   }
 }
 
-
-@media screen and (max-width: 768px) { 
-  .footer{
+@media screen and (max-width: 768px) {
+  .footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
     .footer-md {
       display: none;
     }
@@ -44,7 +46,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      .footer-item{
+      .footer-item {
         display: flex;
         justify-content: center;
         align-items: center;

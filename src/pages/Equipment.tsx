@@ -30,11 +30,21 @@ interface cardItem {
   imgPath: string;
 }
 
-const CardItem: React.FC<cardItem> = ({rate,name, description = "这个英雄很安静",imgPath}) => {
+const CardItem: React.FC<cardItem> = ({
+  rate,
+  name,
+  description = "这个英雄很安静",
+  imgPath,
+}) => {
   return (
     <Card
       hoverable
-      style={{ width: "100%", border: "none" }}
+      style={{
+        width: "100%",
+        border: "none",
+        height: "350rem",
+        overflow: "hidden",
+      }}
       cover={
         <div className="card-item-img">
           <div
@@ -54,22 +64,24 @@ const CardItem: React.FC<cardItem> = ({rate,name, description = "这个英雄很
       >
         <h2 style={{ textAlign: "center", fontSize: "18rem" }}>
           <span>{name}</span>
-          <div  style={{ display: "flex" }}>
+          <div style={{ display: "flex" }}>
             <Space>
-              <span style={{fontSize: "10rem"}}>难易程度:</span>
-              <Rate style={{ fontSize: "10rem" }} disabled defaultValue={rate} />
+              <span style={{ fontSize: "10rem" }}>难易程度:</span>
+              <Rate
+                style={{ fontSize: "10rem" }}
+                disabled
+                defaultValue={rate}
+              />
             </Space>
           </div>
         </h2>
-        <span style={{ fontSize: "6rem" }}>
-          {description}
-        </span>
+        <span className="card-item-desc">{description}</span>
       </div>
     </Card>
   );
 };
 
-type listItem = cardItem[]
+type listItem = cardItem[];
 
 const Equipment: React.FC = () => {
   const [state, setState] = useState<{ visible?: boolean; placement?: string }>(
@@ -126,7 +138,8 @@ const Equipment: React.FC = () => {
     {
       name: "幻影长矛手",
       rate: 5,
-      description: "把你抓走真是一点问题都没有啊",
+      description:
+        "把你抓走真是一点问题都没有啊",
       imgPath: houzi,
     },
     {
@@ -265,7 +278,12 @@ const Equipment: React.FC = () => {
                 dataSource={data}
                 renderItem={(item: cardItem) => (
                   <List.Item>
-                    <CardItem name={item.name} rate={item.rate} imgPath={item.imgPath} description={item.description} />
+                    <CardItem
+                      name={item.name}
+                      rate={item.rate}
+                      imgPath={item.imgPath}
+                      description={item.description}
+                    />
                   </List.Item>
                 )}
               />

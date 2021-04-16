@@ -4,6 +4,7 @@ import gg from "../dota2/gg-item.png";
 import puck from "../dota2/puck-item.png";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
+
 const Footer: React.FC = () => {
   return (
     <>

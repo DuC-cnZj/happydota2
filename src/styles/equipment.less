@@ -1,88 +1,96 @@
 .equipment {
+  .search-result-fixed {
+    display: none;
+  }
+
+  min-height: @content-min-height;
+  background: @bg-700;
+
+  .equipment-search {
+    margin-top: 36rem;
+    margin-bottom: 10rem;
+  }
+
+  .search-result {
+    width: 100%;
+    font-size: 14rem;
+    letter-spacing: 0.1em;
+    color: @main-text-color;
+  }
+
+  .card-item-img {
+    position: relative;
+    overflow: hidden;
+    .card-item-bg {
+      transition: 0.3s;
+      height: 200rem;
+      background-size: cover;
+      background-position: center;
+    }
+    .card-item-mask {
+      opacity: 1;
+    }
+  }
+
+  .card-item-img:hover {
+    .card-item-bg {
+      transform: scale(1.2);
+    }
+    .card-item-mask {
+      display: block;
+      position: absolute;
+      transition: 0.3s;
+      opacity: 0.6;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .card-item-desc {
+    font-size: 6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .equipment {
     .search-result-fixed {
-        display: none;   
+      z-index: 888;
+      height: 56rem;
+      padding: 16rem;
+      display: block;
+      position: fixed;
+      background: @bg-600;
+      top: 64rem;
+      width: 100%;
+      font-size: 15rem;
+      letter-spacing: 0.15em;
+      color: @main-text-color;
+
+      .search-result-fixed-list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
 
-    min-height: @content-min-height;
-    background: @bg-700;
-
     .equipment-search {
-        margin-top: 36rem;
-        margin-bottom: 10rem;
+      display: none;
     }
 
     .search-result {
-        width: 100%;
-        font-size: 14rem;
-        letter-spacing: 0.1em;
-        color: @main-text-color;
+      display: none;
     }
 
-    .card-item-img {
-        position: relative;
-        overflow: hidden;
-        .card-item-bg {
-            transition: .3s;
-            height: 200rem;
-            background-size: cover;
-            background-position: center;
-        }
-        .card-item-mask{
-            opacity: 1;
-        }
+    .list-items {
+      margin-top: 65rem;
     }
-
-    .card-item-img:hover {
-        .card-item-bg {
-            transform: scale(1.2);
-        }
-        .card-item-mask {
-            display: block;
-            position: absolute;
-            transition: .3s;
-            opacity: 0.6;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, .6);
-        }
-    }
-}
-
-@media screen and (max-width: 768px) { 
-    .equipment {
-        .search-result-fixed {
-            z-index: 888;
-            height: 56rem;
-            padding: 16rem;
-            display: block;
-            position: fixed;   
-            background: @bg-600;
-            top: 64rem;
-            width: 100%;
-            font-size: 15rem;
-            letter-spacing: 0.15em;
-            color: @main-text-color;
-
-            .search-result-fixed-list {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-
-        .equipment-search {
-            display: none;
-        }
-
-        .search-result {
-            display: none;
-        }
-
-        .list-items {
-            margin-top: 65rem;
-            
-        }
-    }
+  }
 }
