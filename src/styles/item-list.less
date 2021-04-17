@@ -1,0 +1,95 @@
+.item-list {
+  .list-item-card {
+    border-color: transparent;
+    box-shadow: 0 0 6rem @main-color;
+
+    text-align: center;
+
+    .hero-name {
+      display: block;
+      font-size: 18rem;
+      font-weight: bold;
+      margin-bottom: 15rem;
+    }
+
+    .level-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10rem;
+
+      .rate,
+      .level {
+        font-size: 12rem;
+      }
+    }
+  }
+
+  .card-item-img {
+    position: relative;
+    overflow: hidden;
+    .card-item-bg {
+      transition: 0.3s;
+      height: 200rem;
+      background-size: cover;
+      background-position: center;
+    }
+    .card-item-mask {
+      opacity: 1;
+    }
+    .level {
+      font-size: 12rem;
+    }
+  }
+
+  .card-item-img:hover {
+    .card-item-bg {
+      transform: scale(1.2);
+    }
+    .card-item-mask {
+      display: block;
+      position: absolute;
+      transition: 0.3s;
+      opacity: 0.6;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .card-item-desc {
+    font-size: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  @media screen and (max-width: 768px) {
+    .card-item-desc {
+      font-size: 6rem;
+    }
+
+    .hero-name {
+      font-size: 14rem;
+    }
+
+    .list-item-card {
+      .level-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 5rem;
+        .rate {
+          font-size: 10rem;
+        }
+        .level {
+          display: none;
+        }
+      }
+    }
+  }
+}

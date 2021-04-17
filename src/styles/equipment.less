@@ -18,93 +18,16 @@
     color: @main-text-color;
   }
 
-  .card-item-img {
-    position: relative;
-    overflow: hidden;
-    .card-item-bg {
-      transition: 0.3s;
-      height: 200rem;
-      background-size: cover;
-      background-position: center;
-    }
-    .card-item-mask {
-      opacity: 1;
-    }
-    .level {
-        font-size: 12rem;
-    }
-  }
-
-  .card-item-img:hover {
-    .card-item-bg {
-      transform: scale(1.2);
-    }
-    .card-item-mask {
-      display: block;
-      position: absolute;
-      transition: 0.3s;
-      opacity: 0.6;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-    }
-  }
-
-  .level {
-      font-size: 12rem;
-  }
-
-  .card-item-desc {
-    font-size: 10rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
   .right-sort {
     .ant-select-selector {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
   }
-
-  .contact {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    a {
-      font-size: 12rem;
-      color: @main-text-color;
-    }
-
-    a:hover {
-      color: @main-color;
-    }
-
-    .contact-item {
-      padding-top: 10rem;
-      padding-right: 8rem;
-    }
-  }
-
-  .copyright-text {
-    color: @text-color-secondary;
-    font-size: 10rem;
-  }
 }
 
 @media screen and (max-width: 768px) {
   .equipment {
-    .level {
-        display: none;
-    }
-    .card-item-desc {
-        font-size: 8rem;
-    }
     .search-result-fixed {
       z-index: 888;
       height: 56rem;

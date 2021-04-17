@@ -7,11 +7,11 @@ import {
   Divider,
   Select,
   Space,
-  List,
   Card,
-  Rate,
   Affix,
 } from "antd";
+
+import ItemList, {cardItem} from '../components/ItemList'
 import { useState } from "react";
 import { SearchOutlined, SortDescendingOutlined } from "@ant-design/icons";
 
@@ -20,68 +20,10 @@ import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";
 import houzi from "../dota2/hero-hz.jpeg";
 import xuemo from "../dota2/hero-xm.jpeg";
+import Contact from "../components/Contact";
 
 const { Search } = Input;
 const { Option } = Select;
-
-interface cardItem {
-  rate: number;
-  name: string;
-  description?: string;
-  imgPath: string;
-}
-
-const CardItem: React.FC<cardItem> = ({
-  rate,
-  name,
-  description = "这个英雄很安静",
-  imgPath,
-}) => {
-  return (
-    <Card
-      hoverable
-      style={{
-        border: "none",
-        height: "350rem",
-        overflow: "hidden",
-      }}
-      cover={
-        <div className="card-item-img">
-          <div
-            className="card-item-bg"
-            style={{ backgroundImage: "url(" + imgPath + ")" }}
-          ></div>
-          <div className="card-item-mask"></div>
-        </div>
-      }
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <h2 style={{ textAlign: "center", fontSize: "18rem" }}>
-          <span>{name}</span>
-          <div style={{ display: "flex" }}>
-            <Space>
-              <span className="level">难易程度:</span>
-              <Rate
-                style={{ fontSize: "12rem" }}
-                disabled
-                defaultValue={rate}
-              />
-            </Space>
-          </div>
-        </h2>
-        <span className="card-item-desc">{description}</span>
-      </div>
-    </Card>
-  );
-};
-
-type listItem = cardItem[];
 
 const Equipment: React.FC = () => {
   const [state, setState] = useState<{ visible?: boolean; placement?: string }>(
@@ -116,7 +58,7 @@ const Equipment: React.FC = () => {
     console.log("search:", val);
   };
 
-  const data: listItem = [
+  const data: cardItem[] = [
     {
       name: "剑圣",
       rate: 3,
@@ -313,20 +255,7 @@ const Equipment: React.FC = () => {
               <Divider />
             </div>
             <div className="list-items">
-              <List
-                grid={{ gutter: 16, column: 4, xs: 2, md: 4, sm: 3 }}
-                dataSource={data}
-                renderItem={(item: cardItem) => (
-                  <List.Item>
-                    <CardItem
-                      name={item.name}
-                      rate={item.rate}
-                      imgPath={item.imgPath}
-                      description={item.description}
-                    />
-                  </List.Item>
-                )}
-              />
+              <ItemList data={data} />
             </div>
           </Col>
           <Col md={7} sm={0} xs={0}>
@@ -405,17 +334,7 @@ const Equipment: React.FC = () => {
 
                 <Button style={{ width: "100%" }}>清空筛选</Button>
               </Space>
-              <div>
-                <ul className="contact">
-                  <li className="contact-item"><a href="/">社区规则</a></li>
-                  <li className="contact-item"><a href="/">关于我们</a></li>
-                  <li className="contact-item"><a href="/">开发日志</a></li>
-                  <li className="contact-item"><a href="/">评价规则</a></li>
-                  <li className="contact-item"><a href="/">联系我们</a></li>
-                  <li className="contact-item"><a href="/">使用条款与协议</a></li>
-                </ul>
-              </div>
-              <span className="copyright-text">© 2021 刀圈欢乐多</span>
+              <Contact/>
             </Card>
             </Affix>
           </Col>

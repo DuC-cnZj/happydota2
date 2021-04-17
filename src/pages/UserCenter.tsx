@@ -43,7 +43,7 @@ const TopBg: React.FC = () => {
   );
 };
 
-const TopMenu: React.FC = () => {
+export const TopMenu: React.FC = () => {
   return (
     <div className="author-menu">
       <div className="author-menu-item">
@@ -83,7 +83,7 @@ const TopTabs: React.FC = () => {
   );
 };
 
-const TopAvatar: React.FC = () => {
+export const TopAvatar: React.FC = () => {
   return (
     <img
       className="avatar"

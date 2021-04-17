@@ -1,70 +1,148 @@
-.app-home{
-    background: url(../dota2/nw.jpeg);
-    background-position: center;
-    background-size: cover;
-    width: 100%;
-    height: @content-min-height;
+.app-home {
+  background: url(../dota2/nw.jpeg);
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: @content-min-height;
 }
-.app-home-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.app-home-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.titles{
-    padding-top: 100rem;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30rem;
+.titles {
+  padding-top: 200rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30rem;
 }
 
-.title-1{
-    font-weight: 700;
-    font-size: 24rem;
+.title-1 {
+  font-weight: 700;
+  font-size: 24rem;
 }
-.title-2{
-    font-weight: 700;
-    font-size: 48rem;
+.title-2 {
+  font-weight: 700;
+  font-size: 48rem;
 }
-.title-3{
-    font-weight: 500;
-    font-size: 20rem;
-    border-bottom: 1px solid white;
-    padding-bottom: 10rem;
+.title-3 {
+  font-weight: 500;
+  font-size: 20rem;
+  border-bottom: 1px solid white;
+  padding-bottom: 10rem;
 }
 .home-search {
-    max-width: 420rem;
-    border-radius: @border-radius-600;
+  max-width: 420rem;
+  border-radius: @border-radius-600;
+  background: white;
+  margin-bottom: 30rem;
+  & > input {
     background: white;
-    margin-bottom: 30rem;
-    &> input {
-        background: white;
-    }
+  }
 }
-.home-join{
-    display: flex;
-    align-items: center;
-    .my-ghost {
-        color: @main-color;
-        box-shadow: 0 0 3px @main-color;
-    }
+.home-join {
+  display: flex;
+  align-items: center;
+  .my-ghost {
+    color: @main-color;
+    box-shadow: 0 0 3px @main-color;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .title-1 {
-        font-size: 18rem;
+  .title-1 {
+    font-size: 18rem;
+  }
+  .title-2 {
+    font-size: 36rem;
+  }
+  .title-3 {
+    font-size: 16rem;
+  }
+
+  .home-search {
+    max-width: 370rem;
+  }
+}
+
+.home-auth {
+  min-height: @content-min-height;
+  background: @bg-700;
+
+  .home-auth-body {
+    padding-top: 18rem;
+    padding-bottom: 30rem;
+
+    .homepage {
+      margin-bottom: 20rem;
+      height: 300rem;
+      background-position: center;
+      background-size: cover;
+      border-radius: @border-radius;
     }
-    .title-2 {
-        font-size: 36rem;
-    }
-    .title-3 {
+  }
+
+  .home-auth-right {
+      padding: 16rem;
+    width: 100%;
+    border-radius: @border-radius;
+    background: @bg-500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .author-name {
+        font-weight: bold;
         font-size: 16rem;
+        margin-bottom: 5rem;
     }
 
-    .home-search {
-        max-width: 370rem;
+    .author-desc {
+        font-size: 8rem;
     }
+    .author-menu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid @text-color-secondary;
+      margin-bottom: 10rem;
+
+      .author-menu-item {
+        display: flex;
+        padding: 10rem 15rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &:hover{
+            cursor: pointer;
+            color: @main-color;
+        }
+      }
+    }
+
+    .home-auth-btn-group {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .avatar {
+      margin-top: 20rem;
+      transition: 0.2s;
+      width: 70rem;
+      height: 70rem;
+      border-radius: 50%;
+      margin-bottom: 10rem;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
 }
