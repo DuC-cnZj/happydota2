@@ -16,6 +16,20 @@
   margin-right: 24rem;
 }
 
+.user-avatar-sm {
+  display: none;
+}
+
+.user-avatar-sm,
+.user-avatar-md {
+  cursor: pointer;
+  height: 40rem;
+  width: 40rem;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+}
+
 .menu {
   display: flex;
   align-items: center;
@@ -69,7 +83,40 @@
   display: none;
 }
 
+.avatar-md-a {
+  display: flex;
+  align-items: center;
+  font-size: 12rem;
+  padding: 5rem 10rem;
+  width: 100%;
+  color: @text-color-secondary;
+  border-radius: @border-radius;
+  &:hover {
+    color: @text-color;
+    background: #ffffff1a;
+  }
+}
+
+.avatar-sm-a {
+  .avatar-md-a();
+  padding: 10rem 3rem;
+  font-size: 16rem;
+}
+.avatar-md-a:nth-child(2) {
+  color: red;
+}
+.avatar-sm-a:nth-child(3) {
+  color: red;
+}
+
 @media screen and (max-width: 768px) {
+  .user-avatar-md {
+    display: none;
+  }
+  .user-avatar-sm {
+    display: block;
+  }
+
   .header-right {
     order: 1;
     flex-shrink: 0;

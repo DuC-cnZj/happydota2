@@ -4,8 +4,10 @@ import gg from "../dota2/gg-item.png";
 import puck from "../dota2/puck-item.png";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
+import { User } from "../store/reducers/user";
+import { connect } from "react-redux";
 
-const Footer: React.FC = () => {
+const Footer: React.FC<{ user: User }> = ({ user }) => {
   return (
     <>
       <div className="footer-md">dota2 刀圈欢乐多 by duc @2021.</div>
@@ -40,7 +42,14 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-item">
           <Tooltip placement="top" title="用户" className="tooltip">
-            <Link to="/user" className="footer-menu-item">
+            <Link
+              to={
+                user.name
+                  ? `/users/${user.name}`
+                  : { pathname: "/", state: { showLogin: true } }
+              }
+              className="footer-menu-item"
+            >
               <UserOutlined />
             </Link>
           </Tooltip>
@@ -50,4 +59,7 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer;
+export default connect(
+  (state: { user: User }) => ({ user: state.user }),
+  {}
+)(Footer);

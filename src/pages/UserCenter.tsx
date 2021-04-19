@@ -1,8 +1,9 @@
 import { Card, Divider, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
-import { NavLink, Redirect, Route, Switch } from "react-router-dom";
+import { NavLink, Redirect, Route, Switch, useHistory, useParams } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import { User } from "../store/reducers/user";
+import {useEffect} from 'react'
 
 const HomePage: React.FC = () => {
   return (
@@ -75,7 +76,7 @@ const TopTabs: React.FC = () => {
 
   return (
     <div className="author-tabs">
-      <NavLink to={`${url}/home`} activeClassName="author-tab-active">
+      <NavLink to={`${url}`} activeClassName="author-tab-active">
         <span>主页</span>
       </NavLink>
       <NavLink to={`${url}/comments`} activeClassName="author-tab-active">
@@ -98,6 +99,14 @@ interface IProps {
 
 const UserCenter: React.FC<IProps> = ({ user }) => {
   let { url } = useRouteMatch();
+  let {name} = useParams<{name: string}>()
+  let h = useHistory()
+  useEffect(() => {
+    if (!name) {
+      h.push("/", {showLogin: true})
+    }
+  }, [name, h])
+  
   return (
     <>
       <div className="user-center">
@@ -131,8 +140,8 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
         </div>
 
         <Switch>
-          <Route path={`${url}/home`} component={HomePage} />
-          <Redirect to={`${url}/home`} />
+          <Route path={`${url}`} component={HomePage} />
+          <Redirect to={`${url}`} />
         </Switch>
       </div>
     </>

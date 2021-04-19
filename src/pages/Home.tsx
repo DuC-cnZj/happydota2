@@ -1,5 +1,5 @@
 import { Card, Row, Col, Input, Button, Space } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { showLoginModal, login, logout } from "../store/actionTypes";
 import jugg from "../dota2/hero-jugg.jpeg";
@@ -16,6 +16,7 @@ import { TopAvatar, TopMenu } from "./UserCenter";
 import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import Contact from "../components/Contact";
 import { LoginState, User } from "../store/reducers/user";
+import { useLocation } from "react-router";
 
 interface IProps {
   showLoginModal: () => void;
@@ -23,7 +24,16 @@ interface IProps {
 }
 
 const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
+  let location = useLocation<StateImp>();
+
+  useEffect(() => {
+    if (location.state?.showLogin) {
+      showLoginModal();
+    }
+  }, [location.state?.showLogin, showLoginModal]);
+
   const [loading, setLoading] = useState<boolean>(false);
+
   const joinNow: () => void = () => {
     setLoading(true);
     setTimeout(() => {
@@ -211,9 +221,18 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
 
 interface HomeProps {
   user: User & LoginState;
+  showLoginModal: () => void;
 }
 
-const HomeAuthConnector = connect((state: {user: User})=>({user: state.user}), {logout: logout})(HomeAuth)
+const HomeAuthConnector = connect(
+  (state: { user: User }) => ({ user: state.user }),
+  { logout: logout }
+)(HomeAuth);
+
+interface StateImp {
+  from?: Location;
+  showLogin?: boolean;
+}
 
 const Home: React.FC<HomeProps> = ({ user }) => {
   return user.isLogin ? <HomeAuthConnector /> : <HomeGuestConnect />;

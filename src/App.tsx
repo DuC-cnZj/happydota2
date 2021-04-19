@@ -26,7 +26,7 @@ const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
           <Switch>
             <Route path="/" exact component={MyHome} />
             <Route path="/equipment" component={Equipment} />
-            <AuthRoute path="/user">
+            <AuthRoute path="/users/:name">
               <UserCenter />
             </AuthRoute>
             <Route path="*" component={() => <MyError code={404} />} />

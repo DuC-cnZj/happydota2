@@ -14,22 +14,32 @@ import {
   Badge,
   Checkbox,
 } from "antd";
-import { LockOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  SearchOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  BellOutlined,
+} from "@ant-design/icons";
 import { connect } from "react-redux";
 import { showLoginModal, hideLoginModal } from "../store/actionTypes";
 import { Link } from "react-router-dom";
+import { LoginState, User } from "../store/reducers/user";
+import { Drawer, Popover } from "antd";
 
 const { TabPane } = Tabs;
 interface IProps {
   loginModalVisible: boolean;
   showLoginModal: () => void;
   hideLoginModal: () => void;
+  user: User & LoginState;
 }
 
 const Header: React.FC<IProps> = ({
   loginModalVisible,
   showLoginModal,
   hideLoginModal,
+  user,
 }) => {
   const showModal = () => {
     showLoginModal();
@@ -90,21 +100,27 @@ const Header: React.FC<IProps> = ({
           />
         </div>
         <div className="header-right">
-          <div onClick={showModal}>
-            <Tooltip placement="bottom" title="登录账号" className="tooltip">
-              <Badge
-                dot
-                style={{
-                  boxShadow: "0 0 0 .6rem red",
-                  top: "5.5rem",
-                  right: "5.5rem",
-                }}
-              >
-                <UserOutlined className="header-account" />
-              </Badge>
-            </Tooltip>
-          </div>
-
+          {user.isLogin ? (
+            <div>
+              <AvatarSm url={user.avatarUrl} user={user} />
+              <AvatarMd url={user.avatarUrl} user={user} />
+            </div>
+          ) : (
+            <div onClick={showModal}>
+              <Tooltip placement="bottom" title="登录账号" className="tooltip">
+                <Badge
+                  dot
+                  style={{
+                    boxShadow: "0 0 0 .6rem red",
+                    top: "5.5rem",
+                    right: "5.5rem",
+                  }}
+                >
+                  <UserOutlined className="header-account" />
+                </Badge>
+              </Tooltip>
+            </div>
+          )}
           <Modal
             visible={loginModalVisible}
             closable={false}
@@ -210,14 +226,106 @@ interface State {
   loginModal: {
     visible: boolean;
   };
+  user: User & LoginState;
 }
 
 export default connect(
   (state: State) => ({
     loginModalVisible: state.loginModal.visible,
+    user: state.user,
   }),
   {
     showLoginModal,
     hideLoginModal,
   }
 )(Header);
+
+const AvatarMd: React.FC<{ url: string; user: User }> = ({ url, user }) => {
+  return (
+    <>
+      <Popover
+        placement="bottom"
+        title={
+          <div style={{ textAlign: "center" }}>
+            <span>{user.name}</span>
+          </div>
+        }
+        content={
+          <>
+            <Link to={`/users/${user.name}`} className="avatar-md-a">
+              <UserOutlined style={{ marginRight: "2rem" }} />
+              个人中心
+            </Link>
+            <a href="/" className="avatar-md-a">
+              <LogoutOutlined style={{ marginRight: "2rem" }} />
+              登出
+            </a>
+          </>
+        }
+      >
+        <div
+          className="user-avatar-md"
+          style={{ backgroundImage: "url(" + url + ")" }}
+        ></div>
+      </Popover>
+    </>
+  );
+};
+
+const AvatarSm: React.FC<{ url: string; user: User }> = ({ url, user }) => {
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <div
+        onClick={showDrawer}
+        className="user-avatar-sm"
+        style={{ backgroundImage: "url(" + url + ")" }}
+      ></div>
+      <Drawer
+        title={
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              style={{
+                width: "48rem",
+                height: "48rem",
+                borderRadius: "50%",
+                marginRight: "10rem",
+              }}
+              src={user.avatarUrl}
+              alt="avatar"
+            />
+            <span style={{ fontSize: "18rem", fontWeight: "bold" }}>
+              {user.name}
+            </span>
+          </div>
+        }
+        placement="left"
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+      >
+        <Link to={`/users/${user.name}`} className="avatar-sm-a">
+          <UserOutlined style={{ marginRight: "2rem" }} />
+          <span>个人中心</span>
+        </Link>
+        <Link to={`/users/${user.name}`} className="avatar-sm-a">
+          <BellOutlined style={{ marginRight: "2rem" }} />
+          <span>消息中心</span>
+        </Link>
+        <a href="/" className="avatar-sm-a">
+          <LogoutOutlined style={{ marginRight: "2rem" }} />
+          <span>登出</span>
+        </a>
+      </Drawer>
+    </>
+  );
+};

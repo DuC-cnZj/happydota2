@@ -17,7 +17,7 @@ const AuthRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
           <Redirect
             to={{
               pathname: "/",
-              state: { from: location },
+              state: { from: location, showLogin: true },
             }}
           />
         )
