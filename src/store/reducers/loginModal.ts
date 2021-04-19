@@ -1,18 +1,21 @@
-import { SHOW_LOGIN_MODAL, HIDE_LOGIN_MODAL } from './../actionTypes';
+import { SHOW_LOGIN_MODAL, HIDE_LOGIN_MODAL } from "./../actionTypes";
 interface visible {
-    visible:boolean;
+  visible: boolean;
 }
-const initialState:visible = {
-    visible: false
-}
+const initialState: visible = {
+  visible: false,
+};
 
-export default function loginModal(state: visible = initialState, action: {type: string}) {
+export default function loginModal(
+  state: visible = initialState,
+  action: { type: string }
+) {
   switch (action.type) {
     case SHOW_LOGIN_MODAL:
-      return {visible: true}
+      return { visible: true };
     case HIDE_LOGIN_MODAL:
-      return {visible: false}
+      return { visible: false };
     default:
-      return {visible: false}
+      return { visible: false };
   }
 }
