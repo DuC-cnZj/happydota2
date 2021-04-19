@@ -1,7 +1,7 @@
-import { Card, Row, Col, Input, Button, Divider, Space } from "antd";
+import { Card, Row, Col, Input, Button, Space } from "antd";
 import { useState } from "react";
 import { connect } from "react-redux";
-import { showLoginModal } from "../store/actionTypes";
+import { showLoginModal, login, logout } from "../store/actionTypes";
 import jugg from "../dota2/hero-jugg.jpeg";
 import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";
@@ -13,17 +13,28 @@ import ItemList, { cardItem } from "../components/ItemList";
 import { TopAvatar, TopMenu } from "./UserCenter";
 import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import Contact from "../components/Contact";
+import { LoginState, User } from "../store/reducers/user";
 
 interface IProps {
   showLoginModal: () => void;
+  login: (user: User) => void;
 }
 
-const HomeGuest: React.FC<IProps> = ({ showLoginModal }) => {
+const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const joinNow: () => void = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      login({
+        avatarUrl:
+          "http://dicetower.oss-cn-heyuan.aliyuncs.com/mod/6042637db2d6e3001de64077/202103192104407.jpg",
+        name: "duc",
+        description: "这个人很懒，什么都没留下",
+        fansNum: 666,
+        followerNum: 100,
+        likeNum: 10000,
+      });
     }, 2000);
   };
 
@@ -65,7 +76,11 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal }) => {
   );
 };
 
-const HomeAuth: React.FC = () => {
+interface HomeAuthIProps {
+  logout: () => void;
+}
+
+const HomeAuth: React.FC<HomeAuthIProps> = ({ logout }) => {
   const data: cardItem[] = [
     {
       name: "剑圣",
@@ -176,12 +191,13 @@ const HomeAuth: React.FC = () => {
                     style={{ width: "100%" }}
                     icon={<LogoutOutlined />}
                     danger
+                    onClick={() => logout()}
                   >
                     登出
                   </Button>
                 </Space>
               </div>
-              <Contact/>
+              <Contact />
             </div>
           </Col>
         </Row>
@@ -190,19 +206,29 @@ const HomeAuth: React.FC = () => {
   );
 };
 
-const Home: React.FC = () => {
-  return <HomeAuth />;
-  // return <HomeGuestConnect />;
+interface HomeProps {
+  user: User & LoginState;
+}
+
+const HomeAuthConnector = connect(()=>({}), {logout: logout})(HomeAuth)
+
+const Home: React.FC<HomeProps> = ({ user }) => {
+  return user.isLogin ? <HomeAuthConnector /> : <HomeGuestConnect />;
 };
 
-interface State {
+interface State extends HomeState {
   loginModal: {
     visible: boolean;
   };
 }
 
+interface HomeState {
+  user: User & LoginState;
+}
+
 const HomeGuestConnect = connect((state: State) => ({}), {
   showLoginModal,
+  login,
 })(HomeGuest);
 
-export default Home;
+export default connect((state: HomeState) => ({ user: state.user }), {})(Home);

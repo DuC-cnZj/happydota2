@@ -1,4 +1,4 @@
-import { List, Card, Space, Rate } from "antd";
+import { List, Card, Rate } from "antd";
 
 export interface cardItem {
   rate: number;
