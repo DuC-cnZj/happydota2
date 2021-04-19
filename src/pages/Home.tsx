@@ -7,6 +7,8 @@ import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";
 import houzi from "../dota2/hero-hz.jpeg";
 import xuemo from "../dota2/hero-xm.jpeg";
+import ta from "../dota2/ta.jpeg";
+import st from "../dota2/st.jpeg";
 
 import homepage from "../dota2/sf.jpeg";
 import ItemList, { cardItem } from "../components/ItemList";
@@ -27,13 +29,13 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
     setTimeout(() => {
       setLoading(false);
       login({
-        avatarUrl:
-          "http://dicetower.oss-cn-heyuan.aliyuncs.com/mod/6042637db2d6e3001de64077/202103192104407.jpg",
+        avatarUrl: ta,
         name: "duc",
         description: "这个人很懒，什么都没留下",
         fansNum: 666,
         followerNum: 100,
         likeNum: 10000,
+        backgroundImg: st,
       });
     }, 2000);
   };
@@ -77,10 +79,11 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
 };
 
 interface HomeAuthIProps {
+  user: User;
   logout: () => void;
 }
 
-const HomeAuth: React.FC<HomeAuthIProps> = ({ logout }) => {
+const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
   const data: cardItem[] = [
     {
       name: "剑圣",
@@ -174,9 +177,9 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ logout }) => {
           </Col>
           <Col md={6} sm={0} xs={0}>
             <div className="home-auth-right">
-              <TopAvatar />
-              <span className="author-name">Catko</span>
-              <span className="author-desc">我头像真可爱</span>
+              <TopAvatar avatar={user.avatarUrl} />
+              <span className="author-name">{user.name}</span>
+              <span className="author-desc">{user.description}</span>
               <TopMenu />
               <div style={{ width: "100%" }}>
                 <Space direction="vertical" style={{ width: "100%" }}>
@@ -210,7 +213,7 @@ interface HomeProps {
   user: User & LoginState;
 }
 
-const HomeAuthConnector = connect(()=>({}), {logout: logout})(HomeAuth)
+const HomeAuthConnector = connect((state: {user: User})=>({user: state.user}), {logout: logout})(HomeAuth)
 
 const Home: React.FC<HomeProps> = ({ user }) => {
   return user.isLogin ? <HomeAuthConnector /> : <HomeGuestConnect />;

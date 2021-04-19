@@ -1,4 +1,4 @@
-import { AUTH_USER,LOGIN, LOGOUT } from './../actionTypes';
+import { AUTH_USER, LOGIN, LOGOUT } from "./../actionTypes";
 
 export interface LoginState {
   isLogin: boolean;
@@ -10,6 +10,7 @@ export interface User {
   fansNum: number | null;
   followerNum: number | null;
   likeNum: number | null;
+  backgroundImg: string | null;
 }
 
 const initState: User | LoginState = {
@@ -28,7 +29,7 @@ export default function setUser(
 ) {
   switch (action.type) {
     case LOGIN:
-      return {...state, ...action.state, isLogin: true};
+      return { ...state, ...action.state, isLogin: true };
     case AUTH_USER:
       return state;
     case LOGOUT:

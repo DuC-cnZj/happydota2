@@ -1,6 +1,8 @@
 import { Card, Divider, Button, Row, Col } from "antd";
+import { connect } from "react-redux";
 import { NavLink, Redirect, Route, Switch } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
+import { User } from "../store/reducers/user";
 
 const HomePage: React.FC = () => {
   return (
@@ -31,14 +33,17 @@ const HomePage: React.FC = () => {
   );
 };
 
-const TopBg: React.FC = () => {
+const TopBg: React.FC<{ url: string }> = ({ url }) => {
   return (
     <div
       className="user-top-bg"
-      style={{
-        backgroundImage:
-          "url('http://dicetower.oss-cn-heyuan.aliyuncs.com/mod/6042637db2d6e3001de64077/202103192104407.jpg')",
-      }}
+      style={
+        url
+          ? {
+              backgroundImage: "url('" + url + "')",
+            }
+          : {}
+      }
     ></div>
   );
 };
@@ -83,26 +88,24 @@ const TopTabs: React.FC = () => {
   );
 };
 
-export const TopAvatar: React.FC = () => {
-  return (
-    <img
-      className="avatar"
-      src="https://file.dicecho.com/media/20210329/08582482.jpg"
-      alt="avatar"
-    />
-  );
+export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) => {
+  return <img className="avatar" src={avatar} alt="avatar" />;
 };
 
-const UserCenter: React.FC = () => {
+interface IProps {
+  user: User;
+}
+
+const UserCenter: React.FC<IProps> = ({ user }) => {
   let { url } = useRouteMatch();
   return (
     <>
       <div className="user-center">
-        <TopBg />
+        <TopBg url={user.backgroundImg ? user.backgroundImg : ""} />
         <div className="show-md">
-          <TopAvatar />
-          <p className="author-name">Catko</p>
-          <span className="author-desc">我头像真可爱</span>
+          <TopAvatar avatar={user.avatarUrl} />
+          <p className="author-name">{user.name}</p>
+          <span className="author-desc">{user.description}</span>
           <TopMenu />
           <Button type="ghost" className="follow">
             关注
@@ -112,8 +115,8 @@ const UserCenter: React.FC = () => {
 
         <div className="show-sm container">
           <div className="sm-group-am">
-            <TopAvatar />
-            <div style={{width:"100%"}} className="sm-group-tb">
+            <TopAvatar avatar={user.avatarUrl} />
+            <div style={{ width: "100%" }} className="sm-group-tb">
               <TopMenu />
               <Button type="ghost" className="follow">
                 关注
@@ -121,8 +124,8 @@ const UserCenter: React.FC = () => {
             </div>
           </div>
           <div className="text-group">
-            <p className="author-name">Catko</p>
-            <span className="author-desc">我头像真可爱</span>
+            <p className="author-name">{user.name}</p>
+            <span className="author-desc">{user.description}</span>
           </div>
           <TopTabs />
         </div>
@@ -136,4 +139,7 @@ const UserCenter: React.FC = () => {
   );
 };
 
-export default UserCenter;
+export default connect(
+  (state: { user: User }) => ({ user: state.user }),
+  {}
+)(UserCenter);
