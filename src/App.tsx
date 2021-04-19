@@ -17,28 +17,26 @@ export const authContext = createContext<LoginState>({ isLogin: false });
 
 const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
   return (
-    <>
-      <authContext.Provider value={user}>
-        <Layout>
-          <Header className="ant-header">
-            <MyHeader />
-          </Header>
-          <Content className="content">
-            <Switch>
-              <Route path="/" exact component={MyHome} />
-              <Route path="/equipment" component={Equipment} />
-              <AuthRoute path="/user">
-                <UserCenter/>
-              </AuthRoute>
-              <Route path="*" component={() => <MyError code={404} />} />
-            </Switch>
-          </Content>
-          <Footer className="footer">
-            <MyFooter />
-          </Footer>
-        </Layout>
-      </authContext.Provider>
-    </>
+    <authContext.Provider value={user}>
+      <Layout>
+        <Header className="ant-header">
+          <MyHeader />
+        </Header>
+        <Content className="content">
+          <Switch>
+            <Route path="/" exact component={MyHome} />
+            <Route path="/equipment" component={Equipment} />
+            <AuthRoute path="/user">
+              <UserCenter />
+            </AuthRoute>
+            <Route path="*" component={() => <MyError code={404} />} />
+          </Switch>
+        </Content>
+        <Footer className="footer">
+          <MyFooter />
+        </Footer>
+      </Layout>
+    </authContext.Provider>
   );
 };
 
