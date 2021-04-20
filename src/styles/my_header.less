@@ -53,6 +53,12 @@
   }
 }
 
+.md-avatar-login-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header-search {
   border-radius: @border-radius-600;
   max-width: 300rem;
@@ -80,11 +86,27 @@
 }
 
 .header-notification {
+  cursor: pointer;
+  flex-shrink: 0;
+  & > svg {
+    width: 16rem;
+    height: 16rem;
+  }
+  order: 3;
+  .menu-item();
   display: none;
+}
+
+.header-notification-md {
+  .header-notification();
+  display: flex;
+  order: 0;
+  margin: 0 16rem;
 }
 
 .avatar-md-a {
   display: flex;
+  order: 2;
   align-items: center;
   font-size: 12rem;
   padding: 5rem 10rem;
@@ -110,9 +132,10 @@
 }
 
 @media screen and (max-width: 768px) {
-  .user-avatar-md {
+  .md-avatar-login-group {
     display: none;
   }
+
   .user-avatar-sm {
     display: block;
   }
@@ -134,20 +157,7 @@
   }
 
   .header-notification {
-    cursor: pointer;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: @bg-300;
-    width: 40rem;
-    height: 40rem;
-    & > svg {
-      width: 16rem;
-      height: 16rem;
-    }
     display: flex;
-    justify-content: center;
-    align-items: center;
-    order: 3;
   }
 
   .app-header {
@@ -161,6 +171,7 @@
     display: none;
   }
 }
+
 .forget-pwd {
   color: @main-color;
 }
