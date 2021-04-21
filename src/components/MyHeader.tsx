@@ -13,17 +13,21 @@ import {
   Input,
   Badge,
   Checkbox,
+  Empty,
 } from "antd";
 import {
+  HeartOutlined,
+  MessageOutlined,
   LockOutlined,
   SearchOutlined,
   UserOutlined,
   LogoutOutlined,
+  UnorderedListOutlined,
   BellOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { showLoginModal, hideLoginModal } from "../store/actionTypes";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { LoginState, User } from "../store/reducers/user";
 import { Drawer, Popover } from "antd";
 
@@ -101,10 +105,10 @@ const Header: React.FC<IProps> = ({
         </div>
         <div className="header-right">
           {user.isLogin ? (
-            <div >
-              <AvatarSm url={user.avatarUrl} user={user}/>
+            <div>
+              <AvatarSm url={user.avatarUrl} user={user} />
               <div className="md-avatar-login-group">
-                <NotificationMd/>
+                <NotificationMd />
                 <AvatarMd url={user.avatarUrl} user={user} />
               </div>
             </div>
@@ -202,35 +206,121 @@ const Header: React.FC<IProps> = ({
             </div>
           </Modal>
         </div>
-        <Notification/>
+        <Notification />
       </div>
     </>
   );
 };
 
-const Notification = () => (
-  <div className="header-notification">
-    <Tooltip title="消息通知" placement="bottom">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-        />
-      </svg>
-    </Tooltip>
-  </div>
-);
+const Notification = () => {
+  let h = useHistory();
+
+  return (
+    <div
+      className="header-notification"
+      onClick={() => h.push("/account/notification")}
+    >
+      <Tooltip title="消息通知" placement="bottom">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+          />
+        </svg>
+      </Tooltip>
+    </div>
+  );
+};
 const NotificationMd = () => (
-  <div className="header-notification-md">
-    <Tooltip title="消息通知" placement="bottom">
+  <Popover
+    overlayClassName="notification-md-popover"
+    placement="bottom"
+    content={
+      <div>
+        <div>
+          <Tabs defaultActiveKey="1">
+            <TabPane
+              tab={
+                <>
+                  <UnorderedListOutlined />
+                  提醒
+                </>
+              }
+              key="1"
+            >
+              <Empty
+                style={{
+                  minHeight: "200rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+                description={false}
+              />
+            </TabPane>
+            <TabPane
+              tab={
+                <>
+                  <MessageOutlined />
+                  回复
+                </>
+              }
+              key="2"
+            >
+              <Empty
+                style={{
+                  minHeight: "200rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+                description={false}
+              />
+            </TabPane>
+            <TabPane
+              tab={
+                <>
+                  <HeartOutlined />
+                  获赞
+                </>
+              }
+              key="3"
+            >
+              <Empty
+                style={{
+                  minHeight: "200rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+                description={false}
+              />
+            </TabPane>
+          </Tabs>
+        </div>
+        <div className="notification-md-popover-footer">
+          <a href="/">全部已读</a>
+          <Link to="/account/notification">查看全部</Link>
+        </div>
+      </div>
+    }
+    trigger="click"
+  >
+    <div className="header-notification-md">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"
@@ -245,8 +335,8 @@ const NotificationMd = () => (
           d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
         />
       </svg>
-    </Tooltip>
-  </div>
+    </div>
+  </Popover>
 );
 
 interface State {

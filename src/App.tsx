@@ -10,6 +10,8 @@ import MyError from "./components/MyError";
 import AuthRoute from "./router/AuthRoute";
 import { LoginState, User } from "./store/reducers/user";
 import { connect } from "react-redux";
+import Notification from "./components/Notification";
+import Detail from "./components/Detail";
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,8 +28,12 @@ const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
           <Switch>
             <Route path="/" exact component={MyHome} />
             <Route path="/equipment" component={Equipment} />
+            <Route path="/detail" component={Detail} />
             <AuthRoute path="/users/:name">
               <UserCenter />
+            </AuthRoute>
+            <AuthRoute path="/account/notification">
+              <Notification />
             </AuthRoute>
             <Route path="*" component={() => <MyError code={404} />} />
           </Switch>

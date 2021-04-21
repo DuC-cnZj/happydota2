@@ -1,4 +1,5 @@
 import { List, Card, Rate } from "antd";
+import { useHistory } from "react-router";
 
 export interface cardItem {
   rate: number;
@@ -13,6 +14,10 @@ const CardItem: React.FC<cardItem> = ({
   description = "这个英雄很安静",
   imgPath,
 }) => {
+  let history = useHistory()
+  const showDetail = () => {
+    history.push("/detail")
+  };
   return (
     <Card
       className="list-item-card"
@@ -22,7 +27,7 @@ const CardItem: React.FC<cardItem> = ({
         overflow: "hidden",
       }}
       cover={
-        <div className="card-item-img">
+        <div className="card-item-img" onClick={showDetail}>
           <div
             className="card-item-bg"
             style={{ backgroundImage: "url(" + imgPath + ")" }}
