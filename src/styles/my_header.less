@@ -1,19 +1,29 @@
-.notification-md-popover{
+.notification-md-popover {
   margin-top: 7rem;
   .ant-popover-arrow {
     border-top-color: @bg-600 !important;
     border-left-color: @bg-600 !important;
   }
+
   .ant-popover-inner-content {
     padding: 0;
   }
+
   .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
     justify-content: center;
   }
+
+  .ant-tabs-top > .ant-tabs-nav:before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    content: "";
+    border-bottom: 1px solid @text-color-secondary;
+  }
+
   .ant-tabs-nav-list {
     padding: 0 20rem;
     background: @bg-600;
-    border-bottom: 1px solid @text-color-secondary;
   }
   .ant-tabs-tab {
     padding-left: 10rem;
@@ -167,6 +177,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .notification-md-popover {
+    display: none;
+  }
+
   .md-avatar-login-group {
     display: none;
   }

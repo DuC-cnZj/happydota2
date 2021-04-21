@@ -434,7 +434,7 @@ const AvatarSm: React.FC<{ url: string; user: User }> = ({ url, user }) => {
           <UserOutlined style={{ marginRight: "2rem" }} />
           <span>个人中心</span>
         </Link>
-        <Link to={`/users/${user.name}`} className="avatar-sm-a">
+        <Link to={`/account/notification`} className="avatar-sm-a">
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>
