@@ -1,9 +1,8 @@
+import { removeToken } from "../../utils/token";
 import { AUTH_USER, LOGIN, LOGOUT } from "./../actionTypes";
 
-export interface LoginState {
-  isLogin: boolean;
-}
 export interface User {
+  id: number;
   avatarUrl: string;
   name: string;
   description?: string;
@@ -11,15 +10,18 @@ export interface User {
   followerNum: number | null;
   likeNum: number | null;
   backgroundImg: string | null;
+  isLogin: boolean;
 }
 
-const initState: User | LoginState = {
+export const initState: User = {
+  id: 0,
   avatarUrl: "",
   name: "",
   description: "这个人很懒，什么都没留下",
   fansNum: null,
   followerNum: null,
   likeNum: null,
+  backgroundImg: "",
   isLogin: false,
 };
 
@@ -29,10 +31,12 @@ export default function setUser(
 ) {
   switch (action.type) {
     case LOGIN:
+      console.log("set user")
       return { ...state, ...action.state, isLogin: true };
     case AUTH_USER:
       return state;
     case LOGOUT:
+      removeToken();
       return initState;
     default:
       return state;

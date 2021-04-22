@@ -14,6 +14,7 @@ import {
   Badge,
   Checkbox,
   Empty,
+  message,
 } from "antd";
 import {
   HeartOutlined,
@@ -26,17 +27,20 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { showLoginModal, hideLoginModal } from "../store/actionTypes";
+import { showLoginModal, hideLoginModal, logout } from "../store/actionTypes";
 import { Link, useHistory } from "react-router-dom";
-import { LoginState, User } from "../store/reducers/user";
+import { User } from "../store/reducers/user";
 import { Drawer, Popover } from "antd";
+import { login } from "../api/auth";
+import { ErrorResponse } from "../api/ajax";
+import { setToken } from "../utils/token";
 
 const { TabPane } = Tabs;
 interface IProps {
   loginModalVisible: boolean;
   showLoginModal: () => void;
   hideLoginModal: () => void;
-  user: User & LoginState;
+  user: User;
 }
 
 const Header: React.FC<IProps> = ({
@@ -53,10 +57,41 @@ const Header: React.FC<IProps> = ({
     hideLoginModal();
   };
 
+  let h = useHistory();
+
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
-  const onFinish = (values: any) => {
-    console.log("Finish:", values);
+  const onFinish = (values: { username: string; password: string }) => {
+    if (!values.username) {
+      message.error("用户名必填");
+      return;
+    }
+    if (
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        values.username
+      )
+    ) {
+      message.error("用户名必须为邮箱");
+      return;
+    }
+
+    if (!values.password) {
+      message.error("密码必填");
+      return;
+    }
+
+    login({ email: values.username, password: values.password })
+      .then((r) => {
+        setToken(r.data.token);
+        message.success("登录成功");
+        hideLoginModal();
+        // setTimeout(() => {
+          h.push("/home");
+        // }, 3000);
+      })
+      .catch((res: ErrorResponse) => {
+        message.error(res.message);
+      });
   };
   // To disable submit button at the beginning.
   useEffect(() => {
@@ -106,7 +141,7 @@ const Header: React.FC<IProps> = ({
         <div className="header-right">
           {user.isLogin ? (
             <div>
-              <AvatarSm url={user.avatarUrl} user={user} />
+              <AvatarSmConnector url={user.avatarUrl} user={user} />
               <div className="md-avatar-login-group">
                 <NotificationMd />
                 <AvatarMd url={user.avatarUrl} user={user} />
@@ -343,7 +378,7 @@ interface State {
   loginModal: {
     visible: boolean;
   };
-  user: User & LoginState;
+  user: User;
 }
 
 export default connect(
@@ -389,7 +424,7 @@ const AvatarMd: React.FC<{ url: string; user: User }> = ({ url, user }) => {
   );
 };
 
-const AvatarSm: React.FC<{ url: string; user: User }> = ({ url, user }) => {
+const AvatarSm: React.FC<{ url: string; user: User, logout: ()=>void }> = ({ url, user, logout }) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -438,11 +473,15 @@ const AvatarSm: React.FC<{ url: string; user: User }> = ({ url, user }) => {
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>
-        <a href="/" className="avatar-sm-a">
+        <Link to="/" className="avatar-sm-a" onClick={()=>logout()}>
           <LogoutOutlined style={{ marginRight: "2rem" }} />
           <span>登出</span>
-        </a>
+        </Link>
       </Drawer>
     </>
   );
 };
+
+const AvatarSmConnector = connect(()=>({}), {
+  logout: logout
+})(AvatarSm)

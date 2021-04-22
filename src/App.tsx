@@ -3,21 +3,22 @@ import { Layout } from "antd";
 import MyHeader from "./components/MyHeader";
 import MyFooter from "./pages/Footer";
 import MyHome from "./pages/Home";
+import Welcome from "./pages/Welcome";
 import Equipment from "./pages/Equipment";
 import UserCenter from "./pages/UserCenter";
 import { Switch, Route } from "react-router-dom";
 import MyError from "./components/MyError";
 import AuthRoute from "./router/AuthRoute";
-import { LoginState, User } from "./store/reducers/user";
+import { initState, User } from "./store/reducers/user";
 import { connect } from "react-redux";
 import Notification from "./components/Notification";
 import Detail from "./components/Detail";
 
 const { Header, Content, Footer } = Layout;
 
-export const authContext = createContext<LoginState>({ isLogin: false });
+export const authContext = createContext<User>(initState);
 
-const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
+const App: React.FC<{ user: User }> = ({ user }) => {
   return (
     <authContext.Provider value={user}>
       <Layout>
@@ -26,7 +27,10 @@ const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
         </Header>
         <Content className="content">
           <Switch>
-            <Route path="/" exact component={MyHome} />
+            <Route path="/" exact component={Welcome} />
+            <AuthRoute path="/home">
+              <MyHome />
+            </AuthRoute>
             <Route path="/equipment" component={Equipment} />
             <Route path="/detail" component={Detail} />
             <AuthRoute path="/users/:name">
@@ -47,6 +51,6 @@ const App: React.FC<{ user: User & LoginState }> = ({ user }) => {
 };
 
 export default connect(
-  (state: { user: User & LoginState }) => ({ user: state.user }),
+  (state: { user: User }) => ({ user: state.user }),
   {}
 )(App);
