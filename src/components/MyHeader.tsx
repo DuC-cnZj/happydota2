@@ -85,9 +85,7 @@ const Header: React.FC<IProps> = ({
         setToken(r.data.token);
         message.success("登录成功");
         hideLoginModal();
-        // setTimeout(() => {
-          h.push("/home");
-        // }, 3000);
+        h.push("/home");
       })
       .catch((res: ErrorResponse) => {
         message.error(res.message);
@@ -144,7 +142,7 @@ const Header: React.FC<IProps> = ({
               <AvatarSmConnector url={user.avatarUrl} user={user} />
               <div className="md-avatar-login-group">
                 <NotificationMd />
-                <AvatarMd url={user.avatarUrl} user={user} />
+                <AvatarMdConnector url={user.avatarUrl} user={user} />
               </div>
             </div>
           ) : (
@@ -392,7 +390,11 @@ export default connect(
   }
 )(Header);
 
-const AvatarMd: React.FC<{ url: string; user: User }> = ({ url, user }) => {
+const AvatarMd: React.FC<{ url: string; user: User; logout: () => void }> = ({
+  url,
+  user,
+  logout,
+}) => {
   return (
     <>
       <Popover
@@ -408,10 +410,10 @@ const AvatarMd: React.FC<{ url: string; user: User }> = ({ url, user }) => {
               <UserOutlined style={{ marginRight: "2rem" }} />
               个人中心
             </Link>
-            <a href="/" className="avatar-md-a">
+            <Link to="/" className="avatar-md-a" onClick={() => logout()}>
               <LogoutOutlined style={{ marginRight: "2rem" }} />
               登出
-            </a>
+            </Link>
           </>
         }
       >
@@ -424,7 +426,13 @@ const AvatarMd: React.FC<{ url: string; user: User }> = ({ url, user }) => {
   );
 };
 
-const AvatarSm: React.FC<{ url: string; user: User, logout: ()=>void }> = ({ url, user, logout }) => {
+const AvatarMdConnector = connect(() => ({}), { logout })(AvatarMd);
+
+const AvatarSm: React.FC<{ url: string; user: User; logout: () => void }> = ({
+  url,
+  user,
+  logout,
+}) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -473,7 +481,7 @@ const AvatarSm: React.FC<{ url: string; user: User, logout: ()=>void }> = ({ url
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>
-        <Link to="/" className="avatar-sm-a" onClick={()=>logout()}>
+        <Link to="/" className="avatar-sm-a" onClick={() => logout()}>
           <LogoutOutlined style={{ marginRight: "2rem" }} />
           <span>登出</span>
         </Link>
@@ -482,6 +490,6 @@ const AvatarSm: React.FC<{ url: string; user: User, logout: ()=>void }> = ({ url
   );
 };
 
-const AvatarSmConnector = connect(()=>({}), {
-  logout: logout
-})(AvatarSm)
+const AvatarSmConnector = connect(() => ({}), {
+  logout: logout,
+})(AvatarSm);

@@ -6,15 +6,22 @@ import ta from "../dota2/ta.jpeg";
 import st from "../dota2/st.jpeg";
 
 import { User } from "../store/reducers/user";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 interface IProps {
   showLoginModal: () => void;
   login: (user: User) => void;
+  isLogin: boolean;
 }
 
-const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
+const HomeGuest: React.FC<IProps> = ({ showLoginModal, login, isLogin }) => {
   let location = useLocation<StateImp>();
+  let h = useHistory();
+  useEffect(() => {
+    if (isLogin) {
+      h.push("/home");
+    }
+  }, [h, isLogin]);
 
   useEffect(() => {
     if (location.state?.showLogin) {
@@ -29,7 +36,7 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
     setTimeout(() => {
       setLoading(false);
       login({
-          id: 0,
+        id: 0,
         avatarUrl: ta,
         name: "duc",
         description: "这个人很懒，什么都没留下",
@@ -80,7 +87,6 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login }) => {
   );
 };
 
-
 interface StateImp {
   from?: Location;
   showLogin?: boolean;
@@ -96,9 +102,12 @@ interface HomeState {
   user: User;
 }
 
-const HomeGuestConnect = connect((state: State) => ({}), {
-  showLoginModal,
-  login,
-})(HomeGuest);
+const HomeGuestConnect = connect(
+  (state: State) => ({ isLogin: state.user.isLogin }),
+  {
+    showLoginModal,
+    login,
+  }
+)(HomeGuest);
 
-export default HomeGuestConnect
+export default HomeGuestConnect;

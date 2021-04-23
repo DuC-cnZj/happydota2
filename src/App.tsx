@@ -28,15 +28,15 @@ const App: React.FC<{ user: User }> = ({ user }) => {
         <Content className="content">
           <Switch>
             <Route path="/" exact component={Welcome} />
-            <AuthRoute path="/home">
+            <AuthRoute path="/home" exact>
               <MyHome />
             </AuthRoute>
-            <Route path="/equipment" component={Equipment} />
-            <Route path="/detail" component={Detail} />
-            <AuthRoute path="/users/:name">
+            <Route path="/equipment" component={Equipment} exact />
+            <Route path="/detail" component={Detail} exact />
+            <AuthRoute path={["/users/:name", "/users/"]}>
               <UserCenter />
             </AuthRoute>
-            <AuthRoute path="/account/notification">
+            <AuthRoute path="/account/notification" exact>
               <Notification />
             </AuthRoute>
             <Route path="*" component={() => <MyError code={404} />} />

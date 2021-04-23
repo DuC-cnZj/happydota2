@@ -3,6 +3,7 @@ import loginModal from "./reducers/loginModal";
 import user from "./reducers/user";
 import { applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from 'redux-thunk';
 
 const composeEnhancers = composeWithDevTools({});
 
@@ -11,7 +12,7 @@ const store = createStore(
     loginModal,
     user,
   }),
-  composeEnhancers(applyMiddleware())
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -16,7 +16,7 @@ ajax.interceptors.request.use(
     config.headers["Authorization"] = "Bearer " + getToken();
 
     // 在发送请求之前做些什么
-    console.log("在发送请求之前做些什么");
+    console.log("在发送请求之前做些什么", config.url);
     return config;
   },
   function (error) {

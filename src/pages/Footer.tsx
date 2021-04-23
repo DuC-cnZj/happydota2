@@ -6,8 +6,12 @@ import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { connect } from "react-redux";
+import { showLoginModal } from "../store/actionTypes";
 
-const Footer: React.FC<{ user: User }> = ({ user }) => {
+const Footer: React.FC<{ user: User; showLoginModal: () => void }> = ({
+  user,
+  showLoginModal,
+}) => {
   return (
     <>
       <div className="footer-md">dota2 刀圈欢乐多 by duc @2021.</div>
@@ -43,11 +47,7 @@ const Footer: React.FC<{ user: User }> = ({ user }) => {
         <div className="footer-item">
           <Tooltip placement="top" title="用户" className="tooltip">
             <Link
-              to={
-                user.name
-                  ? `/users/${user.name}`
-                  : { pathname: "/", state: { showLogin: true } }
-              }
+              to={`/users/${user.name}`}
               className="footer-menu-item"
             >
               <UserOutlined />
@@ -59,7 +59,6 @@ const Footer: React.FC<{ user: User }> = ({ user }) => {
   );
 };
 
-export default connect(
-  (state: { user: User }) => ({ user: state.user }),
-  {}
-)(Footer);
+export default connect((state: { user: User }) => ({ user: state.user }), {
+  showLoginModal: showLoginModal,
+})(Footer);

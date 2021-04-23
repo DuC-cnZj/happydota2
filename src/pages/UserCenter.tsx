@@ -1,9 +1,28 @@
-import { Card, Divider, Button, Row, Col } from "antd";
+import {
+  Card,
+  Divider,
+  Button,
+  Upload,
+  Row,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { NavLink, Redirect, Route, Switch, useHistory, useParams } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Switch,
+  useHistory,
+  useParams,
+} from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import { User } from "../store/reducers/user";
-import {useEffect} from 'react'
+import { useEffect, useState, useRef, memo } from "react";
+import { getToken } from "../utils/token";
 
 const HomePage: React.FC = () => {
   return (
@@ -76,7 +95,7 @@ const TopTabs: React.FC = () => {
 
   return (
     <div className="author-tabs">
-      <NavLink to={`${url}`} activeClassName="author-tab-active">
+      <NavLink to={`${url}`} exact activeClassName="author-tab-active">
         <span>主页</span>
       </NavLink>
       <NavLink to={`${url}/comments`} activeClassName="author-tab-active">
@@ -84,6 +103,9 @@ const TopTabs: React.FC = () => {
       </NavLink>
       <NavLink to={`${url}/posts`} activeClassName="author-tab-active">
         <span>帖子</span>
+      </NavLink>
+      <NavLink to={`${url}/setting`} activeClassName="author-tab-active">
+        <span>设置</span>
       </NavLink>
     </div>
   );
@@ -99,26 +121,42 @@ interface IProps {
 
 const UserCenter: React.FC<IProps> = ({ user }) => {
   let { url } = useRouteMatch();
-  let {name} = useParams<{name: string}>()
-  let h = useHistory()
+  let { name } = useParams<{ name: string }>();
+  let h = useHistory();
   useEffect(() => {
     if (!name) {
-      h.push("/", {showLogin: true})
+      h.push("/", { showLogin: true });
     }
-  }, [name, h])
-  
+  }, [name, h]);
+
   return (
     <>
-      <div className="user-center">
+      <div className="user-center" style={{ paddingBottom: "30rem" }}>
         <TopBg url={user.backgroundImg ? user.backgroundImg : ""} />
         <div className="show-md">
           <TopAvatar avatar={user.avatarUrl} />
           <p className="author-name">{user.name}</p>
           <span className="author-desc">{user.description}</span>
           <TopMenu />
-          <Button type="ghost" className="follow">
-            关注
-          </Button>
+          {name !== user.name ? (
+            <Button
+              style={{ fontSize: "12rem" }}
+              type="ghost"
+              className="follow"
+            >
+              关注
+            </Button>
+          ) : (
+            <Button
+              style={{ fontSize: "12rem" }}
+              type="ghost"
+              className="follow"
+              onClick={() => h.push(`/users/${user.name}/setting`)}
+            >
+              编辑资料
+            </Button>
+          )}
+
           <TopTabs />
         </div>
 
@@ -140,8 +178,12 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
         </div>
 
         <Switch>
-          <Route path={`${url}`} component={HomePage} />
-          <Redirect to={`${url}`} />
+          <Route path={`${url}`} exact component={HomePage} />
+          <Route
+            exact
+            path={`${url}/setting`}
+            component={UserSettingConnector}
+          />
         </Switch>
       </div>
     </>
@@ -152,3 +194,148 @@ export default connect(
   (state: { user: User }) => ({ user: state.user }),
   {}
 )(UserCenter);
+
+const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
+  const [form] = Form.useForm();
+
+  const myRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (myRef && myRef.current) {
+      myRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [myRef]);
+
+  const onFinish = (values: any) => {
+    console.log(values);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  return (
+    <Row style={{ width: "100%" }} className="container" ref={myRef}>
+      <Col md={18} sm={24} xs={24}>
+        <Card title="修改个人资料" bordered={false} style={{ width: "100%" }}>
+          <Form
+            initialValues={{
+              name: user.name,
+              intro: user.description ? user.description : "暂无签名",
+            }}
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 10 }}
+            form={form}
+            name="control-hooks"
+            onFinish={onFinish}
+          >
+            <Form.Item name="name" label="昵称" wrapperCol={{ span: 6 }}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="intro" label="个性签名" wrapperCol={{ span: 6 }}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="avatar" label="头像上传" wrapperCol={{ span: 6 }}>
+              <UploadAvatar />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginRight: "5rem" }}
+              >
+                Submit
+              </Button>
+              <Button htmlType="button" onClick={onReset}>
+                Reset
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </Col>
+    </Row>
+  );
+});
+
+interface UploadAvatarProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+const UploadAvatar: React.FC<UploadAvatarProps> = ({ value, onChange }) => {
+  const [previewVisible, setPreviewVisible] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState<string | undefined>(value);
+  const handleCancel = () => setPreviewVisible(false);
+
+  const [fileList, setFileList] = useState<any[]>([]);
+
+  const triggerChange = (path: string) => {
+    onChange?.(path);
+  };
+
+  const beforeUpload = (file: any) => {
+    const isJpgOrPng =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/gif";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange = ({ fileList, file }: { file: any; fileList: any[] }) => {
+    setFileList(fileList);
+    if (file.status === "done") {
+      triggerChange(file.response.data.path);
+    }
+    if (file.status === "removed") {
+      triggerChange("");
+    }
+  };
+
+  const handlePreview = async (file: any) => {
+    setPreviewVisible(true);
+    setPreviewImage(file.response.data.path);
+  };
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  return (
+    <>
+      <Upload
+        beforeUpload={beforeUpload}
+        action={process.env.REACT_APP_BASE_URL + "/api/upload"}
+        listType="picture-card"
+        fileList={fileList}
+        maxCount={1}
+        onPreview={handlePreview}
+        onChange={handleChange}
+        headers={{ Authorization: "Bearer " + getToken() }}
+      >
+        {fileList.length >= 1 ? null : uploadButton}
+      </Upload>
+      <Modal
+        visible={previewVisible}
+        title="预览"
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
+    </>
+  );
+};
+
+const UserSettingConnector = connect(
+  (state: { user: User }) => ({ user: state.user }),
+  {}
+)(UserSetting);
