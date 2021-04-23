@@ -23,6 +23,7 @@ import { useRouteMatch } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { useEffect, useState, useRef, memo } from "react";
 import { getToken } from "../utils/token";
+import { logout } from "../store/actionTypes";
 
 const HomePage: React.FC = () => {
   return (
@@ -131,7 +132,7 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
 
   return (
     <>
-      <div className="user-center" style={{ paddingBottom: "30rem" }}>
+      <div className="user-center" style={{ paddingBottom: "100rem" }}>
         <TopBg url={user.backgroundImg ? user.backgroundImg : ""} />
         <div className="show-md">
           <TopAvatar avatar={user.avatarUrl} />
@@ -236,7 +237,7 @@ const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
               <Input />
             </Form.Item>
             <Form.Item name="avatar" label="头像上传" wrapperCol={{ span: 6 }}>
-              <UploadAvatar />
+              <UploadAvatarConnector />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
               <Button
@@ -260,11 +261,18 @@ const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
 interface UploadAvatarProps {
   value?: string;
   onChange?: (value: string) => void;
+  logout: () => void;
 }
-const UploadAvatar: React.FC<UploadAvatarProps> = ({ value, onChange }) => {
+
+const UploadAvatar: React.FC<UploadAvatarProps> = ({
+  value,
+  onChange,
+  logout,
+}) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string | undefined>(value);
   const handleCancel = () => setPreviewVisible(false);
+  let h = useHistory();
 
   const [fileList, setFileList] = useState<any[]>([]);
 
@@ -291,6 +299,15 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ value, onChange }) => {
     setFileList(fileList);
     if (file.status === "done") {
       triggerChange(file.response.data.path);
+    }
+    if (file.status === "error") {
+      if (file.response.code === 401) {
+        message.error("登录过期, 请重新登录");
+        setTimeout(() => {
+          logout();
+          h.push("/");
+        }, 1000);
+      }
     }
     if (file.status === "removed") {
       triggerChange("");
@@ -324,6 +341,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ value, onChange }) => {
         {fileList.length >= 1 ? null : uploadButton}
       </Upload>
       <Modal
+        width={600}
         visible={previewVisible}
         title="预览"
         footer={null}
@@ -334,6 +352,10 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ value, onChange }) => {
     </>
   );
 };
+
+const UploadAvatarConnector = connect(() => ({}), {
+  logout: logout,
+})(UploadAvatar);
 
 const UserSettingConnector = connect(
   (state: { user: User }) => ({ user: state.user }),

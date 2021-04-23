@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { Redirect, Route, RouteProps, useHistory } from "react-router-dom";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { authContext } from "../App";
 import { getToken, removeToken } from "../utils/token";
@@ -19,10 +19,10 @@ const AuthRoute: React.FC<
   }
 > = ({ children, login, fetchUserInfo, showLoginModal, ...rest }) => {
   const context = useContext<User>(authContext);
-  let h = useHistory();
-  let token = getToken();
 
   useEffect(() => {
+    let token = getToken();
+
     if (context.id === 0 && token) {
       userinfo()
         .then((res) => {
@@ -40,17 +40,15 @@ const AuthRoute: React.FC<
         })
         .catch((e) => {
           removeToken();
-          showLoginModal();
-          h.push("/");
         });
     }
-  }, [context.id, h, login, showLoginModal, token]);
+  }, []);
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        token ? (
+        context.id ? (
           children
         ) : (
           <Redirect
