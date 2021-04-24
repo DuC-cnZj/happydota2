@@ -36,6 +36,7 @@ const AuthRoute: React.FC<
             followerNum: 0,
             likeNum: 0,
             backgroundImg: res.data.data.background_image,
+            backgroundImgId: res.data.data.background_image_id,
             isLogin: true,
           });
         })

@@ -354,6 +354,10 @@ const UserSetting: React.FC<{
               </Form.Item>
               <Form.Item label="头像上传" wrapperCol={{ span: 18 }}>
                 <UploadAvatarConnector
+                  backgroundImageId={
+                    user.backgroundImgId ? user.backgroundImgId : 0
+                  }
+                  avatarId={user.avatarUrlId}
                   name={userInput.name}
                   description={userInput.description}
                   avatarUrl={user.avatarUrl}
@@ -386,6 +390,8 @@ interface UploadAvatarProps {
   value?: string;
   avatarUrl: string;
   name: string;
+  avatarId: number;
+  backgroundImageId: number;
   description?: string;
   backgroundImage?: string;
   onChange?: (value: string) => void;
@@ -398,6 +404,8 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
   logout,
   avatarUrl,
   name,
+  avatarId,
+  backgroundImageId,
   description,
   backgroundImage,
 }) => {
@@ -412,7 +420,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
     <Row gutter={[16, 16]}>
       <Col sm={24} md={18}>
         <Preview
-          image={previewImage ? previewImage : backgroundImage}
+          image={previewImage}
           name={name}
           description={description}
           avatar={avatar ? avatar : avatarUrl}
@@ -422,6 +430,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
         <div>
           <Form.Item name="backgroundId">
             <UploadImage
+              value={backgroundImageId}
               logout={logout}
               previewImage={previewImage}
               setPreviewImage={setPreviewImage}
@@ -431,6 +440,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
           </Form.Item>
           <Form.Item name="avatarId">
             <UploadImage
+              value={avatarId}
               logout={logout}
               previewImage={avatar}
               setPreviewImage={setAvatar}

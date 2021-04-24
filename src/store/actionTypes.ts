@@ -31,6 +31,7 @@ export const fetchUserInfo = () => (dispatch: Dispatch) => {
         followerNum: 0,
         likeNum: 0,
         backgroundImg: data.background_image,
+        backgroundImgId: data.background_image_id,
         isLogin: true,
       })
     );

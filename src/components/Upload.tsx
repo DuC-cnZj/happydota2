@@ -6,7 +6,7 @@ import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
 
 interface UploadAvatarProps {
-  value?: string;
+  value?: number;
   onChange?: (id: number) => void;
   logout: () => void;
   previewImage?: string;
