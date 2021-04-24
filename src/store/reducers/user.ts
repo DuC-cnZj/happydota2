@@ -1,3 +1,4 @@
+import { removeRememberMe } from "../../utils/remember_me";
 import { removeToken } from "../../utils/token";
 import { AUTH_USER, LOGIN, LOGOUT, UPDATE_INFO } from "./../actionTypes";
 
@@ -43,6 +44,7 @@ export default function setUser(
       return state;
     case LOGOUT:
       removeToken();
+      removeRememberMe();
       return initState;
     default:
       return state;
