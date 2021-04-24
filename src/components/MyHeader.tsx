@@ -34,6 +34,7 @@ import { Drawer, Popover } from "antd";
 import { login } from "../api/auth";
 import { ErrorResponse } from "../api/ajax";
 import { setToken } from "../utils/token";
+import { setRememberMe } from "../utils/remember_me";
 
 const { TabPane } = Tabs;
 interface IProps {
@@ -61,7 +62,7 @@ const Header: React.FC<IProps> = ({
 
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
-  const onFinish = (values: { username: string; password: string }) => {
+  const onFinish = (values: { username: string; password: string, rememberMe: boolean }) => {
     if (!values.username) {
       message.error("用户名必填");
       return;
@@ -80,9 +81,12 @@ const Header: React.FC<IProps> = ({
       return;
     }
 
+    console.log(values)
     login({ email: values.username, password: values.password })
       .then((r) => {
         setToken(r.data.token);
+        console.log(values.rememberMe)
+        setRememberMe(!!values.rememberMe)
         message.success("登录成功");
         hideLoginModal();
         h.push("/home");
@@ -137,7 +141,7 @@ const Header: React.FC<IProps> = ({
           />
         </div>
         <div className="header-right">
-          {user.isLogin ? (
+          {user.id !== 0 ? (
             <div>
               <AvatarSmConnector url={user.avatarUrl} user={user} />
               <div className="md-avatar-login-group">
@@ -203,7 +207,7 @@ const Header: React.FC<IProps> = ({
                         placeholder="Password"
                       />
                     </Form.Item>
-                    <Form.Item>
+                    <Form.Item name="rememberMe" valuePropName="checked">
                       <div
                         style={{
                           display: "flex",

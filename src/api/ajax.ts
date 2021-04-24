@@ -1,5 +1,7 @@
 import axios from "axios";
-import { getToken } from "../utils/token";
+import { isRememberMeSet } from "../utils/remember_me";
+import { getToken, removeToken, setToken } from "../utils/token";
+import { refreshToken } from "./auth";
 
 const ajax = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -13,7 +15,7 @@ const ajax = axios.create({
 // 添加请求拦截器
 ajax.interceptors.request.use(
   function (config) {
-    config.headers["Authorization"] = "Bearer " + getToken();
+    config.headers["Authorization"] = getToken();
 
     // 在发送请求之前做些什么
     console.log("在发送请求之前做些什么", config.url);
@@ -31,12 +33,22 @@ ajax.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
     console.log("对响应数据做点什么");
+    console.log(response);
     return response;
   },
   function (error) {
+    console.log(error.response);
+    if (
+      error.response.status === 401 &&
+      getToken() &&
+      isRememberMeSet() &&
+      error.response.config.url !== "/api/refresh_token"
+    ) {
+      return doRefresh(error);
+    }
     // 对响应错误做点什么
     console.log("对响应错误做点什么");
-    return Promise.reject(error.response.data as ErrorResponse);
+    return Promise.reject(error);
   }
 );
 
@@ -46,3 +58,26 @@ export interface ErrorResponse {
 }
 
 export default ajax;
+
+async function doRefresh(error: any) {
+  try {
+    const res = await refreshToken().then((res) => {
+      setToken(res.data.token);
+      return doRequest(error);
+    });
+    return res;
+  } catch (e) {
+    removeToken();
+    return Promise.reject(e);
+  }
+}
+
+async function doRequest(error: any) {
+  let config = error.response.config;
+
+  config.headers.Authorization = getToken();
+
+  const res = await axios.request(config);
+
+  return res;
+}

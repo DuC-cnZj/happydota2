@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Redirect, Route, RouteProps, useHistory } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { authContext } from "../App";
 import { getToken, removeToken } from "../utils/token";
@@ -10,6 +10,7 @@ import {
   showLoginModal,
 } from "../store/actionTypes";
 import { userinfo } from "../api/auth";
+import { message } from "antd";
 
 const AuthRoute: React.FC<
   RouteProps & {
@@ -19,11 +20,10 @@ const AuthRoute: React.FC<
   }
 > = ({ children, login, fetchUserInfo, showLoginModal, ...rest }) => {
   const context = useContext<User>(authContext);
+  let h = useHistory();
 
   useEffect(() => {
-    let token = getToken();
-
-    if (context.id === 0 && token) {
+    if (context.id === 0 && getToken()) {
       userinfo()
         .then((res) => {
           login({
@@ -34,21 +34,25 @@ const AuthRoute: React.FC<
             fansNum: 0,
             followerNum: 0,
             likeNum: 0,
-            backgroundImg: "",
+            backgroundImg: res.data.data.background_image,
             isLogin: true,
           });
         })
         .catch((e) => {
           removeToken();
+          message.error("登录过期")
+          setTimeout(() => {
+            h.push("/", { showLogin: true });
+          }, 1000);
         });
     }
-  }, []);
+  }, [context.id, login, h]);
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        context.id ? (
+        getToken() || context.id ? (
           children
         ) : (
           <Redirect

@@ -1,4 +1,4 @@
-import { Card, Row, Col, Button, Space } from "antd";
+import { Skeleton, Card, Row, Col, Button, Space } from "antd";
 import { connect } from "react-redux";
 import { logout } from "../store/actionTypes";
 import jugg from "../dota2/hero-jugg.jpeg";
@@ -114,8 +114,35 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
           <Col md={6} sm={0} xs={0}>
             <div className="home-auth-right">
               <TopAvatar avatar={user.avatarUrl} />
-              <span className="author-name">{user.name}</span>
-              <span className="author-desc">{user.description}</span>
+              {!user.name ? (
+                <Skeleton.Input
+                  style={{
+                    width: "100rem",
+                    marginBottom: "6rem",
+                    marginTop: "3rem",
+                    borderRadius: "3rem",
+                    height: "16rem"
+                  }}
+                  active
+                  size="small"
+                />
+              ) : (
+                <span className="author-name">{user.name}</span>
+                )}
+                
+              {!user?.description ? (
+                <Skeleton.Input
+                  style={{
+                    width: "250rem",
+                    borderRadius: "3rem",
+                    height: "15rem",
+                  }}
+                  active
+                  size="small"
+                />
+              ) : (
+                <span className="author-desc">{user?.description}</span>
+              )}
               <TopMenu />
               <div style={{ width: "100%" }}>
                 <Space direction="vertical" style={{ width: "100%" }}>
@@ -153,7 +180,6 @@ const HomeAuthConnector = connect(
   (state: { user: User }) => ({ user: state.user }),
   { logout: logout }
 )(HomeAuth);
-
 
 const Home: React.FC<HomeProps> = () => {
   return <HomeAuthConnector />;

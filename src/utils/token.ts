@@ -1,5 +1,5 @@
 export function setToken(token: string) {
-    window.localStorage.setItem("token", token)
+    window.localStorage.setItem("token", "Bearer " + token)
 }
 
 export function removeToken() {

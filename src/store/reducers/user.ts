@@ -1,15 +1,15 @@
 import { removeToken } from "../../utils/token";
-import { AUTH_USER, LOGIN, LOGOUT } from "./../actionTypes";
+import { AUTH_USER, LOGIN, LOGOUT, UPDATE_INFO } from "./../actionTypes";
 
 export interface User {
   id: number;
   avatarUrl: string;
   name: string;
   description?: string;
-  fansNum: number | null;
-  followerNum: number | null;
-  likeNum: number | null;
-  backgroundImg: string | null;
+  fansNum?: number | null;
+  followerNum?: number | null;
+  likeNum?: number | null;
+  backgroundImg?: string | null;
   isLogin: boolean;
 }
 
@@ -30,6 +30,9 @@ export default function setUser(
   action: { type: string; state?: User }
 ) {
   switch (action.type) {
+    case UPDATE_INFO:
+      console.log("update user")
+      return { ...state, ...action.state };
     case LOGIN:
       console.log("set user")
       return { ...state, ...action.state, isLogin: true };

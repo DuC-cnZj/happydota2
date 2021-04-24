@@ -2,15 +2,13 @@ import {
   Card,
   Divider,
   Button,
-  Upload,
   Row,
   Col,
   Form,
   Input,
   message,
-  Modal,
+  Skeleton,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import {
   NavLink,
@@ -22,8 +20,9 @@ import {
 import { useRouteMatch } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { useEffect, useState, useRef, memo } from "react";
-import { getToken } from "../utils/token";
-import { logout } from "../store/actionTypes";
+import { logout, updateUserinfo } from "../store/actionTypes";
+import { updateUser } from "../api/auth";
+import UploadImage from "../components/Upload";
 
 const HomePage: React.FC = () => {
   return (
@@ -113,7 +112,19 @@ const TopTabs: React.FC = () => {
 };
 
 export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) => {
-  return <img className="avatar" src={avatar} alt="avatar" />;
+  return avatar ? (
+    <img className="avatar" src={avatar} alt="avatar" />
+  ) : (
+    <Skeleton.Avatar
+      style={{
+        width: "90rem",
+        height: "90rem",
+        marginTop: "20rem",
+        marginBottom: "10rem",
+      }}
+      active
+    />
+  );
 };
 
 interface IProps {
@@ -136,8 +147,32 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
         <TopBg url={user.backgroundImg ? user.backgroundImg : ""} />
         <div className="show-md">
           <TopAvatar avatar={user.avatarUrl} />
-          <p className="author-name">{user.name}</p>
-          <span className="author-desc">{user.description}</span>
+          {!user.name ? (
+            <Skeleton.Input
+              style={{
+                width: "100rem",
+                marginBottom: "25rem",
+                borderRadius: "3rem",
+              }}
+              size="default"
+              active
+            />
+          ) : (
+            <p className="author-name">{user.name}</p>
+          )}
+          {!user?.description ? (
+            <Skeleton.Input
+              style={{
+                width: "250rem",
+                marginBottom: "3rem",
+                borderRadius: "3rem",
+              }}
+              active
+              size="small"
+            />
+          ) : (
+            <span className="author-desc">{user?.description}</span>
+          )}
           <TopMenu />
           {name !== user.name ? (
             <Button
@@ -172,8 +207,37 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
             </div>
           </div>
           <div className="text-group">
-            <p className="author-name">{user.name}</p>
-            <span className="author-desc">{user.description}</span>
+            {!user.name ? (
+              <p>
+                <Skeleton.Input
+                  style={{
+                    width: "100rem",
+                    marginBottom: "3rem",
+                    marginTop: "7rem",
+                    borderRadius: "3rem",
+                  }}
+                  active
+                  size="small"
+                />
+              </p>
+            ) : (
+              <p className="author-name">{user.name}</p>
+            )}
+
+            {!user?.description ? (
+              <Skeleton.Input
+                style={{
+                  width: "250rem",
+                  marginBottom: "3rem",
+                  borderRadius: "3rem",
+                  height: "22rem",
+                }}
+                active
+                size="small"
+              />
+            ) : (
+              <span className="author-desc">{user?.description}</span>
+            )}
           </div>
           <TopTabs />
         </div>
@@ -196,8 +260,18 @@ export default connect(
   {}
 )(UserCenter);
 
-const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
+const UserSetting: React.FC<{
+  user: User;
+  updateUserinfoAction: (user: User) => void;
+}> = memo(({ user, updateUserinfoAction }) => {
   const [form] = Form.useForm();
+  const [userInput, setUserInput] = useState<{
+    name: string;
+    description?: string;
+  }>({
+    name: user.name,
+    description: user.description ? user.description : "暂无签名",
+  });
 
   const myRef = useRef<HTMLInputElement>(null);
 
@@ -209,49 +283,95 @@ const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
 
   const onFinish = (values: any) => {
     console.log(values);
+    updateUser({
+      name: values.name,
+      intro: values.description,
+      avatar: values.avatar ? values.avatar : user.avatarUrl,
+      backgroundImage: values.background,
+    }).then((res) => {
+      const { data } = res.data;
+      updateUserinfoAction({
+        id: data.id,
+        avatarUrl: data.avatar,
+        name: data.name,
+        description: data.intro,
+        backgroundImg: data.background_image,
+        isLogin: true,
+      });
+      message.success("更新成功");
+    });
   };
 
   const onReset = () => {
     form.resetFields();
+    setUserInput({ name: user.name, description: user.description });
   };
 
+  const valuesChange = (v: any) => {
+    setUserInput({ ...userInput, ...v });
+  };
+  console.log(user);
   return (
-    <Row style={{ width: "100%" }} className="container" ref={myRef}>
-      <Col md={18} sm={24} xs={24}>
+    <Row
+      style={{ width: "100%" }}
+      className="container"
+      ref={myRef}
+      justify="center"
+    >
+      <Col md={24} sm={24} lg={20} xs={24}>
         <Card title="修改个人资料" bordered={false} style={{ width: "100%" }}>
-          <Form
-            initialValues={{
-              name: user.name,
-              intro: user.description ? user.description : "暂无签名",
-            }}
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 10 }}
-            form={form}
-            name="control-hooks"
-            onFinish={onFinish}
-          >
-            <Form.Item name="name" label="昵称" wrapperCol={{ span: 6 }}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="intro" label="个性签名" wrapperCol={{ span: 6 }}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="avatar" label="头像上传" wrapperCol={{ span: 6 }}>
-              <UploadAvatarConnector />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginRight: "5rem" }}
+          {user.id ? (
+            <Form
+              onValuesChange={valuesChange}
+              initialValues={{
+                name: user.name,
+                background: user.backgroundImg,
+                description: user.description ? user.description : "暂无签名",
+              }}
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 10 }}
+              form={form}
+              name="control-hooks"
+              onFinish={onFinish}
+            >
+              <Form.Item name="name" label="昵称" wrapperCol={{ span: 10 }}>
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label="个性签名"
+                wrapperCol={{ span: 10 }}
               >
-                Submit
-              </Button>
-              <Button htmlType="button" onClick={onReset}>
-                Reset
-              </Button>
-            </Form.Item>
-          </Form>
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                name="avatar"
+                label="头像上传"
+                wrapperCol={{ span: 18 }}
+              >
+                <UploadAvatarConnector
+                  name={userInput.name}
+                  description={userInput.description}
+                  avatarUrl={user.avatarUrl}
+                  backgroundImage={user.backgroundImg ? user.backgroundImg : ""}
+                />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{ marginRight: "5rem" }}
+                >
+                  保存
+                </Button>
+                <Button htmlType="button" onClick={onReset}>
+                  重置
+                </Button>
+              </Form.Item>
+            </Form>
+          ) : (
+            <></>
+          )}
         </Card>
       </Col>
     </Row>
@@ -260,6 +380,10 @@ const UserSetting: React.FC<{ user: User }> = memo(({ user }) => {
 
 interface UploadAvatarProps {
   value?: string;
+  avatarUrl: string;
+  name: string;
+  description?: string;
+  backgroundImage?: string;
   onChange?: (value: string) => void;
   logout: () => void;
 }
@@ -268,96 +392,105 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
   value,
   onChange,
   logout,
+  avatarUrl,
+  name,
+  description,
+  backgroundImage,
 }) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string | undefined>(value);
-  const handleCancel = () => setPreviewVisible(false);
-  let h = useHistory();
-
-  const [fileList, setFileList] = useState<any[]>([]);
-
-  const triggerChange = (path: string) => {
-    onChange?.(path);
-  };
-
-  const beforeUpload = (file: any) => {
-    const isJpgOrPng =
-      file.type === "image/jpeg" ||
-      file.type === "image/png" ||
-      file.type === "image/gif";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
-
-  const handleChange = ({ fileList, file }: { file: any; fileList: any[] }) => {
-    setFileList(fileList);
-    if (file.status === "done") {
-      triggerChange(file.response.data.path);
-    }
-    if (file.status === "error") {
-      if (file.response.code === 401) {
-        message.error("登录过期, 请重新登录");
-        setTimeout(() => {
-          logout();
-          h.push("/");
-        }, 1000);
-      }
-    }
-    if (file.status === "removed") {
-      triggerChange("");
-    }
-  };
-
-  const handlePreview = async (file: any) => {
-    setPreviewVisible(true);
-    setPreviewImage(file.response.data.path);
-  };
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
+  const [previewImage, setPreviewImage] = useState<string | undefined>(
+    backgroundImage
   );
+  const [avatar, setAvatar] = useState<string>(avatarUrl);
+  const [avatarVisible, setAvatarVisible] = useState<boolean>(false);
 
   return (
+    <Row gutter={[16, 16]}>
+      <Col sm={24} md={18}>
+        <Preview
+          image={previewImage ? previewImage : backgroundImage}
+          name={name}
+          description={description}
+          avatar={avatar ? avatar : avatarUrl}
+        />
+      </Col>
+      <Col sm={24} md={6}>
+        <div>
+          <Form.Item name="background">
+            <UploadImage
+              logout={logout}
+              previewImage={previewImage}
+              setPreviewImage={setPreviewImage}
+              previewVisible={previewVisible}
+              setPreviewVisible={setPreviewVisible}
+            />
+          </Form.Item>
+          <Form.Item name="avatar">
+            <UploadImage
+              logout={logout}
+              previewImage={avatar}
+              setPreviewImage={setAvatar}
+              previewVisible={avatarVisible}
+              setPreviewVisible={setAvatarVisible}
+            />
+          </Form.Item>
+        </div>
+      </Col>
+    </Row>
+  );
+};
+
+const Preview: React.FC<{
+  image: string | undefined;
+  avatar: string;
+  name: string;
+  description?: string;
+}> = ({ image, avatar, name, description }) => {
+  return (
     <>
-      <Upload
-        beforeUpload={beforeUpload}
-        action={process.env.REACT_APP_BASE_URL + "/api/upload"}
-        listType="picture-card"
-        fileList={fileList}
-        maxCount={1}
-        onPreview={handlePreview}
-        onChange={handleChange}
-        headers={{ Authorization: "Bearer " + getToken() }}
-      >
-        {fileList.length >= 1 ? null : uploadButton}
-      </Upload>
-      <Modal
-        width={600}
-        visible={previewVisible}
-        title="预览"
-        footer={null}
-        onCancel={handleCancel}
-      >
-        <img alt="example" style={{ width: "100%" }} src={previewImage} />
-      </Modal>
+      <div
+        className="preview"
+        style={{
+          backgroundImage: `url(${image})`,
+        }}
+      ></div>
+      <div style={{ width: "100%" }}>
+        <div className="preview-bar">
+          {avatar ? (
+            <img src={avatar} alt="avatar" className="preview-img" />
+          ) : (
+            <Skeleton.Avatar active className="preview-img" />
+          )}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {name ? (
+              <span style={{ fontSize: "14rem" }}>name</span>
+            ) : (
+              <span style={{ color: "gray", fontSize: "14rem" }}>
+                这里显示昵称
+              </span>
+            )}
+            {description ? (
+              <span style={{ fontSize: "12rem" }}>{description}</span>
+            ) : (
+              <span style={{ color: "gray", fontSize: "14rem" }}>
+                这里显示个性签名
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
-const UploadAvatarConnector = connect(() => ({}), {
-  logout: logout,
-})(UploadAvatar);
+const UploadAvatarConnector = connect(
+  (state: { user: User }) => ({ user: state.user }),
+  {
+    logout: logout,
+  }
+)(UploadAvatar);
 
 const UserSettingConnector = connect(
   (state: { user: User }) => ({ user: state.user }),
-  {}
+  { updateUserinfoAction: updateUserinfo }
 )(UserSetting);
