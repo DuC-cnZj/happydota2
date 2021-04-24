@@ -22,8 +22,10 @@ export interface UserInfo {
     email: string;
     name: string;
     avatar: string;
+    avatar_id: number;
     intro: string;
     background_image: string;
+    background_image_id: number;
   };
 }
 
@@ -44,18 +46,18 @@ export function refreshToken() {
 export function updateUser({
   name,
   intro,
-  avatar,
-  backgroundImage,
+  avatarId,
+  backgroundImageId,
 }: {
   name: string;
   intro?: string;
-  avatar: string;
-  backgroundImage?: string;
+  avatarId: number;
+  backgroundImageId?: number;
 }) {
   return ajax.post<UserInfo>("/api/update_userinfo", {
     name,
     intro,
-    avatar,
-    background_image: backgroundImage,
+    avatar_id: avatarId,
+    background_image_id: backgroundImageId,
   });
 }

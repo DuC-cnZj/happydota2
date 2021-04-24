@@ -37,6 +37,7 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login, isLogin }) => {
       setLoading(false);
       login({
         id: 0,
+        avatarUrlId: 0,
         avatarUrl: ta,
         name: "duc",
         description: "这个人很懒，什么都没留下",

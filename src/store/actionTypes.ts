@@ -24,6 +24,7 @@ export const fetchUserInfo = () => (dispatch: Dispatch) => {
       login({
         id: data.id,
         avatarUrl: data.avatar,
+        avatarUrlId: data.avatar_id,
         name: data.name,
         description: data.intro,
         fansNum: 0,

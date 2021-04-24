@@ -281,20 +281,26 @@ const UserSetting: React.FC<{
     }
   }, [myRef]);
 
+  useEffect(() => {
+    setUserInput({ name: user.name, description: user.description });
+  }, [user.name, user.description]);
+
   const onFinish = (values: any) => {
     console.log(values);
     updateUser({
       name: values.name,
       intro: values.description,
-      avatar: values.avatar ? values.avatar : user.avatarUrl,
-      backgroundImage: values.background,
+      avatarId: values.avatarId ? values.avatarId : user.avatarUrlId,
+      backgroundImageId: values.backgroundId,
     }).then((res) => {
       const { data } = res.data;
       updateUserinfoAction({
         id: data.id,
+        avatarUrlId: data.avatar_id,
         avatarUrl: data.avatar,
         name: data.name,
         description: data.intro,
+        backgroundImgId: data.background_image_id,
         backgroundImg: data.background_image,
         isLogin: true,
       });
@@ -308,6 +314,7 @@ const UserSetting: React.FC<{
   };
 
   const valuesChange = (v: any) => {
+    console.log(v);
     setUserInput({ ...userInput, ...v });
   };
   console.log(user);
@@ -325,7 +332,8 @@ const UserSetting: React.FC<{
               onValuesChange={valuesChange}
               initialValues={{
                 name: user.name,
-                background: user.backgroundImg,
+                avatarId: user.avatarUrlId,
+                backgroundId: user.backgroundImgId,
                 description: user.description ? user.description : "暂无签名",
               }}
               labelCol={{ span: 4 }}
@@ -335,20 +343,16 @@ const UserSetting: React.FC<{
               onFinish={onFinish}
             >
               <Form.Item name="name" label="昵称" wrapperCol={{ span: 10 }}>
-                  <Input />
+                <Input />
               </Form.Item>
               <Form.Item
                 name="description"
                 label="个性签名"
                 wrapperCol={{ span: 10 }}
               >
-                  <Input />
+                <Input />
               </Form.Item>
-              <Form.Item
-                name="avatar"
-                label="头像上传"
-                wrapperCol={{ span: 18 }}
-              >
+              <Form.Item label="头像上传" wrapperCol={{ span: 18 }}>
                 <UploadAvatarConnector
                   name={userInput.name}
                   description={userInput.description}
@@ -416,7 +420,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
       </Col>
       <Col sm={24} md={6}>
         <div>
-          <Form.Item name="background">
+          <Form.Item name="backgroundId">
             <UploadImage
               logout={logout}
               previewImage={previewImage}
@@ -425,7 +429,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
               setPreviewVisible={setPreviewVisible}
             />
           </Form.Item>
-          <Form.Item name="avatar">
+          <Form.Item name="avatarId">
             <UploadImage
               logout={logout}
               previewImage={avatar}
@@ -463,7 +467,7 @@ const Preview: React.FC<{
           )}
           <div style={{ display: "flex", flexDirection: "column" }}>
             {name ? (
-              <span style={{ fontSize: "14rem" }}>name</span>
+              <span style={{ fontSize: "14rem" }}>{name}</span>
             ) : (
               <span style={{ color: "gray", fontSize: "14rem" }}>
                 这里显示昵称

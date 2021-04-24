@@ -3,18 +3,21 @@ import { AUTH_USER, LOGIN, LOGOUT, UPDATE_INFO } from "./../actionTypes";
 
 export interface User {
   id: number;
+  avatarUrlId: number;
   avatarUrl: string;
   name: string;
   description?: string;
   fansNum?: number | null;
   followerNum?: number | null;
   likeNum?: number | null;
+  backgroundImgId?: number | null;
   backgroundImg?: string | null;
   isLogin: boolean;
 }
 
 export const initState: User = {
   id: 0,
+  avatarUrlId: 0,
   avatarUrl: "",
   name: "",
   description: "这个人很懒，什么都没留下",

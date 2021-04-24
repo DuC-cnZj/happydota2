@@ -28,6 +28,7 @@ const AuthRoute: React.FC<
         .then((res) => {
           login({
             id: res.data.data.id,
+            avatarUrlId: res.data.data.avatar_id,
             avatarUrl: res.data.data.avatar,
             name: res.data.data.name,
             description: res.data.data.intro,

@@ -7,7 +7,7 @@ import { upload } from "../api/upload";
 
 interface UploadAvatarProps {
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (id: number) => void;
   logout: () => void;
   previewImage?: string;
   setPreviewImage: (image: string) => void;
@@ -29,8 +29,8 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
 
   const [fileList, setFileList] = useState<any[]>([]);
 
-  const triggerChange = (path: string) => {
-    onChange?.(path);
+  const triggerChange = (id: number) => {
+    onChange?.(id);
   };
 
   const beforeUpload = (file: any) => {
@@ -52,7 +52,8 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
     console.log(file);
     setFileList(fileList);
     if (file.status === "done") {
-      triggerChange(file.response.data.data.path);
+      console.log(file.response)
+      triggerChange(file.response.data.data.id);
       setPreviewImage(file.response.data.data.path);
     }
     if (file.status === "error") {
@@ -65,7 +66,7 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
       }
     }
     if (file.status === "removed") {
-      triggerChange("");
+      triggerChange(0);
       setPreviewImage("");
     }
   };
@@ -87,8 +88,14 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
       <Upload
         customRequest={(opt: any) => {
           upload(opt.file)
-            .then((res) => opt.onSuccess(res))
-            .catch((e) => opt.onError(e, e.response));
+            .then((res) => {
+              console.log("upload success", res)
+              opt.onSuccess(res)
+            })
+            .catch((e) => {
+              console.log("upload error", e)
+              opt.onError(e, e.response)
+            });
         }}
         beforeUpload={beforeUpload}
         listType="picture-card"
