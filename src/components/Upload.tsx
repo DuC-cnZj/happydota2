@@ -1,14 +1,14 @@
 import { Upload, message, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
 
 interface UploadAvatarProps {
-  value?: number;
+  value?: {id: number, url: string};
   title: string;
-  onChange?: (id: number) => void;
+  onChange?: ({id, url}: {id: number, url: string}) => void;
   logout: () => void;
   previewImage?: string;
   setPreviewImage: (image: string) => void;
@@ -30,16 +30,27 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   let h = useHistory();
   const [fileList, setFileList] = useState<any[]>([
     {
-      uid: value,
+      uid: value?.id ? value.id: 0,
       name: "",
       status: "done",
-      url: previewImage
+      url: value?.url ? value.url :""
     },
   ]);
 
-  const triggerChange = (id: number) => {
-    onChange?.(id);
-    console.log(onChange, id);
+  useEffect(() => {
+    setFileList([
+      {
+        uid: value?.id ? value.id: 0,
+        name: "",
+        status: "done",
+        url: value?.url ? value.url :""
+      },
+    ])
+  }, [value])
+
+  const triggerChange = ({id, url} : {id:number, url: string}) => {
+    onChange?.({id: id, url: url});
+    console.log("triggerChange", {id: id, url: url})
   };
 
   const beforeUpload = (file: any) => {
@@ -62,7 +73,8 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
     setFileList(fileList);
     if (file.status === "done") {
       console.log(file.response);
-      triggerChange(file.response.data.data.id);
+      file.url = file.response.data.data.path
+      triggerChange({id: file.response.data.data.id, url: file.response.data.data.path});
       setPreviewImage(file.response.data.data.path);
     }
     if (file.status === "error") {
@@ -79,14 +91,15 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
       }
     }
     if (file.status === "removed") {
-      triggerChange(0);
+      triggerChange({id: 0, url: ""});
       setPreviewImage("");
     }
   };
 
   const handlePreview = async (file: any) => {
     setPreviewVisible(true);
-    setPreviewImage(file.response.data.data.path);
+    setPreviewImage(file.url);
+    // file.response.data.data.path
   };
 
   const uploadButton = (

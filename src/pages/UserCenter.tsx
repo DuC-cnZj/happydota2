@@ -26,6 +26,7 @@ import {
   historyAvatars,
   updateUser,
   historyBackgroundImages,
+  userinfo,
 } from "../api/auth";
 import UploadImage from "../components/Upload";
 import { HistoryOutlined } from "@ant-design/icons";
@@ -289,16 +290,21 @@ const UserSetting: React.FC<{
   }, [myRef]);
 
   useEffect(() => {
-    setUserInput({ name: user.name, description: user.description });
-  }, [user.name, user.description]);
+    setUserInput({
+      name: user.name,
+      description: user.description,
+    });
+    setPreviewImage(user.backgroundImg ? user.backgroundImg : "");
+    setAvatar(user.avatarUrl);
+  }, [user]);
 
   const onFinish = (values: any) => {
     console.log("onFinish", values);
     updateUser({
       name: values.name,
       intro: values.description,
-      avatarId: values.avatarId ? values.avatarId : user.avatarUrlId,
-      backgroundImageId: values.backgroundId,
+      avatarId: values.avatar.id ? values.avatar.id : user.avatarUrlId,
+      backgroundImageId: values.background.id,
     }).then((res) => {
       const { data } = res.data;
       updateUserinfoAction({
@@ -317,7 +323,12 @@ const UserSetting: React.FC<{
 
   const onReset = () => {
     form.resetFields();
-    setUserInput({ name: user.name, description: user.description });
+    setUserInput({
+      name: user.name,
+      description: user.description,
+    });
+    setPreviewImage(user?.backgroundImg ? user.backgroundImg : "");
+    setAvatar(user.avatarUrl);
   };
 
   const valuesChange = (v: any) => {
@@ -325,6 +336,14 @@ const UserSetting: React.FC<{
     setUserInput({ ...userInput, ...v });
   };
   console.log(user);
+
+  const [previewVisible, setPreviewVisible] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState<string | undefined>(
+    user?.backgroundImg ? user.backgroundImg : ""
+  );
+  const [avatar, setAvatar] = useState<string>(user.avatarUrl);
+  const [avatarVisible, setAvatarVisible] = useState<boolean>(false);
+  const [avatarId, setAvatarId] = useState<number>(user.avatarUrlId)
 
   return (
     <Row
@@ -340,8 +359,11 @@ const UserSetting: React.FC<{
               onValuesChange={valuesChange}
               initialValues={{
                 name: user.name,
-                avatarId: user.avatarUrlId,
-                backgroundId: user.backgroundImgId,
+                avatar: { id: user.avatarUrlId, url: user.avatarUrl },
+                background: {
+                  id: user.backgroundImgId,
+                  url: user.backgroundImg,
+                },
                 description: user.description ? user.description : "暂无签名",
               }}
               labelCol={{ span: 4 }}
@@ -361,17 +383,97 @@ const UserSetting: React.FC<{
                 <Input />
               </Form.Item>
               <Form.Item label="头像上传" wrapperCol={{ span: 18 }}>
-                <UploadAvatarConnector
-                  form={form}
-                  backgroundImageId={
-                    user.backgroundImgId ? user.backgroundImgId : 0
-                  }
-                  avatarId={user.avatarUrlId}
-                  name={userInput.name}
-                  description={userInput.description}
-                  avatarUrl={user.avatarUrl}
-                  backgroundImage={user.backgroundImg ? user.backgroundImg : ""}
-                />
+                <Row gutter={[16, 16]}>
+                  <Col xs={24} sm={24} md={18}>
+                    <Preview
+                      image={previewImage}
+                      name={userInput.name}
+                      description={userInput.description}
+                      avatar={avatar}
+                    />
+                  </Col>
+                  <Col sm={24} md={6}>
+                    <Row style={{ width: "100%" }} gutter={[16, 16]}>
+                      <Col xs={12} sm={12} md={24}>
+                        <div style={{ display: "flex" }}>
+                          <Form.Item name="background">
+                            <UploadImage
+                              title="上传背景图"
+                              value={{
+                                id: user.backgroundImgId
+                                  ? user.backgroundImgId
+                                  : 0,
+                                url: user.backgroundImg
+                                  ? user.backgroundImg
+                                  : "",
+                              }}
+                              logout={logout}
+                              previewImage={previewImage}
+                              setPreviewImage={setPreviewImage}
+                              previewVisible={previewVisible}
+                              setPreviewVisible={setPreviewVisible}
+                            />
+                          </Form.Item>
+                          <Popover
+                            content={
+                              <PictureSelector
+                                fetch={historyBackgroundImages}
+                                onChange={(img) => {
+                                  setPreviewImage(img.path);
+                                  form.setFieldsValue({ background: {id: img.id, url: img.path} });
+                                }}
+                              />
+                            }
+                            title="历史背景图片"
+                            trigger="click"
+                          >
+                            <Button
+                              style={{ flex: "0 0 auto" }}
+                              icon={<HistoryOutlined />}
+                            ></Button>
+                          </Popover>
+                        </div>
+                      </Col>
+                      <Col xs={12} sm={12} md={24}>
+                        <div style={{ display: "flex" }}>
+                          <Form.Item name="avatar" style={{ display: "flex" }}>
+                            <UploadImage
+                              title="上传头像"
+                              value={{
+                                id: avatarId,
+                                url: avatar,
+                              }}
+                              logout={logout}
+                              previewImage={avatar}
+                              setPreviewImage={setAvatar}
+                              previewVisible={avatarVisible}
+                              setPreviewVisible={setAvatarVisible}
+                            />
+                          </Form.Item>
+                          <Popover
+                            content={
+                              <PictureSelector
+                                fetch={historyAvatars}
+                                onChange={(img) => {
+                                  setAvatarId(img.id);
+                                  setAvatar(img.path);
+                                  form.setFieldsValue({ avatar: {id: img.id, url: img.path} });
+                                }}
+                              />
+                            }
+                            title="历史头像图片"
+                            trigger="click"
+                          >
+                            <Button
+                              style={{ flex: "0 0 auto" }}
+                              icon={<HistoryOutlined />}
+                            ></Button>
+                          </Popover>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
               </Form.Item>
 
               <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
@@ -395,117 +497,6 @@ const UserSetting: React.FC<{
     </Row>
   );
 });
-
-interface UploadAvatarProps {
-  value?: string;
-  avatarUrl: string;
-  name: string;
-  avatarId: number;
-  backgroundImageId: number;
-  description?: string;
-  backgroundImage?: string;
-  onChange?: (value: string) => void;
-  logout: () => void;
-  form: any;
-}
-
-const UploadAvatar: React.FC<UploadAvatarProps> = ({
-  value,
-  onChange,
-  logout,
-  avatarUrl,
-  name,
-  avatarId: aid,
-  backgroundImageId,
-  description,
-  form,
-  backgroundImage,
-}) => {
-  const [previewVisible, setPreviewVisible] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string | undefined>(
-    backgroundImage
-  );
-  const [avatar, setAvatar] = useState<string>(avatarUrl);
-  const [avatarVisible, setAvatarVisible] = useState<boolean>(false);
-  const [avatarId, setAvatarId] = useState<number>(aid);
-
-  return (
-    <Row gutter={[16, 16]}>
-      <Col xs={24} sm={24} md={18}>
-        <Preview
-          image={previewImage}
-          name={name}
-          description={description}
-          avatar={avatar ? avatar : avatarUrl}
-        />
-      </Col>
-      <Col sm={24} md={6}>
-        <Row style={{ width: "100%" }} gutter={[16, 16]}>
-          <Col xs={12} sm={12} md={24}>
-            <div style={{ display: "flex" }}>
-              <Form.Item name="backgroundId">
-                <UploadImage
-                  title="上传背景图"
-                  value={backgroundImageId}
-                  logout={logout}
-                  previewImage={previewImage}
-                  setPreviewImage={setPreviewImage}
-                  previewVisible={previewVisible}
-                  setPreviewVisible={setPreviewVisible}
-                />
-              </Form.Item>
-              <Popover
-                content={
-                  <PictureSelector
-                    fetch={historyBackgroundImages}
-                    onChange={(img) => {
-                      setPreviewImage(img.path);
-                      form.setFieldsValue({ backgroundId: img.id });
-                    }}
-                  />
-                }
-                title="历史背景图片"
-                trigger="click"
-              >
-                <Button icon={<HistoryOutlined />}></Button>
-              </Popover>
-            </div>
-          </Col>
-          <Col xs={12} sm={12} md={24}>
-            <div style={{ display: "flex" }}>
-              <Form.Item name="avatarId" style={{ display: "flex" }}>
-                <UploadImage
-                  title="上传头像"
-                  value={avatarId}
-                  logout={logout}
-                  previewImage={avatar}
-                  setPreviewImage={setAvatar}
-                  previewVisible={avatarVisible}
-                  setPreviewVisible={setAvatarVisible}
-                />
-              </Form.Item>
-              <Popover
-                content={
-                  <PictureSelector
-                    fetch={historyAvatars}
-                    onChange={(img) => {
-                      setAvatar(img.path);
-                      form.setFieldsValue({ avatarId: img.id });
-                    }}
-                  />
-                }
-                title="历史头像图片"
-                trigger="click"
-              >
-                <Button icon={<HistoryOutlined />}></Button>
-              </Popover>
-            </div>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  );
-};
 
 const Preview: React.FC<{
   image: string | undefined;
@@ -547,13 +538,6 @@ const Preview: React.FC<{
     </>
   );
 };
-
-const UploadAvatarConnector = connect(
-  (state: { user: User }) => ({ user: state.user }),
-  {
-    logout: logout,
-  }
-)(UploadAvatar);
 
 const UserSettingConnector = connect(
   (state: { user: User }) => ({ user: state.user }),
