@@ -1,7 +1,7 @@
 import { Upload, message, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
 

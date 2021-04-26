@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, List, Spin } from "antd";
+import { Card, List, Spin, Button } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import InfiniteScroll from "react-infinite-scroller";
@@ -46,6 +46,29 @@ const PictureSelector: React.FC<PictureSelectorData> = ({
   const [page, setPage] = useState<number>(0);
   const [total, setTotal] = useState<number>(1);
 
+  const loadMore = () => {
+    console.log("loadMore");
+    setLoading(true);
+    fetch({ pageSize: 3, page: page + 1 }).then((res) => {
+      const { data: resData, total: resTotal, page } = res.data;
+      setData(
+        data.concat(
+          resData.map(
+            (item): Image => ({
+              id: item.id,
+              path: item.path,
+              checked: false,
+            })
+          )
+        )
+      );
+      setPage(page);
+      setTotal(resTotal);
+      setHasMore(total > data.length);
+      setLoading(false);
+    });
+  };
+
   const onSelected = (img: Image) => {
     img.checked = true;
     setCheckedImage(img);
@@ -58,28 +81,7 @@ const PictureSelector: React.FC<PictureSelectorData> = ({
         <InfiniteScroll
           initialLoad={true}
           pageStart={0}
-          loadMore={() => {
-            console.log("loadMore");
-            setLoading(true);
-            fetch({ pageSize: 3, page: page + 1 }).then((res) => {
-              const { data: resData, total: resTotal, page } = res.data;
-              setData(
-                data.concat(
-                  resData.map(
-                    (item): Image => ({
-                      id: item.id,
-                      path: item.path,
-                      checked: false,
-                    })
-                  )
-                )
-              );
-              setPage(page);
-              setTotal(resTotal);
-              setHasMore(total > data.length);
-              setLoading(false);
-            });
-          }}
+          loadMore={loadMore}
           hasMore={!loading && hasMore}
           useWindow={false}
         >
