@@ -26,11 +26,11 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
 }) => {
   const handleCancel = () => setPreviewVisible(false);
   let h = useHistory();
-
   const [fileList, setFileList] = useState<any[]>([]);
 
   const triggerChange = (id: number) => {
     onChange?.(id);
+    console.log(onChange, id)
   };
 
   const beforeUpload = (file: any) => {

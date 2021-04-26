@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   message,
+  Popover,
   Skeleton,
 } from "antd";
 import { connect } from "react-redux";
@@ -21,8 +22,11 @@ import { useRouteMatch } from "react-router-dom";
 import { User } from "../store/reducers/user";
 import { useEffect, useState, useRef, memo } from "react";
 import { logout, updateUserinfo } from "../store/actionTypes";
-import { updateUser } from "../api/auth";
+import { historyAvatars, updateUser } from "../api/auth";
 import UploadImage from "../components/Upload";
+import { HistoryOutlined } from "@ant-design/icons";
+import PictureSelector from "../components/PictureSelector";
+
 
 const HomePage: React.FC = () => {
   return (
@@ -286,7 +290,7 @@ const UserSetting: React.FC<{
   }, [user.name, user.description]);
 
   const onFinish = (values: any) => {
-    console.log(values);
+    console.log("onFinish", values);
     updateUser({
       name: values.name,
       intro: values.description,
@@ -318,6 +322,7 @@ const UserSetting: React.FC<{
     setUserInput({ ...userInput, ...v });
   };
   console.log(user);
+
   return (
     <Row
       style={{ width: "100%" }}
@@ -364,6 +369,7 @@ const UserSetting: React.FC<{
                   backgroundImage={user.backgroundImg ? user.backgroundImg : ""}
                 />
               </Form.Item>
+
               <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
                 <Button
                   type="primary"
@@ -438,7 +444,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
               setPreviewVisible={setPreviewVisible}
             />
           </Form.Item>
-          <Form.Item name="avatarId">
+          <Form.Item name="avatarId" style={{ display: "flex" }}>
             <UploadImage
               value={avatarId}
               logout={logout}
@@ -447,6 +453,22 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
               previewVisible={avatarVisible}
               setPreviewVisible={setAvatarVisible}
             />
+            <Popover
+              content={
+                <PictureSelector
+                  fetch={historyAvatars}
+                  onChange={(img) => {
+                    setAvatar(img.path);
+                    avatarId = img.id
+                    console.log(avatarId)
+                  }}
+                />
+              }
+              title="历史图片"
+              trigger="click"
+            >
+              <Button icon={<HistoryOutlined />}>历史图片</Button>
+            </Popover>
           </Form.Item>
         </div>
       </Col>

@@ -43,6 +43,21 @@ export function refreshToken() {
   return ajax.get<RefreshTokenResponse>("/api/refresh_token");
 }
 
+interface HistoryAvatars {
+  code: number;
+  page: number;
+  page_size: number;
+  total: number;
+  data: {
+    id: number;
+    path: string;
+  }[];
+}
+
+export function historyAvatars({pageSize = 15, page = 1}) {
+  return ajax.get<HistoryAvatars>(`/api/history_avatars?page=${page}&page_size=${pageSize}`);
+}
+
 export function updateUser({
   name,
   intro,
