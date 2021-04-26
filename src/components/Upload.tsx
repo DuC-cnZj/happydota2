@@ -1,12 +1,13 @@
 import { Upload, message, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
 
 interface UploadAvatarProps {
   value?: number;
+  title: string;
   onChange?: (id: number) => void;
   logout: () => void;
   previewImage?: string;
@@ -21,16 +22,24 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   logout,
   previewImage,
   setPreviewImage,
+  title,
   previewVisible,
   setPreviewVisible,
 }) => {
   const handleCancel = () => setPreviewVisible(false);
   let h = useHistory();
-  const [fileList, setFileList] = useState<any[]>([]);
+  const [fileList, setFileList] = useState<any[]>([
+    {
+      uid: value,
+      name: "",
+      status: "done",
+      url: previewImage
+    },
+  ]);
 
   const triggerChange = (id: number) => {
     onChange?.(id);
-    console.log(onChange, id)
+    console.log(onChange, id);
   };
 
   const beforeUpload = (file: any) => {
@@ -52,12 +61,16 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
     console.log(file);
     setFileList(fileList);
     if (file.status === "done") {
-      console.log(file.response)
+      console.log(file.response);
       triggerChange(file.response.data.data.id);
       setPreviewImage(file.response.data.data.path);
     }
     if (file.status === "error") {
-      if (file.response && file.response.data && file.response.data.code === 401) {
+      if (
+        file.response &&
+        file.response.data &&
+        file.response.data.code === 401
+      ) {
         message.error("登录过期, 请重新登录");
         setTimeout(() => {
           logout();
@@ -79,7 +92,7 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{title}</div>
     </div>
   );
 
@@ -89,12 +102,12 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
         customRequest={(opt: any) => {
           upload(opt.file)
             .then((res) => {
-              console.log("upload success", res)
-              opt.onSuccess(res)
+              console.log("upload success", res);
+              opt.onSuccess(res);
             })
             .catch((e) => {
-              console.log("upload error", e)
-              opt.onError(e, e.response)
+              console.log("upload error", e);
+              opt.onError(e, e.response);
             });
         }}
         beforeUpload={beforeUpload}

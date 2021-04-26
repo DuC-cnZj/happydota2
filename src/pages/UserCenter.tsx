@@ -431,7 +431,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
 
   return (
     <Row gutter={[16, 16]}>
-      <Col sm={24} md={18}>
+      <Col xs={24} sm={24} md={18}>
         <Preview
           image={previewImage}
           name={name}
@@ -440,62 +440,68 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
         />
       </Col>
       <Col sm={24} md={6}>
-        <div>
-          <div style={{ display: "flex" }}>
-            <Form.Item name="backgroundId">
-              <UploadImage
-                value={backgroundImageId}
-                logout={logout}
-                previewImage={previewImage}
-                setPreviewImage={setPreviewImage}
-                previewVisible={previewVisible}
-                setPreviewVisible={setPreviewVisible}
-              />
-            </Form.Item>
-            <Popover
-              content={
-                <PictureSelector
-                  fetch={historyBackgroundImages}
-                  onChange={(img) => {
-                    setPreviewImage(img.path);
-                    form.setFieldsValue({ backgroundId: img.id });
-                  }}
+        <Row style={{ width: "100%" }} gutter={[16, 16]}>
+          <Col xs={12} sm={12} md={24}>
+            <div style={{ display: "flex" }}>
+              <Form.Item name="backgroundId">
+                <UploadImage
+                  title="上传背景图"
+                  value={backgroundImageId}
+                  logout={logout}
+                  previewImage={previewImage}
+                  setPreviewImage={setPreviewImage}
+                  previewVisible={previewVisible}
+                  setPreviewVisible={setPreviewVisible}
                 />
-              }
-              title="历史背景图片"
-              trigger="click"
-            >
-              <Button icon={<HistoryOutlined />}></Button>
-            </Popover>
-          </div>
-          <div style={{ display: "flex" }}>
-            <Form.Item name="avatarId" style={{ display: "flex" }}>
-              <UploadImage
-                value={avatarId}
-                logout={logout}
-                previewImage={avatar}
-                setPreviewImage={setAvatar}
-                previewVisible={avatarVisible}
-                setPreviewVisible={setAvatarVisible}
-              />
-            </Form.Item>
-            <Popover
-              content={
-                <PictureSelector
-                  fetch={historyAvatars}
-                  onChange={(img) => {
-                    setAvatar(img.path);
-                    form.setFieldsValue({ avatarId: img.id });
-                  }}
+              </Form.Item>
+              <Popover
+                content={
+                  <PictureSelector
+                    fetch={historyBackgroundImages}
+                    onChange={(img) => {
+                      setPreviewImage(img.path);
+                      form.setFieldsValue({ backgroundId: img.id });
+                    }}
+                  />
+                }
+                title="历史背景图片"
+                trigger="click"
+              >
+                <Button icon={<HistoryOutlined />}></Button>
+              </Popover>
+            </div>
+          </Col>
+          <Col xs={12} sm={12} md={24}>
+            <div style={{ display: "flex" }}>
+              <Form.Item name="avatarId" style={{ display: "flex" }}>
+                <UploadImage
+                  title="上传头像"
+                  value={avatarId}
+                  logout={logout}
+                  previewImage={avatar}
+                  setPreviewImage={setAvatar}
+                  previewVisible={avatarVisible}
+                  setPreviewVisible={setAvatarVisible}
                 />
-              }
-              title="历史头像图片"
-              trigger="click"
-            >
-              <Button icon={<HistoryOutlined />}></Button>
-            </Popover>
-          </div>
-        </div>
+              </Form.Item>
+              <Popover
+                content={
+                  <PictureSelector
+                    fetch={historyAvatars}
+                    onChange={(img) => {
+                      setAvatar(img.path);
+                      form.setFieldsValue({ avatarId: img.id });
+                    }}
+                  />
+                }
+                title="历史头像图片"
+                trigger="click"
+              >
+                <Button icon={<HistoryOutlined />}></Button>
+              </Popover>
+            </div>
+          </Col>
+        </Row>
       </Col>
     </Row>
   );
