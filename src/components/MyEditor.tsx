@@ -10,6 +10,7 @@ interface IProps {
 
 const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
   useEffect(() => {
+    console.log("editor init");
     const vditor = new Vditor("vditor", {
       counter: {
         enable: true,
@@ -17,7 +18,9 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
       upload: {
         multiple: false,
         format: (files: File[], responseText: string): string => {
-          const { code, data } = JSON.parse(responseText);
+          const {
+            data: { path },
+          } = JSON.parse(responseText);
 
           let res = {
             msg: "",
@@ -25,7 +28,7 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
             errFiles: [],
             data: {
               succMap: {
-                file: data.path,
+                file: path,
               },
             },
           };
