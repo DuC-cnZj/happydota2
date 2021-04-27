@@ -1,5 +1,103 @@
 .detail {
-    min-height: @content-min-height;
-    background: @bg-700;
-    padding: 30rem 0;
+  min-height: @content-min-height;
+  background: @bg-700;
+  padding: 50rem 0;
+
+  .ant-card-body {
+      padding-bottom: 0;
+  }
+}
+
+.detail-header {
+    display: flex;
+    flex-direction: column;
+  &-top {
+    display: flex;
+    border-bottom: 1px solid @text-color-secondary;
+  }
+
+  &-bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+          .ant-tabs-tab {
+              padding: 20rem 0;
+          }
+          border: none;
+      }
+      .ant-tabs-top > .ant-tabs-nav::before {
+          border: none;
+      }
+      .ant-tabs-top > .ant-tabs-nav {
+          margin-bottom: 0;
+      }
+      &__tabs {
+          width: 100%;
+      }
+  }
+
+  &__left {
+    width: 80%;
+
+    display: flex;
+    padding-bottom: 20rem;
+  }
+  &__left-image {
+    margin-top: -50rem;
+    width: 150rem;
+    height: 200rem;
+    background-position: center;
+    background-size: cover;
+    margin-right: 20rem;
+  }
+
+  &__left-body {
+    width: 100%;
+    border-right: 1px solid @text-color-secondary;
+    padding-right: 20rem;
+    margin-right: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__title {
+      display: flex;
+      flex-direction: column;
+      .title {
+        font-size: 22rem;
+        font-weight: bold;
+      }
+      .sub-title {
+        font-size: 14rem;
+      }
+    }
+
+    &__bottom {
+      display: flex;
+      justify-content: space-between;
+      .evaluate {
+      }
+      .sourcestation {
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    color: @text-color-secondary;
+    .title {
+      font-size: 12rem;
+    }
+
+    .score {
+      font-size: 50rem;
+      color: @main-color;
+      font-weight: bolder;
+    }
+
+    .total {
+    }
+  }
 }

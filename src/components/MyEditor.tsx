@@ -1,4 +1,4 @@
-import React, { useEffect, createElement } from "react";
+import React, { useEffect, createElement, memo } from "react";
 import Vditor from "vditor";
 import "../styles/my-editor.scss";
 import { getToken } from "../utils/token";
@@ -98,6 +98,7 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
         "export",
         "help",
       ],
+      mode: "sv",
       cache: {
         enable: true,
         id: "intro_cache",
@@ -106,10 +107,8 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
         vditor.setValue(value ? value : "");
       },
     });
-
-    // return vditor.destroy()
   }, []);
   return createElement("div", { id: "vditor" });
 };
 
-export default MyEditor;
+export default memo(MyEditor);

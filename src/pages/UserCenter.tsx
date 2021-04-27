@@ -41,7 +41,7 @@ const HomePage: React.FC<{ user: User }> = ({ user }) => {
         gutter={[16, 16]}
         className="container user-body"
       >
-        <Col xs={{ span: 24, order: 2 }} md={{ span: 18, order: 1 }}>
+        <Col xs={{ span: 24, order: 2 }} md={{ span: 17, order: 1 }}>
           <Card
             title="评价列表 - 63篇评价"
             bordered={false}
@@ -52,7 +52,7 @@ const HomePage: React.FC<{ user: User }> = ({ user }) => {
             <p>Card content</p>
           </Card>
         </Col>
-        <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
+        <Col xs={{ span: 24, order: 1 }} md={{ span: 7, order: 2 }}>
           <Card title="简介" bordered={false} style={{ width: "100%" }} className="markdown">
             {user.intro ? <ReactMarkdown>{user.intro}</ReactMarkdown> : ""}
           </Card>

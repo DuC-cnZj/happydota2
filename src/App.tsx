@@ -12,7 +12,8 @@ import AuthRoute from "./router/AuthRoute";
 import { initState, User } from "./store/reducers/user";
 import { connect } from "react-redux";
 import Notification from "./components/Notification";
-import Detail from "./components/Detail";
+import Detail from "./pages/Detail";
+import PublicRoute from "./router/PublicRoute";
 
 const { Header, Content, Footer } = Layout;
 
@@ -27,19 +28,21 @@ const App: React.FC<{ user: User }> = ({ user }) => {
         </Header>
         <Content className="content">
           <Switch>
-            <Route path="/" exact component={Welcome} />
+            <PublicRoute path="/" exact component={Welcome} />
             <AuthRoute path="/home" exact>
               <MyHome />
             </AuthRoute>
-            <Route path="/equipment" component={Equipment} exact />
-            <Route path="/detail" component={Detail} exact />
+            <PublicRoute path="/equipment" component={Equipment} exact />
+            <PublicRoute path="/detail" exact>
+              <Detail />
+            </PublicRoute>
             <AuthRoute path={["/users/:name", "/users/"]}>
               <UserCenter />
             </AuthRoute>
             <AuthRoute path="/account/notification" exact>
               <Notification />
             </AuthRoute>
-            <Route path="*" component={() => <MyError code={404} />} />
+            <PublicRoute path="*" component={() => <MyError code={404} />} />
           </Switch>
         </Content>
         <Footer className="footer">
