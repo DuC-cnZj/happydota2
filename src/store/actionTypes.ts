@@ -26,7 +26,7 @@ export const fetchUserInfo = () => (dispatch: Dispatch) => {
         avatarUrl: data.avatar,
         avatarUrlId: data.avatar_id,
         name: data.name,
-        description: data.intro,
+        note: data.intro,
         fansNum: 0,
         followerNum: 0,
         likeNum: 0,

@@ -7,7 +7,8 @@ export interface User {
   avatarUrlId: number;
   avatarUrl: string;
   name: string;
-  description?: string;
+  note?: string;
+  intro?: string;
   fansNum?: number | null;
   followerNum?: number | null;
   likeNum?: number | null;
@@ -21,7 +22,8 @@ export const initState: User = {
   avatarUrlId: 0,
   avatarUrl: "",
   name: "",
-  description: "这个人很懒，什么都没留下",
+  note: "这个人很懒，什么都没留下",
+  intro: "",
   fansNum: null,
   followerNum: null,
   likeNum: null,

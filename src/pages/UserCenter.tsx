@@ -26,13 +26,14 @@ import {
   historyAvatars,
   updateUser,
   historyBackgroundImages,
-  userinfo,
 } from "../api/auth";
 import UploadImage from "../components/Upload";
 import { HistoryOutlined } from "@ant-design/icons";
 import PictureSelector from "../components/PictureSelector";
+import MyEditor from "../components/MyEditor";
 
-const HomePage: React.FC = () => {
+
+const HomePage: React.FC<{user: User}> = ({user}) => {
   return (
     <>
       <Row
@@ -53,13 +54,16 @@ const HomePage: React.FC = () => {
         </Col>
         <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
           <Card title="简介" bordered={false} style={{ width: "100%" }}>
-            西部森林中隐藏了无数的秘密。其中之一就是受到风神眷顾的森林弓箭大师莱瑞蕾。风行者莱瑞蕾的家人在她出生那夜的暴风雨中全部去世了，狂风摧毁了他们的房屋，一切都化为乌有。只有还是婴儿的风行者在充满死亡和破坏的瓦屑中幸存了下来。暴风雨平静下来后，自然之风注意到了这个在草地中哭泣的幸运儿。风很怜悯这个孩子，便将她抬起，放到一户邻居的门前台阶上。之后的岁月里，风会时不时回来看下这个孩子的生活，从远处看着她磨练自己的技术。现在，经过多年的训练，风行者射出的箭矢百步穿杨。她迅捷的步伐让人难以看清，犹如背后有风在推动。风行者用飓风般的箭矢群杀戮敌人，她几乎已成为自然之力本身。
+            {user.intro}
           </Card>
         </Col>
       </Row>
     </>
   );
 };
+
+const HomePageConnector = connect((state: {user: User})=>({user: state.user}), {})(HomePage)
+
 
 const TopBg: React.FC<{ url: string }> = ({ url }) => {
   return (
@@ -168,7 +172,7 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
           ) : (
             <p className="author-name">{user.name}</p>
           )}
-          {!user?.description ? (
+          {!user?.note ? (
             <Skeleton.Input
               style={{
                 width: "250rem",
@@ -179,7 +183,7 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
               size="small"
             />
           ) : (
-            <span className="author-desc">{user?.description}</span>
+            <span className="author-desc">{user?.note}</span>
           )}
           <TopMenu />
           {name !== user.name ? (
@@ -232,7 +236,7 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
               <p className="author-name">{user.name}</p>
             )}
 
-            {!user?.description ? (
+            {!user?.note ? (
               <Skeleton.Input
                 style={{
                   width: "250rem",
@@ -244,14 +248,14 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
                 size="small"
               />
             ) : (
-              <span className="author-desc">{user?.description}</span>
+              <span className="author-desc">{user?.note}</span>
             )}
           </div>
           <TopTabs />
         </div>
 
         <Switch>
-          <Route path={`${url}`} exact component={HomePage} />
+          <Route path={`${url}`} exact component={HomePageConnector} />
           <Route
             exact
             path={`${url}/setting`}
@@ -275,10 +279,10 @@ const UserSetting: React.FC<{
   const [form] = Form.useForm();
   const [userInput, setUserInput] = useState<{
     name: string;
-    description?: string;
+    note?: string;
   }>({
     name: user.name,
-    description: user.description ? user.description : "暂无签名",
+    note: user.note ? user.note : "暂无签名",
   });
 
   const myRef = useRef<HTMLInputElement>(null);
@@ -292,7 +296,7 @@ const UserSetting: React.FC<{
   useEffect(() => {
     setUserInput({
       name: user.name,
-      description: user.description,
+      note: user.note,
     });
     setPreviewImage(user.backgroundImg ? user.backgroundImg : "");
     setAvatar(user.avatarUrl);
@@ -302,7 +306,8 @@ const UserSetting: React.FC<{
     console.log("onFinish", values);
     updateUser({
       name: values.name,
-      intro: values.description,
+      intro: values.intro,
+      note: values.note,
       avatarId: values.avatar.id ? values.avatar.id : user.avatarUrlId,
       backgroundImageId: values.background.id,
     }).then((res) => {
@@ -312,7 +317,8 @@ const UserSetting: React.FC<{
         avatarUrlId: data.avatar_id,
         avatarUrl: data.avatar,
         name: data.name,
-        description: data.intro,
+        note: data.note,
+        intro: data.intro,
         backgroundImgId: data.background_image_id,
         backgroundImg: data.background_image,
         isLogin: true,
@@ -325,7 +331,7 @@ const UserSetting: React.FC<{
     form.resetFields();
     setUserInput({
       name: user.name,
-      description: user.description,
+      note: user.note,
     });
     setPreviewImage(user?.backgroundImg ? user.backgroundImg : "");
     setAvatar(user.avatarUrl);
@@ -343,7 +349,7 @@ const UserSetting: React.FC<{
   );
   const [avatar, setAvatar] = useState<string>(user.avatarUrl);
   const [avatarVisible, setAvatarVisible] = useState<boolean>(false);
-  const [avatarId, setAvatarId] = useState<number>(user.avatarUrlId)
+  const [avatarId, setAvatarId] = useState<number>(user.avatarUrlId);
 
   return (
     <Row
@@ -364,7 +370,8 @@ const UserSetting: React.FC<{
                   id: user.backgroundImgId,
                   url: user.backgroundImg,
                 },
-                description: user.description ? user.description : "暂无签名",
+                note: user.note ? user.note : "暂无签名",
+                intro: user.intro ? user.intro : "",
               }}
               labelCol={{ span: 4 }}
               wrapperCol={{ span: 10 }}
@@ -376,7 +383,7 @@ const UserSetting: React.FC<{
                 <Input />
               </Form.Item>
               <Form.Item
-                name="description"
+                name="note"
                 label="个性签名"
                 wrapperCol={{ span: 10 }}
               >
@@ -388,7 +395,7 @@ const UserSetting: React.FC<{
                     <Preview
                       image={previewImage}
                       name={userInput.name}
-                      description={userInput.description}
+                      note={userInput.note}
                       avatar={avatar}
                     />
                   </Col>
@@ -420,7 +427,9 @@ const UserSetting: React.FC<{
                                 fetch={historyBackgroundImages}
                                 onChange={(img) => {
                                   setPreviewImage(img.path);
-                                  form.setFieldsValue({ background: {id: img.id, url: img.path} });
+                                  form.setFieldsValue({
+                                    background: { id: img.id, url: img.path },
+                                  });
                                 }}
                               />
                             }
@@ -457,7 +466,9 @@ const UserSetting: React.FC<{
                                 onChange={(img) => {
                                   setAvatarId(img.id);
                                   setAvatar(img.path);
-                                  form.setFieldsValue({ avatar: {id: img.id, url: img.path} });
+                                  form.setFieldsValue({
+                                    avatar: { id: img.id, url: img.path },
+                                  });
                                 }}
                               />
                             }
@@ -474,6 +485,10 @@ const UserSetting: React.FC<{
                     </Row>
                   </Col>
                 </Row>
+              </Form.Item>
+
+              <Form.Item name="intro" label="个人简介" wrapperCol={{ span: 18 }}>
+                <MyEditor />
               </Form.Item>
 
               <Form.Item wrapperCol={{ offset: 4, span: 10 }}>
@@ -502,8 +517,8 @@ const Preview: React.FC<{
   image: string | undefined;
   avatar: string;
   name: string;
-  description?: string;
-}> = ({ image, avatar, name, description }) => {
+  note?: string;
+}> = ({ image, avatar, name, note }) => {
   return (
     <>
       <div
@@ -525,8 +540,8 @@ const Preview: React.FC<{
                 这里显示昵称
               </span>
             )}
-            {description ? (
-              <span style={{ fontSize: "12rem" }}>{description}</span>
+            {note ? (
+              <span style={{ fontSize: "12rem" }}>{note}</span>
             ) : (
               <span style={{ color: "gray", fontSize: "14rem" }}>
                 这里显示个性签名

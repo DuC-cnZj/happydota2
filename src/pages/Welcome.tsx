@@ -40,7 +40,7 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login, isLogin }) => {
         avatarUrlId: 0,
         avatarUrl: ta,
         name: "duc",
-        description: "这个人很懒，什么都没留下",
+        note: "这个人很懒，什么都没留下",
         fansNum: 666,
         followerNum: 100,
         likeNum: 10000,

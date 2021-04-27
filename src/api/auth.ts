@@ -24,6 +24,7 @@ export interface UserInfo {
     avatar: string;
     avatar_id: number;
     intro: string;
+    note: string;
     background_image: string;
     background_image_id: number;
   };
@@ -64,17 +65,20 @@ export function historyBackgroundImages({pageSize = 15, page = 1}) {
 export function updateUser({
   name,
   intro,
+  note,
   avatarId,
   backgroundImageId,
 }: {
   name: string;
   intro?: string;
+  note?: string;
   avatarId: number;
   backgroundImageId?: number;
 }) {
   return ajax.post<UserInfo>("/api/update_userinfo", {
     name,
     intro,
+    note,
     avatar_id: avatarId,
     background_image_id: backgroundImageId,
   });

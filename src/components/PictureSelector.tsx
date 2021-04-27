@@ -49,7 +49,7 @@ const PictureSelector: React.FC<PictureSelectorData> = ({
   const loadMore = () => {
     console.log("loadMore");
     setLoading(true);
-    fetch({ pageSize: 3, page: page + 1 }).then((res) => {
+    fetch({ pageSize: 10, page: page + 1 }).then((res) => {
       const { data: resData, total: resTotal, page } = res.data;
       setData(
         data.concat(

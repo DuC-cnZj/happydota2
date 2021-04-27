@@ -130,7 +130,7 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
                 <span className="author-name">{user.name}</span>
                 )}
                 
-              {!user?.description ? (
+              {!user?.note ? (
                 <Skeleton.Input
                   style={{
                     width: "250rem",
@@ -141,7 +141,7 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
                   size="small"
                 />
               ) : (
-                <span className="author-desc">{user?.description}</span>
+                <span className="author-desc">{user?.note}</span>
               )}
               <TopMenu />
               <div style={{ width: "100%" }}>
