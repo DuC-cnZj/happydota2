@@ -53,7 +53,7 @@ const HomePage: React.FC<{ user: User }> = ({ user }) => {
           </Card>
         </Col>
         <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
-          <Card title="简介" bordered={false} style={{ width: "100%" }}>
+          <Card title="简介" bordered={false} style={{ width: "100%" }} className="markdown">
             {user.intro ? <ReactMarkdown>{user.intro}</ReactMarkdown> : ""}
           </Card>
         </Col>
@@ -222,7 +222,6 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
           </div>
           <div className="text-group">
             {!user.name ? (
-              <p>
                 <Skeleton.Input
                   style={{
                     width: "100rem",
@@ -233,7 +232,6 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
                   active
                   size="small"
                 />
-              </p>
             ) : (
               <p className="author-name">{user.name}</p>
             )}

@@ -16,6 +16,18 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
         enable: true,
       },
       upload: {
+        success: (editor: HTMLPreElement, msg: string) => {
+          console.log(editor, msg);
+          const {
+            data: { path },
+          }: { data: { path: string } } = JSON.parse(msg);
+          let name = path.split("/")[path.split("/").length - 1];
+
+          editor.innerHTML += "![" + name + "](" + path + ")";
+        },
+        linkToImgCallback: (res: string) => {
+          console.log(res);
+        },
         multiple: false,
         format: (files: File[], responseText: string): string => {
           const {

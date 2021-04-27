@@ -16,10 +16,13 @@ $transition: all 0.15s ease-in-out !default;
 $max-width: 520px !default;
 
 .vditor {
-    
-    &--fullscreen {
-        margin-top: 64rem;
-    }
+  img {
+    max-width: 300rem;
+  }
+
+  &--fullscreen {
+    margin-top: 64rem;
+  }
   &-reset {
     color: azure;
   }
@@ -55,8 +58,13 @@ $max-width: 520px !default;
   --ir-paren-color: #008000;
 
   &--dark {
-    h1, h2, h3, h4, h5, h6 {
-        color: azure;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: azure;
     }
     --border-color: #141414;
     --second-color: rgba(185, 185, 185, 0.36);
