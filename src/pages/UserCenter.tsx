@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import {
   Card,
   Divider,
@@ -32,8 +33,7 @@ import { HistoryOutlined } from "@ant-design/icons";
 import PictureSelector from "../components/PictureSelector";
 import MyEditor from "../components/MyEditor";
 
-
-const HomePage: React.FC<{user: User}> = ({user}) => {
+const HomePage: React.FC<{ user: User }> = ({ user }) => {
   return (
     <>
       <Row
@@ -54,7 +54,7 @@ const HomePage: React.FC<{user: User}> = ({user}) => {
         </Col>
         <Col xs={{ span: 24, order: 1 }} md={{ span: 6, order: 2 }}>
           <Card title="简介" bordered={false} style={{ width: "100%" }}>
-            {user.intro}
+            {user.intro ? <ReactMarkdown>{user.intro}</ReactMarkdown> : ""}
           </Card>
         </Col>
       </Row>
@@ -62,8 +62,10 @@ const HomePage: React.FC<{user: User}> = ({user}) => {
   );
 };
 
-const HomePageConnector = connect((state: {user: User})=>({user: state.user}), {})(HomePage)
-
+const HomePageConnector = connect(
+  (state: { user: User }) => ({ user: state.user }),
+  {}
+)(HomePage);
 
 const TopBg: React.FC<{ url: string }> = ({ url }) => {
   return (
@@ -382,11 +384,7 @@ const UserSetting: React.FC<{
               <Form.Item name="name" label="昵称" wrapperCol={{ span: 10 }}>
                 <Input />
               </Form.Item>
-              <Form.Item
-                name="note"
-                label="个性签名"
-                wrapperCol={{ span: 10 }}
-              >
+              <Form.Item name="note" label="个性签名" wrapperCol={{ span: 10 }}>
                 <Input />
               </Form.Item>
               <Form.Item label="头像上传" wrapperCol={{ span: 18 }}>
@@ -487,7 +485,11 @@ const UserSetting: React.FC<{
                 </Row>
               </Form.Item>
 
-              <Form.Item name="intro" label="个人简介" wrapperCol={{ span: 18 }}>
+              <Form.Item
+                name="intro"
+                label="个人简介"
+                wrapperCol={{ span: 18 }}
+              >
                 <MyEditor />
               </Form.Item>
 
