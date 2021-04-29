@@ -416,7 +416,7 @@ const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
             <Link
               to="/"
               className="avatar-md-a"
-              onClick={() => logout(() => {})}
+              onClick={() => logout()}
             >
               <LogoutOutlined style={{ marginRight: "2rem" }} />
               登出
@@ -485,7 +485,7 @@ const AvatarSm: React.FC<{ url: string }> = ({ url }) => {
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>
-        <Link to="/" className="avatar-sm-a" onClick={() => logout(() => {})}>
+        <Link to="/" className="avatar-sm-a" onClick={() => logout()}>
           <LogoutOutlined style={{ marginRight: "2rem" }} />
           <span>登出</span>
         </Link>

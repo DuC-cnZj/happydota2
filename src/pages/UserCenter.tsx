@@ -403,7 +403,6 @@ const UserSetting: React.FC = memo(() => {
                                   ? user.backgroundImg
                                   : "",
                               }}
-                              logout={() => {logout(() => {})}}
                               previewImage={previewImage}
                               setPreviewImage={setPreviewImage}
                               previewVisible={previewVisible}
@@ -441,7 +440,6 @@ const UserSetting: React.FC = memo(() => {
                                 id: avatarId,
                                 url: avatar,
                               }}
-                              logout={()=>{logout(()=>{})}}
                               previewImage={avatar}
                               setPreviewImage={setAvatar}
                               previewVisible={avatarVisible}

@@ -4,12 +4,12 @@ import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
+import { useAuth } from "./AuthProvider";
 
 interface UploadAvatarProps {
-  value?: {id: number, url: string};
+  value?: { id: number; url: string };
   title: string;
-  onChange?: ({id, url}: {id: number, url: string}) => void;
-  logout: () => void;
+  onChange?: ({ id, url }: { id: number; url: string }) => void;
   previewImage?: string;
   setPreviewImage: (image: string) => void;
   previewVisible: boolean;
@@ -19,38 +19,38 @@ interface UploadAvatarProps {
 const UploadImage: React.FC<UploadAvatarProps> = ({
   value,
   onChange,
-  logout,
   previewImage,
   setPreviewImage,
   title,
   previewVisible,
   setPreviewVisible,
 }) => {
+  let { signout: logout } = useAuth();
   const handleCancel = () => setPreviewVisible(false);
   let h = useHistory();
   const [fileList, setFileList] = useState<any[]>([
     {
-      uid: value?.id ? value.id: 0,
+      uid: value?.id ? value.id : 0,
       name: "",
       status: "done",
-      url: value?.url ? value.url :""
+      url: value?.url ? value.url : "",
     },
   ]);
 
   useEffect(() => {
     setFileList([
       {
-        uid: value?.id ? value.id: 0,
+        uid: value?.id ? value.id : 0,
         name: "",
         status: "done",
-        url: value?.url ? value.url :""
+        url: value?.url ? value.url : "",
       },
-    ])
-  }, [value])
+    ]);
+  }, [value]);
 
-  const triggerChange = ({id, url} : {id:number, url: string}) => {
-    onChange?.({id: id, url: url});
-    console.log("triggerChange", {id: id, url: url})
+  const triggerChange = ({ id, url }: { id: number; url: string }) => {
+    onChange?.({ id: id, url: url });
+    console.log("triggerChange", { id: id, url: url });
   };
 
   const beforeUpload = (file: any) => {
@@ -73,8 +73,11 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
     setFileList(fileList);
     if (file.status === "done") {
       console.log(file.response);
-      file.url = file.response.data.data.path
-      triggerChange({id: file.response.data.data.id, url: file.response.data.data.path});
+      file.url = file.response.data.data.path;
+      triggerChange({
+        id: file.response.data.data.id,
+        url: file.response.data.data.path,
+      });
       setPreviewImage(file.response.data.data.path);
     }
     if (file.status === "error") {
@@ -85,13 +88,12 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
       ) {
         message.error("登录过期, 请重新登录");
         setTimeout(() => {
-          logout();
-          h.push("/");
+          logout(() => h.push("/"));
         }, 1000);
       }
     }
     if (file.status === "removed") {
-      triggerChange({id: 0, url: ""});
+      triggerChange({ id: 0, url: "" });
       setPreviewImage("");
     }
   };

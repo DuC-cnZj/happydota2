@@ -26,19 +26,19 @@ const fakeAuth = {
     id: 0,
     avatarUrlId: 0,
     avatarUrl: "",
-    name: ""
+    name: "",
   },
   setAuthUser(user: User) {},
-  signin(cb: () => void) {},
-  signout(cb: () => void) {},
+  signin(cb?: () => void) {},
+  signout(cb?: () => void) {},
 };
 
 const authContext = createContext<{
   isLogin: boolean;
   user: User;
   setAuthUser: (user: User) => void;
-  signin: (cb: () => void) => void;
-  signout: (cb: () => void) => void;
+  signin: (cb?: () => void) => void;
+  signout: (cb?: () => void) => void;
 }>(fakeAuth);
 
 export function useAuth() {
@@ -57,7 +57,7 @@ function useProvideAuth(showLoginModal: () => void) {
     }
   };
 
-  const signin = (cb: () => void) => {
+  const signin = (cb?: () => void) => {
     setIsLogin(true);
 
     async function asyncLogin() {
@@ -76,7 +76,9 @@ function useProvideAuth(showLoginModal: () => void) {
           backgroundImg: data.background_image,
         };
         setUser(u);
-        cb();
+        if (cb) {
+          cb()
+        }
       } catch (e) {
         signout(() => {
           showLoginModal();
@@ -88,12 +90,12 @@ function useProvideAuth(showLoginModal: () => void) {
     asyncLogin();
   };
 
-  const signout = (cb: () => void) => {
+  const signout = (cb?: () => void) => {
     setIsLogin(false);
     setUser(fakeAuth.user);
     removeToken();
     removeRememberMe();
-    cb();
+    cb ? cb() : h.push("/");
   };
 
   return {
