@@ -1,21 +1,20 @@
 import { Input, Button } from "antd";
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { showLoginModal, login } from "../store/actionTypes";
+import { showLoginModal } from "../store/actionTypes";
 import ta from "../dota2/ta.jpeg";
 import st from "../dota2/st.jpeg";
 
-import { User } from "../store/reducers/user";
 import { useHistory, useLocation } from "react-router";
+import { useAuth } from "../components/AuthProvider";
 
 interface IProps {
   showLoginModal: () => void;
-  login: (user: User) => void;
-  isLogin: boolean;
 }
 
-const HomeGuest: React.FC<IProps> = ({ showLoginModal, login, isLogin }) => {
+const HomeGuest: React.FC<IProps> = ({ showLoginModal }) => {
   let location = useLocation<StateImp>();
+  let {isLogin} = useAuth()
   let h = useHistory();
   useEffect(() => {
     if (isLogin) {
@@ -35,18 +34,6 @@ const HomeGuest: React.FC<IProps> = ({ showLoginModal, login, isLogin }) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      login({
-        id: 0,
-        avatarUrlId: 0,
-        avatarUrl: ta,
-        name: "duc",
-        note: "这个人很懒，什么都没留下",
-        fansNum: 666,
-        followerNum: 100,
-        likeNum: 10000,
-        backgroundImg: st,
-        isLogin: true,
-      });
     }, 2000);
   };
 
@@ -93,21 +80,17 @@ interface StateImp {
   showLogin?: boolean;
 }
 
-interface State extends HomeState {
+interface State {
   loginModal: {
     visible: boolean;
   };
 }
 
-interface HomeState {
-  user: User;
-}
 
 const HomeGuestConnect = connect(
-  (state: State) => ({ isLogin: state.user.isLogin }),
+  (state: State) => ({ }),
   {
     showLoginModal,
-    login,
   }
 )(HomeGuest);
 

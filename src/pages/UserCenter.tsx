@@ -20,9 +20,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
-import { User } from "../store/reducers/user";
 import { useEffect, useState, useRef, memo } from "react";
-import { logout, updateUserinfo } from "../store/actionTypes";
 import {
   historyAvatars,
   updateUser,
@@ -32,8 +30,10 @@ import UploadImage from "../components/Upload";
 import { HistoryOutlined } from "@ant-design/icons";
 import PictureSelector from "../components/PictureSelector";
 import MyEditor from "../components/MyEditor";
+import { useAuth } from "../components/AuthProvider";
 
-const HomePage: React.FC<{ user: User }> = ({ user }) => {
+const HomePage: React.FC = () => {
+  let { user } = useAuth();
   return (
     <>
       <Row
@@ -53,7 +53,12 @@ const HomePage: React.FC<{ user: User }> = ({ user }) => {
           </Card>
         </Col>
         <Col xs={{ span: 24, order: 1 }} md={{ span: 7, order: 2 }}>
-          <Card title="简介" bordered={false} style={{ width: "100%" }} className="markdown">
+          <Card
+            title="简介"
+            bordered={false}
+            style={{ width: "100%" }}
+            className="markdown"
+          >
             {user.intro ? <ReactMarkdown>{user.intro}</ReactMarkdown> : ""}
           </Card>
         </Col>
@@ -62,10 +67,7 @@ const HomePage: React.FC<{ user: User }> = ({ user }) => {
   );
 };
 
-const HomePageConnector = connect(
-  (state: { user: User }) => ({ user: state.user }),
-  {}
-)(HomePage);
+const HomePageConnector = HomePage;
 
 const TopBg: React.FC<{ url: string }> = ({ url }) => {
   return (
@@ -141,11 +143,8 @@ export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) => {
   );
 };
 
-interface IProps {
-  user: User;
-}
-
-const UserCenter: React.FC<IProps> = ({ user }) => {
+const UserCenter: React.FC = () => {
+  let { user } = useAuth();
   let { url } = useRouteMatch();
   let { name } = useParams<{ name: string }>();
   let h = useHistory();
@@ -222,16 +221,16 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
           </div>
           <div className="text-group">
             {!user.name ? (
-                <Skeleton.Input
-                  style={{
-                    width: "100rem",
-                    marginBottom: "3rem",
-                    marginTop: "7rem",
-                    borderRadius: "3rem",
-                  }}
-                  active
-                  size="small"
-                />
+              <Skeleton.Input
+                style={{
+                  width: "100rem",
+                  marginBottom: "3rem",
+                  marginTop: "7rem",
+                  borderRadius: "3rem",
+                }}
+                active
+                size="small"
+              />
             ) : (
               <p className="author-name">{user.name}</p>
             )}
@@ -267,16 +266,11 @@ const UserCenter: React.FC<IProps> = ({ user }) => {
   );
 };
 
-export default connect(
-  (state: { user: User }) => ({ user: state.user }),
-  {}
-)(UserCenter);
+export default UserCenter;
 
-const UserSetting: React.FC<{
-  user: User;
-  updateUserinfoAction: (user: User) => void;
-}> = memo(({ user, updateUserinfoAction }) => {
+const UserSetting: React.FC = memo(() => {
   const [form] = Form.useForm();
+  let { user, setAuthUser: updateUserinfoAction, signout: logout } = useAuth();
   const [userInput, setUserInput] = useState<{
     name: string;
     note?: string;
@@ -321,7 +315,6 @@ const UserSetting: React.FC<{
         intro: data.intro,
         backgroundImgId: data.background_image_id,
         backgroundImg: data.background_image,
-        isLogin: true,
       });
       message.success("更新成功");
     });
@@ -410,7 +403,7 @@ const UserSetting: React.FC<{
                                   ? user.backgroundImg
                                   : "",
                               }}
-                              logout={logout}
+                              logout={() => {logout(() => {})}}
                               previewImage={previewImage}
                               setPreviewImage={setPreviewImage}
                               previewVisible={previewVisible}
@@ -448,7 +441,7 @@ const UserSetting: React.FC<{
                                 id: avatarId,
                                 url: avatar,
                               }}
-                              logout={logout}
+                              logout={()=>{logout(()=>{})}}
                               previewImage={avatar}
                               setPreviewImage={setAvatar}
                               previewVisible={avatarVisible}
@@ -554,7 +547,4 @@ const Preview: React.FC<{
   );
 };
 
-const UserSettingConnector = connect(
-  (state: { user: User }) => ({ user: state.user }),
-  { updateUserinfoAction: updateUserinfo }
-)(UserSetting);
+const UserSettingConnector = UserSetting;

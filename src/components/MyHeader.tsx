@@ -27,28 +27,26 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { showLoginModal, hideLoginModal, logout } from "../store/actionTypes";
+import { showLoginModal, hideLoginModal } from "../store/actionTypes";
 import { Link, useHistory } from "react-router-dom";
-import { User } from "../store/reducers/user";
 import { Drawer, Popover } from "antd";
 import { login } from "../api/auth";
 import { ErrorResponse } from "../api/ajax";
 import { setToken } from "../utils/token";
 import { setRememberMe } from "../utils/remember_me";
+import { useAuth } from "./AuthProvider";
 
 const { TabPane } = Tabs;
 interface IProps {
   loginModalVisible: boolean;
   showLoginModal: () => void;
   hideLoginModal: () => void;
-  user: User;
 }
 
 const Header: React.FC<IProps> = ({
   loginModalVisible,
   showLoginModal,
   hideLoginModal,
-  user,
 }) => {
   const showModal = () => {
     showLoginModal();
@@ -58,11 +56,16 @@ const Header: React.FC<IProps> = ({
     hideLoginModal();
   };
 
+  let { signin, user, isLogin } = useAuth();
   let h = useHistory();
 
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
-  const onFinish = (values: { username: string; password: string, rememberMe: boolean }) => {
+  const onFinish = (values: {
+    username: string;
+    password: string;
+    rememberMe: boolean;
+  }) => {
     if (!values.username) {
       message.error("用户名必填");
       return;
@@ -81,15 +84,16 @@ const Header: React.FC<IProps> = ({
       return;
     }
 
-    console.log(values)
+    console.log(values);
     login({ email: values.username, password: values.password })
       .then((r) => {
         setToken(r.data.token);
-        console.log(values.rememberMe)
-        setRememberMe(!!values.rememberMe)
-        message.success("登录成功");
+        setRememberMe(!!values.rememberMe);
         hideLoginModal();
-        h.push("/home");
+        signin(() => {
+          message.success("登录成功");
+          h.push("/home");
+        });
       })
       .catch((res: ErrorResponse) => {
         message.error(res.message);
@@ -141,12 +145,12 @@ const Header: React.FC<IProps> = ({
           />
         </div>
         <div className="header-right">
-          {user.id !== 0 ? (
+          {isLogin ? (
             <div>
-              <AvatarSmConnector url={user.avatarUrl} user={user} />
+              <AvatarSmConnector url={user.avatarUrl} />
               <div className="md-avatar-login-group">
                 <NotificationMd />
-                <AvatarMdConnector url={user.avatarUrl} user={user} />
+                <AvatarMdConnector url={user.avatarUrl} />
               </div>
             </div>
           ) : (
@@ -380,13 +384,11 @@ interface State {
   loginModal: {
     visible: boolean;
   };
-  user: User;
 }
 
 export default connect(
   (state: State) => ({
     loginModalVisible: state.loginModal.visible,
-    user: state.user,
   }),
   {
     showLoginModal,
@@ -394,11 +396,8 @@ export default connect(
   }
 )(Header);
 
-const AvatarMd: React.FC<{ url: string; user: User; logout: () => void }> = ({
-  url,
-  user,
-  logout,
-}) => {
+const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
+  let { user, signout: logout } = useAuth();
   return (
     <>
       <Popover
@@ -414,7 +413,11 @@ const AvatarMd: React.FC<{ url: string; user: User; logout: () => void }> = ({
               <UserOutlined style={{ marginRight: "2rem" }} />
               个人中心
             </Link>
-            <Link to="/" className="avatar-md-a" onClick={() => logout()}>
+            <Link
+              to="/"
+              className="avatar-md-a"
+              onClick={() => logout(() => {})}
+            >
               <LogoutOutlined style={{ marginRight: "2rem" }} />
               登出
             </Link>
@@ -430,13 +433,10 @@ const AvatarMd: React.FC<{ url: string; user: User; logout: () => void }> = ({
   );
 };
 
-const AvatarMdConnector = connect(() => ({}), { logout })(AvatarMd);
+const AvatarMdConnector = AvatarMd;
 
-const AvatarSm: React.FC<{ url: string; user: User; logout: () => void }> = ({
-  url,
-  user,
-  logout,
-}) => {
+const AvatarSm: React.FC<{ url: string }> = ({ url }) => {
+  let { user, signout: logout } = useAuth();
   const [visible, setVisible] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -485,7 +485,7 @@ const AvatarSm: React.FC<{ url: string; user: User; logout: () => void }> = ({
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>
-        <Link to="/" className="avatar-sm-a" onClick={() => logout()}>
+        <Link to="/" className="avatar-sm-a" onClick={() => logout(() => {})}>
           <LogoutOutlined style={{ marginRight: "2rem" }} />
           <span>登出</span>
         </Link>
@@ -494,6 +494,4 @@ const AvatarSm: React.FC<{ url: string; user: User; logout: () => void }> = ({
   );
 };
 
-const AvatarSmConnector = connect(() => ({}), {
-  logout: logout,
-})(AvatarSm);
+const AvatarSmConnector = AvatarSm;

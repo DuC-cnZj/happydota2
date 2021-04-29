@@ -1,6 +1,5 @@
 import { Skeleton, Card, Row, Col, Button, Space } from "antd";
 import { connect } from "react-redux";
-import { logout } from "../store/actionTypes";
 import jugg from "../dota2/hero-jugg.jpeg";
 import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";
@@ -12,14 +11,13 @@ import ItemList, { cardItem } from "../components/ItemList";
 import { TopAvatar, TopMenu } from "./UserCenter";
 import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import Contact from "../components/Contact";
-import { User } from "../store/reducers/user";
+import { useAuth } from "../components/AuthProvider";
+import { useHistory } from "react-router";
 
-interface HomeAuthIProps {
-  user: User;
-  logout: () => void;
-}
 
-const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
+const HomeAuth: React.FC = () => {
+  let { signout: logout, user } = useAuth();
+  let h = useHistory();
   const data: cardItem[] = [
     {
       name: "剑圣",
@@ -121,15 +119,15 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
                     marginBottom: "6rem",
                     marginTop: "3rem",
                     borderRadius: "3rem",
-                    height: "16rem"
+                    height: "16rem",
                   }}
                   active
                   size="small"
                 />
               ) : (
                 <span className="author-name">{user.name}</span>
-                )}
-                
+              )}
+
               {!user?.note ? (
                 <Skeleton.Input
                   style={{
@@ -157,7 +155,11 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
                     style={{ width: "100%" }}
                     icon={<LogoutOutlined />}
                     danger
-                    onClick={() => logout()}
+                    onClick={() =>
+                      logout(() => {
+                        h.push("/");
+                      })
+                    }
                   >
                     登出
                   </Button>
@@ -172,21 +174,4 @@ const HomeAuth: React.FC<HomeAuthIProps> = ({ user, logout }) => {
   );
 };
 
-interface HomeProps {
-  user: User;
-}
-
-const HomeAuthConnector = connect(
-  (state: { user: User }) => ({ user: state.user }),
-  { logout: logout }
-)(HomeAuth);
-
-const Home: React.FC<HomeProps> = () => {
-  return <HomeAuthConnector />;
-};
-
-interface HomeState {
-  user: User;
-}
-
-export default connect((state: HomeState) => ({ user: state.user }), {})(Home);
+export default HomeAuth;

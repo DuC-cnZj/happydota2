@@ -4,14 +4,14 @@ import gg from "../dota2/gg-item.png";
 import puck from "../dota2/puck-item.png";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
-import { User } from "../store/reducers/user";
 import { connect } from "react-redux";
 import { showLoginModal } from "../store/actionTypes";
+import { useAuth } from "../components/AuthProvider";
 
-const Footer: React.FC<{ user: User; showLoginModal: () => void }> = ({
-  user,
+const Footer: React.FC<{ showLoginModal: () => void }> = ({
   showLoginModal,
 }) => {
+  let {user} = useAuth();
   return (
     <>
       <div className="footer-md">dota2 刀圈欢乐多 by duc @2021.</div>
@@ -59,6 +59,6 @@ const Footer: React.FC<{ user: User; showLoginModal: () => void }> = ({
   );
 };
 
-export default connect((state: { user: User }) => ({ user: state.user }), {
+export default connect((state) => ({}), {
   showLoginModal: showLoginModal,
 })(Footer);

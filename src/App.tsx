@@ -1,59 +1,55 @@
-import React, { createContext } from "react";
+import React, { lazy, Suspense } from "react";
 import { Layout } from "antd";
 import MyHeader from "./components/MyHeader";
-import MyFooter from "./pages/Footer";
-import MyHome from "./pages/Home";
-import Welcome from "./pages/Welcome";
-import Equipment from "./pages/Equipment";
-import UserCenter from "./pages/UserCenter";
 import { Switch, Route } from "react-router-dom";
 import MyError from "./components/MyError";
 import AuthRoute from "./router/AuthRoute";
-import { initState, User } from "./store/reducers/user";
-import { connect } from "react-redux";
 import Notification from "./components/Notification";
-import Detail from "./pages/Detail";
-import PublicRoute from "./router/PublicRoute";
+import AuthProvider from "./components/AuthProvider";
+
+const Equipment = lazy(() => import("./pages/Equipment"));
+const MyFooter = lazy(() => import("./pages/Footer"));
+const MyHome = lazy(() => import("./pages/Home"));
+const Welcome = lazy(() => import("./pages/Welcome"));
+const UserCenter = lazy(() => import("./pages/UserCenter"));
+const Detail = lazy(() => import("./pages/Detail"));
 
 const { Header, Content, Footer } = Layout;
 
-export const authContext = createContext<User>(initState);
-
-const App: React.FC<{ user: User }> = ({ user }) => {
+const App: React.FC = () => {
   return (
-    <authContext.Provider value={user}>
-      <Layout>
-        <Header className="ant-header">
-          <MyHeader />
-        </Header>
-        <Content className="content">
-          <Switch>
-            <PublicRoute path="/" exact component={Welcome} />
-            <AuthRoute path="/home" exact>
-              <MyHome />
-            </AuthRoute>
-            <PublicRoute path="/equipment" component={Equipment} exact />
-            <PublicRoute path="/detail" exact>
-              <Detail />
-            </PublicRoute>
-            <AuthRoute path={["/users/:name", "/users/"]}>
-              <UserCenter />
-            </AuthRoute>
-            <AuthRoute path="/account/notification" exact>
-              <Notification />
-            </AuthRoute>
-            <PublicRoute path="*" component={() => <MyError code={404} />} />
-          </Switch>
-        </Content>
-        <Footer className="footer">
-          <MyFooter />
-        </Footer>
-      </Layout>
-    </authContext.Provider>
+    <AuthProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+          <Header className="ant-header">
+            <MyHeader />
+          </Header>
+          <Content className="content">
+            <Switch>
+              <Route path="/" exact component={Welcome} />
+              <AuthRoute path="/home" exact>
+                <MyHome />
+              </AuthRoute>
+              <Route path="/equipment" component={Equipment} exact />
+              <Route path="/detail" exact>
+                <Detail />
+              </Route>
+              <AuthRoute path={["/users/:name", "/users/"]}>
+                <UserCenter />
+              </AuthRoute>
+              <AuthRoute path="/account/notification" exact>
+                <Notification />
+              </AuthRoute>
+              <Route path="*" component={() => <MyError code={404} />} />
+            </Switch>
+          </Content>
+          <Footer className="footer">
+            <MyFooter />
+          </Footer>
+        </Layout>
+      </Suspense>
+    </AuthProvider>
   );
 };
 
-export default connect(
-  (state: { user: User }) => ({ user: state.user }),
-  {}
-)(App);
+export default App;
