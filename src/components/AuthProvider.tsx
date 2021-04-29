@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useContext, useState } from "react";
+import React, { useCallback, useEffect, createContext, useContext, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { userinfo } from "../api/auth";
@@ -29,8 +29,8 @@ const fakeAuth = {
     name: "",
   },
   setAuthUser(user: User) {},
-  signin(cb?: () => void) {},
-  signout(cb?: () => void) {},
+  signin() {},
+  signout() {},
 };
 
 const authContext = createContext<{
@@ -50,14 +50,22 @@ function useProvideAuth(showLoginModal: () => void) {
   const [isLogin, setIsLogin] = useState<boolean>(!!getToken());
   let h = useHistory();
 
-  const setAuthUser = (user: User) => {
+  const setAuthUser = useCallback((user: User) => {
     setUser(user);
     if (user.id !== 0) {
       setIsLogin(true);
     }
-  };
+  }, [setIsLogin, setUser]);
 
-  const signin = (cb?: () => void) => {
+  const signout = useCallback((cb?: () => void) => {
+    setIsLogin(false);
+    setUser(fakeAuth.user);
+    removeToken();
+    removeRememberMe();
+    cb ? cb() : h.push("/");
+  },[h]);
+
+  const signin = useCallback((cb?: () => void) => {
     setIsLogin(true);
 
     async function asyncLogin() {
@@ -88,15 +96,9 @@ function useProvideAuth(showLoginModal: () => void) {
     }
 
     asyncLogin();
-  };
+  },[h, showLoginModal, signout]);
 
-  const signout = (cb?: () => void) => {
-    setIsLogin(false);
-    setUser(fakeAuth.user);
-    removeToken();
-    removeRememberMe();
-    cb ? cb() : h.push("/");
-  };
+
 
   return {
     isLogin,

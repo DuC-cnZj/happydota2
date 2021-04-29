@@ -1,5 +1,4 @@
 import { Skeleton, Card, Row, Col, Button, Space } from "antd";
-import { connect } from "react-redux";
 import jugg from "../dota2/hero-jugg.jpeg";
 import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";

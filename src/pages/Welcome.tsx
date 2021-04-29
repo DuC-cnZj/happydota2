@@ -2,9 +2,6 @@ import { Input, Button } from "antd";
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { showLoginModal } from "../store/actionTypes";
-import ta from "../dota2/ta.jpeg";
-import st from "../dota2/st.jpeg";
-
 import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../components/AuthProvider";
 

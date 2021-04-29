@@ -11,7 +11,6 @@ import {
   Popover,
   Skeleton,
 } from "antd";
-import { connect } from "react-redux";
 import {
   NavLink,
   Route,
@@ -270,7 +269,7 @@ export default UserCenter;
 
 const UserSetting: React.FC = memo(() => {
   const [form] = Form.useForm();
-  let { user, setAuthUser: updateUserinfoAction, signout: logout } = useAuth();
+  let { user, setAuthUser: updateUserinfoAction } = useAuth();
   const [userInput, setUserInput] = useState<{
     name: string;
     note?: string;
