@@ -46,10 +46,10 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
     if (value?.id) {
       setFileList([
         {
-          uid: value?.id,
+          uid: value.id,
           name: "",
           status: "done",
-          url: value?.url,
+          url: value.url,
         },
       ]);
     } else {
