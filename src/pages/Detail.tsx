@@ -70,7 +70,7 @@ const Detail: React.FC = () => {
             </Card>
           </Col>
         </Row>
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} style={{ marginBottom: "50rem" }}>
           <Col md={18}>
             <Row style={{ marginBottom: "15rem" }}>
               <Col span={24}>
@@ -137,7 +137,7 @@ const Detail: React.FC = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={6}>
+          <Col md={6} xs={0} sm={0}>
             <Card style={{ paddingBottom: "20rem" }}>
               <div
                 className="detail-author"
