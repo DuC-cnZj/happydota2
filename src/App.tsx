@@ -6,6 +6,7 @@ import MyError from "./components/MyError";
 import AuthRoute from "./router/AuthRoute";
 import Notification from "./components/Notification";
 import AuthProvider from "./components/AuthProvider";
+import Loading from "./components/Loading";
 
 const Equipment = lazy(() => import("./pages/Equipment"));
 const MyFooter = lazy(() => import("./pages/Footer"));
@@ -18,7 +19,7 @@ const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => (
   <AuthProvider>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Layout>
         <Header className="ant-header">
           <MyHeader />

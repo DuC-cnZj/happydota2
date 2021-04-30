@@ -1,4 +1,21 @@
 .detail {
+  .detail-author {
+    padding-bottom: 20rem;
+    &__item {
+      font-weight: bold;
+      margin-bottom: 5rem;
+      img {
+        width: 25rem;
+        height: 25rem;
+        border-radius: 50%;
+        margin-right: 5rem;
+      }
+      span {
+        font-size: 12rem;
+        font-weight: lighter;
+      }
+    }
+  }
   min-height: @content-min-height;
   background: @bg-700;
   padding: 50rem 0;

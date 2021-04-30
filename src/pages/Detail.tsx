@@ -4,6 +4,7 @@ import React from "react";
 import classNames from "classnames";
 import { useState } from "react";
 import DetailPreviewCard from "../components/DetailPreview";
+import st from "../dota2/st.jpeg";
 
 const { TabPane } = Tabs;
 
@@ -136,7 +137,35 @@ const Detail: React.FC = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={6}>right</Col>
+          <Col md={6}>
+            <Card style={{ paddingBottom: "20rem" }}>
+              <div
+                className="detail-author"
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <div className="detail-author__item">
+                  <span>发布于 2021年04月23日</span>
+                </div>
+                <div className="detail-author__item">
+                  作者：
+                  <img src={st} alt="" />
+                  <span>颜渊白琉璃</span>
+                </div>
+                <div className="detail-author__item">
+                  应用规则：<span> COC</span>
+                </div>
+                <div className="detail-author__item">
+                  人数：<span>人数 2-4 </span>
+                </div>
+                <div className="detail-author__item">
+                  标签：<span> 英国/1920</span>
+                </div>
+              </div>
+              <Button danger style={{ width: "100%" }}>
+                举报ta
+              </Button>
+            </Card>
+          </Col>
         </Row>
       </div>
     </div>
