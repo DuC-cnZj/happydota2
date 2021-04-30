@@ -39,6 +39,7 @@ ajax.interceptors.response.use(
   (error) => {
     console.log(error.response);
     if (
+      error.response &&
       error.response.status === 401 &&
       getToken() &&
       isRememberMeSet() &&
