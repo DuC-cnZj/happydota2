@@ -28,7 +28,7 @@ import {
   historyBackgroundImages,
 } from "../api/auth";
 import UploadImage from "../components/Upload";
-import PictureSelector from "../components/PictureSelector";
+import PictureSelector, { Fetch } from "../components/PictureSelector";
 import MyEditor from "../components/MyEditor";
 import { useAuth } from "../components/AuthProvider";
 
@@ -404,26 +404,16 @@ const UserSetting: React.FC = memo(() => {
                               setPreviewVisible={setPreviewVisible}
                             />
                           </Form.Item>
-                          <Popover
-                            content={
-                              <PictureSelector
-                                fetch={historyBackgroundImages}
-                                onChange={(img) => {
-                                  setPreviewImage(img.path);
-                                  form.setFieldsValue({
-                                    background: { id: img.id, url: img.path },
-                                  });
-                                }}
-                              />
-                            }
+                          <PSMd
                             title="历史背景图片"
-                            trigger="click"
-                          >
-                            <Button
-                              style={{ flex: "0 0 auto" }}
-                              icon={<HistoryOutlined />}
-                            />
-                          </Popover>
+                            fetch={historyBackgroundImages}
+                            onChange={(img) => {
+                              setPreviewImage(img.path);
+                              form.setFieldsValue({
+                                background: { id: img.id, url: img.path },
+                              });
+                            }}
+                          />
                         </div>
                       </Col>
                       <Col xs={12} sm={12} md={24}>
@@ -441,27 +431,17 @@ const UserSetting: React.FC = memo(() => {
                               setPreviewVisible={setAvatarVisible}
                             />
                           </Form.Item>
-                          <Popover
-                            content={
-                              <PictureSelector
-                                fetch={historyAvatars}
-                                onChange={(img) => {
-                                  setAvatarId(img.id);
-                                  setAvatar(img.path);
-                                  form.setFieldsValue({
-                                    avatar: { id: img.id, url: img.path },
-                                  });
-                                }}
-                              />
-                            }
+                          <PSMd
                             title="历史头像图片"
-                            trigger="click"
-                          >
-                            <Button
-                              style={{ flex: "0 0 auto" }}
-                              icon={<HistoryOutlined />}
-                            />
-                          </Popover>
+                            fetch={historyAvatars}
+                            onChange={(img) => {
+                              setAvatarId(img.id);
+                              setAvatar(img.path);
+                              form.setFieldsValue({
+                                avatar: { id: img.id, url: img.path },
+                              });
+                            }}
+                          />
                         </div>
                       </Col>
                     </Row>
@@ -536,3 +516,29 @@ const Preview: React.FC<{
 );
 
 const UserSettingConnector = UserSetting;
+
+interface PSMdPropsSub {
+  id: number;
+  path: string;
+}
+
+interface PSMdProps {
+  onChange(sub: PSMdPropsSub): void;
+  fetch: Fetch;
+  title: string;
+}
+
+const PSMd: React.FC<PSMdProps> = ({ onChange, fetch, title }) => {
+  return (
+    <Popover
+      placement="left"
+      content={
+        <PictureSelector fetch={fetch} onChange={(img) => onChange(img)} />
+      }
+      title={title}
+      trigger="click"
+    >
+      <Button style={{ flex: "0 0 auto" }} icon={<HistoryOutlined />} />
+    </Popover>
+  );
+};

@@ -16,23 +16,25 @@ interface Pagination {
   pageSize: number;
 }
 
+export type Fetch = (
+  p: Pagination
+) => Promise<
+  AxiosResponse<{
+    code: number;
+    page: number;
+    page_size: number;
+    total: number;
+    data: {
+      id: number;
+      path: string;
+    }[];
+  }>
+>;
+
 interface PictureSelectorData {
   value?: Image;
   onChange?: (value: Image) => void;
-  fetch: (
-    p: Pagination
-  ) => Promise<
-    AxiosResponse<{
-      code: number;
-      page: number;
-      page_size: number;
-      total: number;
-      data: {
-        id: number;
-        path: string;
-      }[];
-    }>
-  >;
+  fetch: Fetch;
 }
 
 const PictureSelector: React.FC<PictureSelectorData> = ({
