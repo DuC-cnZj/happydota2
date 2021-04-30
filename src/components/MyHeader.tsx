@@ -1,7 +1,3 @@
-import logo from "../dota2/logo.png";
-import sj from "../dota2/sj-item.png";
-import gg from "../dota2/gg-item.png";
-import puck from "../dota2/puck-item.png";
 import { useState, useEffect } from "react";
 import {
   Form,
@@ -15,6 +11,8 @@ import {
   Checkbox,
   Empty,
   message,
+  Drawer,
+  Popover,
 } from "antd";
 import {
   HeartOutlined,
@@ -27,9 +25,13 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { showLoginModal, hideLoginModal } from "../store/actionTypes";
 import { Link, useHistory } from "react-router-dom";
-import { Drawer, Popover } from "antd";
+import { showLoginModal, hideLoginModal } from "../store/actionTypes";
+
+import puck from "../dota2/puck-item.png";
+import gg from "../dota2/gg-item.png";
+import sj from "../dota2/sj-item.png";
+import logo from "../dota2/logo.png";
 import { login } from "../api/auth";
 import { ErrorResponse } from "../api/ajax";
 import { setToken } from "../utils/token";
@@ -56,8 +58,8 @@ const Header: React.FC<IProps> = ({
     hideLoginModal();
   };
 
-  let { signin, user, isLogin } = useAuth();
-  let h = useHistory();
+  const { signin, user, isLogin } = useAuth();
+  const h = useHistory();
 
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
@@ -254,7 +256,7 @@ const Header: React.FC<IProps> = ({
 };
 
 const Notification = () => {
-  let h = useHistory();
+  const h = useHistory();
 
   return (
     <div
@@ -397,7 +399,7 @@ export default connect(
 )(Header);
 
 const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
-  let { user, signout: logout } = useAuth();
+  const { user, signout: logout } = useAuth();
   return (
     <>
       <Popover
@@ -413,11 +415,7 @@ const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
               <UserOutlined style={{ marginRight: "2rem" }} />
               个人中心
             </Link>
-            <Link
-              to="/"
-              className="avatar-md-a"
-              onClick={() => logout()}
-            >
+            <Link to="/" className="avatar-md-a" onClick={() => logout()}>
               <LogoutOutlined style={{ marginRight: "2rem" }} />
               登出
             </Link>
@@ -426,8 +424,8 @@ const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
       >
         <div
           className="user-avatar-md"
-          style={{ backgroundImage: "url(" + url + ")" }}
-        ></div>
+          style={{ backgroundImage: `url(${url})` }}
+        />
       </Popover>
     </>
   );
@@ -436,7 +434,7 @@ const AvatarMd: React.FC<{ url: string }> = ({ url }) => {
 const AvatarMdConnector = AvatarMd;
 
 const AvatarSm: React.FC<{ url: string }> = ({ url }) => {
-  let { user, signout: logout } = useAuth();
+  const { user, signout: logout } = useAuth();
   const [visible, setVisible] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -452,8 +450,8 @@ const AvatarSm: React.FC<{ url: string }> = ({ url }) => {
       <div
         onClick={showDrawer}
         className="user-avatar-sm"
-        style={{ backgroundImage: "url(" + url + ")" }}
-      ></div>
+        style={{ backgroundImage: `url(${url})` }}
+      />
       <Drawer
         title={
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -481,7 +479,7 @@ const AvatarSm: React.FC<{ url: string }> = ({ url }) => {
           <UserOutlined style={{ marginRight: "2rem" }} />
           <span>个人中心</span>
         </Link>
-        <Link to={`/account/notification`} className="avatar-sm-a">
+        <Link to="/account/notification" className="avatar-sm-a">
           <BellOutlined style={{ marginRight: "2rem" }} />
           <span>消息中心</span>
         </Link>

@@ -25,9 +25,9 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   previewVisible,
   setPreviewVisible,
 }) => {
-  let { signout: logout } = useAuth();
+  const { signout: logout } = useAuth();
   const handleCancel = () => setPreviewVisible(false);
-  let h = useHistory();
+  const h = useHistory();
   const [fileList, setFileList] = useState<any[]>([
     {
       uid: value?.id ? value.id : 0,
@@ -49,8 +49,8 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   }, [value]);
 
   const triggerChange = ({ id, url }: { id: number; url: string }) => {
-    onChange?.({ id: id, url: url });
-    console.log("triggerChange", { id: id, url: url });
+    onChange?.({ id, url });
+    console.log("triggerChange", { id, url });
   };
 
   const beforeUpload = (file: any) => {

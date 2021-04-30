@@ -14,14 +14,14 @@ const ajax = axios.create({
 
 // 添加请求拦截器
 ajax.interceptors.request.use(
-  function (config) {
-    config.headers["Authorization"] = getToken();
+  (config) => {
+    config.headers.Authorization = getToken();
 
     // 在发送请求之前做些什么
     console.log("在发送请求之前做些什么", config.url);
     return config;
   },
-  function (error) {
+  (error) => {
     // 对请求错误做些什么
     console.log("对请求错误做些什么");
     return Promise.reject(error);
@@ -30,13 +30,13 @@ ajax.interceptors.request.use(
 
 // 添加响应拦截器
 ajax.interceptors.response.use(
-  function (response) {
+  (response) => {
     // 对响应数据做点什么
     console.log("对响应数据做点什么");
     console.log(response);
     return response;
   },
-  function (error) {
+  (error) => {
     console.log(error.response);
     if (
       error.response.status === 401 &&
@@ -73,7 +73,7 @@ async function doRefresh(error: any) {
 }
 
 async function doRequest(error: any) {
-  let config = error.response.config;
+  const { config } = error.response;
 
   config.headers.Authorization = getToken();
 

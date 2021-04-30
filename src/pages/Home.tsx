@@ -1,4 +1,6 @@
 import { Skeleton, Card, Row, Col, Button, Space } from "antd";
+import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router";
 import jugg from "../dota2/hero-jugg.jpeg";
 import luna from "../dota2/hero-luna.jpeg";
 import yemo from "../dota2/hero-ym.jpeg";
@@ -8,15 +10,12 @@ import xuemo from "../dota2/hero-xm.jpeg";
 import homepage from "../dota2/sf.jpeg";
 import ItemList, { cardItem } from "../components/ItemList";
 import { TopAvatar, TopMenu } from "./UserCenter";
-import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import Contact from "../components/Contact";
 import { useAuth } from "../components/AuthProvider";
-import { useHistory } from "react-router";
-
 
 const HomeAuth: React.FC = () => {
-  let { signout: logout, user } = useAuth();
-  let h = useHistory();
+  const { signout: logout, user } = useAuth();
+  const h = useHistory();
   const data: cardItem[] = [
     {
       name: "剑圣",
@@ -92,8 +91,8 @@ const HomeAuth: React.FC = () => {
           <Col md={18} xs={24} sm={24}>
             <div
               className="homepage"
-              style={{ backgroundImage: "url(" + homepage + ")" }}
-            ></div>
+              style={{ backgroundImage: `url(${homepage})` }}
+            />
 
             <div>
               <Card

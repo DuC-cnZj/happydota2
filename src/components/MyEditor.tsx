@@ -21,9 +21,9 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
           const {
             data: { path },
           }: { data: { path: string } } = JSON.parse(msg);
-          let name = path.split("/")[path.split("/").length - 1];
+          const name = path.split("/")[path.split("/").length - 1];
 
-          editor.innerHTML += "![" + name + "](" + path + ")";
+          editor.innerHTML += `![${name}](${path})`;
         },
         linkToImgCallback: (res: string) => {
           console.log(res);
@@ -34,7 +34,7 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
             data: { path },
           } = JSON.parse(responseText);
 
-          let res = {
+          const res = {
             msg: "",
             code: 0,
             errFiles: [],
@@ -51,7 +51,7 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
           Authorization: getToken(),
         },
         fieldName: "file",
-        url: process.env.REACT_APP_BASE_URL + "/api/upload",
+        url: `${process.env.REACT_APP_BASE_URL}/api/upload`,
       },
       theme: "dark",
       icon: "material",
@@ -104,7 +104,7 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
         id: "intro_cache",
       },
       after() {
-        vditor.setValue(value ? value : "");
+        vditor.setValue(value || "");
       },
     });
   }, []);

@@ -1,8 +1,8 @@
 import { Input, Button } from "antd";
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { showLoginModal } from "../store/actionTypes";
 import { useHistory, useLocation } from "react-router";
+import { showLoginModal } from "../store/actionTypes";
 import { useAuth } from "../components/AuthProvider";
 
 interface IProps {
@@ -10,9 +10,9 @@ interface IProps {
 }
 
 const HomeGuest: React.FC<IProps> = ({ showLoginModal }) => {
-  let location = useLocation<StateImp>();
-  let {isLogin} = useAuth()
-  let h = useHistory();
+  const location = useLocation<StateImp>();
+  const { isLogin } = useAuth();
+  const h = useHistory();
   useEffect(() => {
     if (isLogin) {
       h.push("/home");
@@ -83,12 +83,8 @@ interface State {
   };
 }
 
-
-const HomeGuestConnect = connect(
-  (state: State) => ({ }),
-  {
-    showLoginModal,
-  }
-)(HomeGuest);
+const HomeGuestConnect = connect((state: State) => ({}), {
+  showLoginModal,
+})(HomeGuest);
 
 export default HomeGuestConnect;

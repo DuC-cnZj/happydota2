@@ -47,7 +47,8 @@ const Detail: React.FC = () => {
                   <div className="detail-header__right">
                     <div className="title">DOTA2评分</div>
                     <div>
-                      <span className="score">1</span>/10
+                      <span className="score">1</span>
+                      /10
                     </div>
 
                     <div className="total">10 人评分</div>
@@ -55,11 +56,11 @@ const Detail: React.FC = () => {
                 </div>
                 <div className="detail-header-bottom">
                   <Tabs defaultActiveKey="1" onChange={() => ({})}>
-                    <TabPane tab="主页" key="主页"></TabPane>
-                    <TabPane tab="体验评价" key="体验评价"></TabPane>
-                    <TabPane tab="讨论区" key="讨论区"></TabPane>
-                    <TabPane tab="跑团记录" key="跑团记录"></TabPane>
-                    <TabPane tab="跑团Replay" key="跑团Replay"></TabPane>
+                    <TabPane tab="主页" key="主页" />
+                    <TabPane tab="体验评价" key="体验评价" />
+                    <TabPane tab="讨论区" key="讨论区" />
+                    <TabPane tab="跑团记录" key="跑团记录" />
+                    <TabPane tab="跑团Replay" key="跑团Replay" />
                   </Tabs>
                 </div>
               </div>
@@ -129,9 +130,7 @@ const Detail: React.FC = () => {
             </Row>
             <Row style={{ marginBottom: "15rem" }}>
               <Col span={24}>
-                <Card style={{paddingBottom: "20rem"}}>
-                  评价区域
-                </Card>
+                <Card style={{ paddingBottom: "20rem" }}>评价区域</Card>
               </Col>
             </Row>
           </Col>

@@ -14,9 +14,9 @@ const CardItem: React.FC<cardItem> = ({
   description = "这个英雄很安静",
   imgPath,
 }) => {
-  let history = useHistory()
+  const history = useHistory();
   const showDetail = () => {
-    history.push("/detail")
+    history.push("/detail");
   };
   return (
     <Card
@@ -30,9 +30,9 @@ const CardItem: React.FC<cardItem> = ({
         <div className="card-item-img" onClick={showDetail}>
           <div
             className="card-item-bg"
-            style={{ backgroundImage: "url(" + imgPath + ")" }}
-          ></div>
-          <div className="card-item-mask"></div>
+            style={{ backgroundImage: `url(${imgPath})` }}
+          />
+          <div className="card-item-mask" />
         </div>
       }
     >
@@ -60,24 +60,28 @@ interface IProps {
   data: cardItem[];
 }
 
-const ItemList: React.FC<IProps> = ({ data }) => {
-  return (
-    <List
-      className="item-list"
-      grid={{ gutter: 16, column: 4, xs: 2, md: 4, sm: 3 }}
-      dataSource={data}
-      renderItem={(item: cardItem) => (
-        <List.Item>
-          <CardItem
-            name={item.name}
-            rate={item.rate}
-            imgPath={item.imgPath}
-            description={item.description}
-          />
-        </List.Item>
-      )}
-    />
-  );
-};
+const ItemList: React.FC<IProps> = ({ data }) => (
+  <List
+    className="item-list"
+    grid={{
+      gutter: 16,
+      column: 4,
+      xs: 2,
+      md: 4,
+      sm: 3,
+    }}
+    dataSource={data}
+    renderItem={(item: cardItem) => (
+      <List.Item>
+        <CardItem
+          name={item.name}
+          rate={item.rate}
+          imgPath={item.imgPath}
+          description={item.description}
+        />
+      </List.Item>
+    )}
+  />
+);
 
 export default ItemList;

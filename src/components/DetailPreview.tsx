@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { Carousel, Image, Card } from "antd";
+import classNames from "classnames";
+import { CarouselRef } from "antd/lib/carousel";
 import st from "../dota2/st.jpeg";
 import xg from "../dota2/xg.jpeg";
 import nw from "../dota2/nw.jpeg";
 import sf from "../dota2/sf.jpeg";
 import ta from "../dota2/ta.jpeg";
-import classNames from "classnames";
-import { CarouselRef } from "antd/lib/carousel";
 
 interface Image {
   url: string;
@@ -48,9 +48,9 @@ const DetailPreviewCard: React.FC = () => {
             className={classNames("detail-preview-card__bottom__image", {
               "detail-preview-card__bottom__image--selected": index === current,
             })}
-            style={{ background: "url(" + item + ")" }}
+            style={{ background: `url(${item})` }}
             onClick={() => s.current?.goTo(index)}
-          ></div>
+          />
         ))}
       </div>
     </Card>

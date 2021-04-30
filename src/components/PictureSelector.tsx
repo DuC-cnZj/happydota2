@@ -79,7 +79,7 @@ const PictureSelector: React.FC<PictureSelectorData> = ({
     <Card style={{ width: "100%" }}>
       <div className="picture-selector">
         <InfiniteScroll
-          initialLoad={true}
+          initialLoad
           pageStart={0}
           loadMore={loadMore}
           hasMore={!loading && hasMore}
@@ -118,16 +118,14 @@ const PictureItem: React.FC<Image & { onCheck: (id: Image) => void }> = ({
   path,
   checked,
   onCheck,
-}) => {
-  return (
-    <div
-      className={classNames("item", { "item--selected": checked })}
-      onClick={() => onCheck({ id, path, checked })}
-    >
-      <img src={path} alt="item" />
-      {checked ? <CheckCircleOutlined className="item__checked-icon" /> : ""}
-    </div>
-  );
-};
+}) => (
+  <div
+    className={classNames("item", { "item--selected": checked })}
+    onClick={() => onCheck({ id, path, checked })}
+  >
+    <img src={path} alt="item" />
+    {checked ? <CheckCircleOutlined className="item__checked-icon" /> : ""}
+  </div>
+);
 
 export default PictureSelector;

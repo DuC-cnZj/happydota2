@@ -8,7 +8,7 @@ export function isRememberMeSet(): boolean {
 }
 
 export function setRememberMe(bool: boolean) {
-  let state = bool ? RememberMe.On : RememberMe.Off;
+  const state = bool ? RememberMe.On : RememberMe.Off;
 
   window.localStorage.setItem("remember_me", state);
 }

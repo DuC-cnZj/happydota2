@@ -1,4 +1,5 @@
-import { SHOW_LOGIN_MODAL, HIDE_LOGIN_MODAL } from "./../actionTypes";
+import { SHOW_LOGIN_MODAL, HIDE_LOGIN_MODAL } from "../actionTypes";
+
 interface visible {
   visible: boolean;
 }

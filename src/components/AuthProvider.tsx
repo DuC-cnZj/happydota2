@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, createContext, useContext, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { userinfo } from "../api/auth";
@@ -48,57 +54,64 @@ export function useAuth() {
 function useProvideAuth(showLoginModal: () => void) {
   const [user, setUser] = useState<User>(fakeAuth.user);
   const [isLogin, setIsLogin] = useState<boolean>(!!getToken());
-  let h = useHistory();
+  const h = useHistory();
 
-  const setAuthUser = useCallback((user: User) => {
-    setUser(user);
-    if (user.id !== 0) {
-      setIsLogin(true);
-    }
-  }, [setIsLogin, setUser]);
-
-  const signout = useCallback((cb?: () => void) => {
-    setIsLogin(false);
-    setUser(fakeAuth.user);
-    removeToken();
-    removeRememberMe();
-    cb ? cb() : h.push("/");
-  },[h]);
-
-  const signin = useCallback((cb?: () => void) => {
-    setIsLogin(true);
-
-    async function asyncLogin() {
-      try {
-        const {
-          data: { data },
-        } = await userinfo();
-        let u = {
-          id: data.id,
-          avatarUrlId: data.avatar_id,
-          avatarUrl: data.avatar,
-          name: data.name,
-          note: data.note,
-          intro: data.intro,
-          backgroundImgId: data.background_image_id,
-          backgroundImg: data.background_image,
-        };
-        setUser(u);
-        if (cb) {
-          cb()
-        }
-      } catch (e) {
-        signout(() => {
-          showLoginModal();
-          h.push("/");
-        });
+  const setAuthUser = useCallback(
+    (user: User) => {
+      setUser(user);
+      if (user.id !== 0) {
+        setIsLogin(true);
       }
-    }
+    },
+    [setIsLogin, setUser]
+  );
 
-    asyncLogin();
-  },[h, showLoginModal, signout]);
+  const signout = useCallback(
+    (cb?: () => void) => {
+      setIsLogin(false);
+      setUser(fakeAuth.user);
+      removeToken();
+      removeRememberMe();
+      cb ? cb() : h.push("/");
+    },
+    [h]
+  );
 
+  const signin = useCallback(
+    (cb?: () => void) => {
+      setIsLogin(true);
 
+      async function asyncLogin() {
+        try {
+          const {
+            data: { data },
+          } = await userinfo();
+          const u = {
+            id: data.id,
+            avatarUrlId: data.avatar_id,
+            avatarUrl: data.avatar,
+            name: data.name,
+            note: data.note,
+            intro: data.intro,
+            backgroundImgId: data.background_image_id,
+            backgroundImg: data.background_image,
+          };
+          setUser(u);
+          if (cb) {
+            cb();
+          }
+        } catch (e) {
+          signout(() => {
+            showLoginModal();
+            h.push("/");
+          });
+        }
+      }
+
+      asyncLogin();
+    },
+    [h, showLoginModal, signout]
+  );
 
   return {
     isLogin,
@@ -115,7 +128,7 @@ const AuthProvider: React.FC<{
   const auth = useProvideAuth(showLoginModal);
   console.log("AuthProvider render");
   useEffect(() => {
-    let token = getToken();
+    const token = getToken();
     if (auth.user.id === 0 && token) {
       auth.signin(() => {});
     }

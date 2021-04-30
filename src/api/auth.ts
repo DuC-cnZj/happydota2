@@ -55,11 +55,15 @@ interface HistoryAvatars {
   }[];
 }
 
-export function historyAvatars({pageSize = 15, page = 1}) {
-  return ajax.get<HistoryAvatars>(`/api/history_avatars?page=${page}&page_size=${pageSize}`);
+export function historyAvatars({ pageSize = 15, page = 1 }) {
+  return ajax.get<HistoryAvatars>(
+    `/api/history_avatars?page=${page}&page_size=${pageSize}`
+  );
 }
-export function historyBackgroundImages({pageSize = 15, page = 1}) {
-  return ajax.get<HistoryAvatars>(`/api/history_background_images?page=${page}&page_size=${pageSize}`);
+export function historyBackgroundImages({ pageSize = 15, page = 1 }) {
+  return ajax.get<HistoryAvatars>(
+    `/api/history_background_images?page=${page}&page_size=${pageSize}`
+  );
 }
 
 export function updateUser({

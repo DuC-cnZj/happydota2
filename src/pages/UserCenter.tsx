@@ -17,22 +17,23 @@ import {
   Switch,
   useHistory,
   useParams,
+  useRouteMatch,
 } from "react-router-dom";
-import { useRouteMatch } from "react-router-dom";
+
 import { useEffect, useState, useRef, memo } from "react";
+import { HistoryOutlined } from "@ant-design/icons";
 import {
   historyAvatars,
   updateUser,
   historyBackgroundImages,
 } from "../api/auth";
 import UploadImage from "../components/Upload";
-import { HistoryOutlined } from "@ant-design/icons";
 import PictureSelector from "../components/PictureSelector";
 import MyEditor from "../components/MyEditor";
 import { useAuth } from "../components/AuthProvider";
 
 const HomePage: React.FC = () => {
-  let { user } = useAuth();
+  const { user } = useAuth();
   return (
     <>
       <Row
@@ -68,45 +69,41 @@ const HomePage: React.FC = () => {
 
 const HomePageConnector = HomePage;
 
-const TopBg: React.FC<{ url: string }> = ({ url }) => {
-  return (
-    <div
-      className="user-top-bg"
-      style={
-        url
-          ? {
-              backgroundImage: "url('" + url + "')",
-            }
-          : {}
-      }
-    ></div>
-  );
-};
+const TopBg: React.FC<{ url: string }> = ({ url }) => (
+  <div
+    className="user-top-bg"
+    style={
+      url
+        ? {
+            backgroundImage: `url('${url}')`,
+          }
+        : {}
+    }
+  />
+);
 
-export const TopMenu: React.FC = () => {
-  return (
-    <div className="author-menu">
-      <div className="author-menu-item">
-        <span>24</span>
-        <span>粉丝</span>
-      </div>
-      <Divider type="vertical" plain />
-
-      <div className="author-menu-item">
-        <span>27</span>
-        <span>关注</span>
-      </div>
-      <Divider type="vertical" plain />
-      <div className="author-menu-item">
-        <span>30</span>
-        <span>获赞</span>
-      </div>
+export const TopMenu: React.FC = () => (
+  <div className="author-menu">
+    <div className="author-menu-item">
+      <span>24</span>
+      <span>粉丝</span>
     </div>
-  );
-};
+    <Divider type="vertical" plain />
+
+    <div className="author-menu-item">
+      <span>27</span>
+      <span>关注</span>
+    </div>
+    <Divider type="vertical" plain />
+    <div className="author-menu-item">
+      <span>30</span>
+      <span>获赞</span>
+    </div>
+  </div>
+);
 
 const TopTabs: React.FC = () => {
-  let { url } = useRouteMatch();
+  const { url } = useRouteMatch();
 
   return (
     <div className="author-tabs">
@@ -126,8 +123,8 @@ const TopTabs: React.FC = () => {
   );
 };
 
-export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) => {
-  return avatar ? (
+export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) =>
+  avatar ? (
     <img className="avatar" src={avatar} alt="avatar" />
   ) : (
     <Skeleton.Avatar
@@ -140,13 +137,12 @@ export const TopAvatar: React.FC<{ avatar: string }> = ({ avatar }) => {
       active
     />
   );
-};
 
 const UserCenter: React.FC = () => {
-  let { user } = useAuth();
-  let { url } = useRouteMatch();
-  let { name } = useParams<{ name: string }>();
-  let h = useHistory();
+  const { user } = useAuth();
+  const { url } = useRouteMatch();
+  const { name } = useParams<{ name: string }>();
+  const h = useHistory();
   useEffect(() => {
     if (!name) {
       h.push("/", { showLogin: true });
@@ -269,7 +265,7 @@ export default UserCenter;
 
 const UserSetting: React.FC = memo(() => {
   const [form] = Form.useForm();
-  let { user, setAuthUser: updateUserinfoAction } = useAuth();
+  const { user, setAuthUser: updateUserinfoAction } = useAuth();
   const [userInput, setUserInput] = useState<{
     name: string;
     note?: string;
@@ -426,7 +422,7 @@ const UserSetting: React.FC = memo(() => {
                             <Button
                               style={{ flex: "0 0 auto" }}
                               icon={<HistoryOutlined />}
-                            ></Button>
+                            />
                           </Popover>
                         </div>
                       </Col>
@@ -464,7 +460,7 @@ const UserSetting: React.FC = memo(() => {
                             <Button
                               style={{ flex: "0 0 auto" }}
                               icon={<HistoryOutlined />}
-                            ></Button>
+                            />
                           </Popover>
                         </div>
                       </Col>
@@ -508,40 +504,35 @@ const Preview: React.FC<{
   avatar: string;
   name: string;
   note?: string;
-}> = ({ image, avatar, name, note }) => {
-  return (
-    <>
-      <div
-        className="preview"
-        style={{ backgroundImage: `url(${image})` }}
-      ></div>
-      <div style={{ width: "100%" }}>
-        <div className="preview-bar">
-          {avatar ? (
-            <img src={avatar} alt="avatar" className="preview-img" />
+}> = ({ image, avatar, name, note }) => (
+  <>
+    <div className="preview" style={{ backgroundImage: `url(${image})` }} />
+    <div style={{ width: "100%" }}>
+      <div className="preview-bar">
+        {avatar ? (
+          <img src={avatar} alt="avatar" className="preview-img" />
+        ) : (
+          <Skeleton.Avatar active className="preview-img" />
+        )}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {name ? (
+            <span style={{ fontSize: "14rem" }}>{name}</span>
           ) : (
-            <Skeleton.Avatar active className="preview-img" />
+            <span style={{ color: "gray", fontSize: "14rem" }}>
+              这里显示昵称
+            </span>
           )}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {name ? (
-              <span style={{ fontSize: "14rem" }}>{name}</span>
-            ) : (
-              <span style={{ color: "gray", fontSize: "14rem" }}>
-                这里显示昵称
-              </span>
-            )}
-            {note ? (
-              <span style={{ fontSize: "12rem" }}>{note}</span>
-            ) : (
-              <span style={{ color: "gray", fontSize: "14rem" }}>
-                这里显示个性签名
-              </span>
-            )}
-          </div>
+          {note ? (
+            <span style={{ fontSize: "12rem" }}>{note}</span>
+          ) : (
+            <span style={{ color: "gray", fontSize: "14rem" }}>
+              这里显示个性签名
+            </span>
+          )}
         </div>
       </div>
-    </>
-  );
-};
+    </div>
+  </>
+);
 
 const UserSettingConnector = UserSetting;

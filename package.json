@@ -35,7 +35,12 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "fix": "eslint src/ --ext .tsx,.ts --fix",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +63,10 @@
   "devDependencies": {
     "@types/react-infinite-scroller": "^1.2.1",
     "@types/react-redux": "^7.1.16",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "eslint-config-airbnb": "^18.2.1",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
   }
 }

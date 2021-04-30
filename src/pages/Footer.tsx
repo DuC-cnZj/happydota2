@@ -1,17 +1,17 @@
-import sj from "../dota2/sj-item.png";
 import { UserOutlined, HomeOutlined } from "@ant-design/icons";
-import gg from "../dota2/gg-item.png";
-import puck from "../dota2/puck-item.png";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import puck from "../dota2/puck-item.png";
+import gg from "../dota2/gg-item.png";
+import sj from "../dota2/sj-item.png";
 import { showLoginModal } from "../store/actionTypes";
 import { useAuth } from "../components/AuthProvider";
 
 const Footer: React.FC<{ showLoginModal: () => void }> = ({
   showLoginModal,
 }) => {
-  let {user} = useAuth();
+  const { user } = useAuth();
   return (
     <>
       <div className="footer-md">dota2 刀圈欢乐多 by duc @2021.</div>
@@ -46,10 +46,7 @@ const Footer: React.FC<{ showLoginModal: () => void }> = ({
         </div>
         <div className="footer-item">
           <Tooltip placement="top" title="用户" className="tooltip">
-            <Link
-              to={`/users/${user.name}`}
-              className="footer-menu-item"
-            >
+            <Link to={`/users/${user.name}`} className="footer-menu-item">
               <UserOutlined />
             </Link>
           </Tooltip>
@@ -60,5 +57,5 @@ const Footer: React.FC<{ showLoginModal: () => void }> = ({
 };
 
 export default connect((state) => ({}), {
-  showLoginModal: showLoginModal,
+  showLoginModal,
 })(Footer);
