@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import "normalize.css";
 import "./styles/index.less";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
