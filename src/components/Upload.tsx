@@ -12,7 +12,7 @@ interface OnChange {
 }
 
 interface UploadAvatarProps {
-  value?: { id: number; url: string };
+  value?: { id?: number; url?: string };
   title: string;
   onChange?: (o: OnChange) => void;
   previewImage?: string;
@@ -35,22 +35,26 @@ const UploadImage: React.FC<UploadAvatarProps> = ({
   const h = useHistory();
   const [fileList, setFileList] = useState<any[]>([
     {
-      uid: value?.id ? value.id : 0,
+      uid: value?.id,
       name: "",
       status: "done",
-      url: value?.url ? value.url : "",
+      url: value?.url,
     },
   ]);
 
   useEffect(() => {
-    setFileList([
-      {
-        uid: value?.id ? value.id : 0,
-        name: "",
-        status: "done",
-        url: value?.url ? value.url : "",
-      },
-    ]);
+    if (value?.id) {
+      setFileList([
+        {
+          uid: value?.id,
+          name: "",
+          status: "done",
+          url: value?.url,
+        },
+      ]);
+    } else {
+      setFileList([]);
+    }
   }, [value]);
 
   const triggerChange = ({ id, url }: { id: number; url: string }) => {

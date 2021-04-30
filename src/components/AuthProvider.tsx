@@ -19,11 +19,11 @@ export interface User {
   name: string;
   note?: string;
   intro?: string;
-  fansNum?: number | null;
-  followerNum?: number | null;
-  likeNum?: number | null;
-  backgroundImgId?: number | null;
-  backgroundImg?: string | null;
+  fansNum?: number;
+  followerNum?: number;
+  likeNum?: number;
+  backgroundImgId?: number;
+  backgroundImg?: string;
 }
 
 const fakeAuth = {

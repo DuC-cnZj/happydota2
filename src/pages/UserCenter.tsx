@@ -391,12 +391,8 @@ const UserSetting: React.FC = memo(() => {
                             <UploadImage
                               title="上传背景图"
                               value={{
-                                id: user.backgroundImgId
-                                  ? user.backgroundImgId
-                                  : 0,
-                                url: user.backgroundImg
-                                  ? user.backgroundImg
-                                  : "",
+                                id: user.backgroundImgId,
+                                url: user.backgroundImg,
                               }}
                               previewImage={previewImage}
                               setPreviewImage={setPreviewImage}
@@ -538,7 +534,11 @@ const PSMd: React.FC<PSMdProps> = ({ onChange, fetch, title }) => {
       title={title}
       trigger="click"
     >
-      <Button style={{ flex: "0 0 auto" }} icon={<HistoryOutlined />} />
+      <Button
+        className="psmd-btn"
+        style={{ flex: "0 0 auto" }}
+        icon={<HistoryOutlined />}
+      />
     </Popover>
   );
 };
