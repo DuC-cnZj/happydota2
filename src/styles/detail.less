@@ -4,38 +4,48 @@
   padding: 50rem 0;
 
   .ant-card-body {
-      padding-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .detail-content {
+    &--less {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
   }
 }
 
 .detail-header {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   &-top {
     display: flex;
     border-bottom: 1px solid @text-color-secondary;
   }
 
   &-bottom {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-      .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
-          .ant-tabs-tab {
-              padding: 20rem 0;
-          }
-          border: none;
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+      .ant-tabs-tab {
+        padding: 20rem 0;
       }
-      .ant-tabs-top > .ant-tabs-nav::before {
-          border: none;
-      }
-      .ant-tabs-top > .ant-tabs-nav {
-          margin-bottom: 0;
-      }
-      &__tabs {
-          width: 100%;
-      }
+      border: none;
+    }
+    .ant-tabs-top > .ant-tabs-nav::before {
+      border: none;
+    }
+    .ant-tabs-top > .ant-tabs-nav {
+      margin-bottom: 0;
+    }
+    &__tabs {
+      width: 100%;
+    }
   }
 
   &__left {
@@ -98,6 +108,39 @@
     }
 
     .total {
+    }
+  }
+}
+
+.detail-preview-card {
+  width: 100%;
+  padding-bottom: 20rem;
+  &__item {
+    display: flex !important;
+    width: 100%;
+    height: 400rem;
+    justify-content: center;
+    align-content: center;
+
+    img {
+      height: 400rem;
+      width: auto;
+    }
+  }
+  &__bottom {
+    overflow: auto;
+    display: flex;
+    align-content: center;
+    &__image {
+      flex-shrink: 0;
+      width: 80rem;
+      height: 100rem;
+      margin-right: 10rem;
+      background-position: center !important;
+      background-size: cover !important;
+      &&--selected {
+        border: 2px solid @main-color;
+      }
     }
   }
 }
