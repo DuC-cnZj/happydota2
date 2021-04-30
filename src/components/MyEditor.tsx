@@ -59,11 +59,11 @@ const MyEditor: React.FC<IProps> = ({ value, onChange }) => {
       toolbarConfig: {
         pin: true,
       },
-      input: (value: string, previewElement?: HTMLElement) => {
+      input: (value: string) => {
         console.log("input", value);
         onChange?.(value);
       },
-      blur: (value: string, previewElement?: HTMLElement) => {
+      blur: (value: string) => {
         console.log("blur", value);
         onChange?.(value);
       },

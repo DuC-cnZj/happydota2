@@ -1,15 +1,20 @@
 import { Upload, message, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getToken } from "../utils/token";
 import { upload } from "../api/upload";
 import { useAuth } from "./AuthProvider";
 
+interface OnChange {
+  id: number;
+  url: string;
+}
+
 interface UploadAvatarProps {
   value?: { id: number; url: string };
   title: string;
-  onChange?: ({ id, url }: { id: number; url: string }) => void;
+  onChange?: (o: OnChange) => void;
   previewImage?: string;
   setPreviewImage: (image: string) => void;
   previewVisible: boolean;

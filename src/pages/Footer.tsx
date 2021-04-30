@@ -1,16 +1,14 @@
+import React from "react";
+
 import { UserOutlined, HomeOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import puck from "../dota2/puck-item.png";
 import gg from "../dota2/gg-item.png";
 import sj from "../dota2/sj-item.png";
-import { showLoginModal } from "../store/actionTypes";
 import { useAuth } from "../components/AuthProvider";
 
-const Footer: React.FC<{ showLoginModal: () => void }> = ({
-  showLoginModal,
-}) => {
+const Footer: React.FC = () => {
   const { user } = useAuth();
   return (
     <>
@@ -56,6 +54,4 @@ const Footer: React.FC<{ showLoginModal: () => void }> = ({
   );
 };
 
-export default connect((state) => ({}), {
-  showLoginModal,
-})(Footer);
+export default Footer;

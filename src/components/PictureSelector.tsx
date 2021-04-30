@@ -11,16 +11,17 @@ export interface Image {
   checked: boolean;
 }
 
+interface Pagination {
+  page: number;
+  pageSize: number;
+}
+
 interface PictureSelectorData {
   value?: Image;
   onChange?: (value: Image) => void;
-  fetch: ({
-    page,
-    pageSize,
-  }: {
-    page: number;
-    pageSize: number;
-  }) => Promise<
+  fetch: (
+    p: Pagination
+  ) => Promise<
     AxiosResponse<{
       code: number;
       page: number;

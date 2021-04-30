@@ -1,3 +1,4 @@
+import React from "react";
 import img from "../dota2/404-two.png";
 
 interface status {

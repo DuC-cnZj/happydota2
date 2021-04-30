@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Card, Col, Empty, Row } from "antd";
 import tf from "../dota2/tf.png";
 

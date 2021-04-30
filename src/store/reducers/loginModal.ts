@@ -17,6 +17,6 @@ export default function loginModal(
     case HIDE_LOGIN_MODAL:
       return { visible: false };
     default:
-      return { visible: false };
+      return state;
   }
 }

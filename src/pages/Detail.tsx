@@ -1,4 +1,6 @@
-import { Image, Card, Col, Row, Button, Tabs } from "antd";
+import { Card, Col, Row, Button, Tabs } from "antd";
+import React from "react";
+
 import classNames from "classnames";
 import { useState } from "react";
 import DetailPreviewCard from "../components/DetailPreview";

@@ -1,3 +1,4 @@
+import React from "react";
 import { Skeleton, Card, Row, Col, Button, Space } from "antd";
 import { LogoutOutlined, EditOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router";

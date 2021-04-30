@@ -34,7 +34,7 @@ const fakeAuth = {
     avatarUrl: "",
     name: "",
   },
-  setAuthUser(user: User) {},
+  setAuthUser() {},
   signin() {},
   signout() {},
 };

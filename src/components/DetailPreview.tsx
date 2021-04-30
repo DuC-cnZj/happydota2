@@ -8,10 +8,6 @@ import nw from "../dota2/nw.jpeg";
 import sf from "../dota2/sf.jpeg";
 import ta from "../dota2/ta.jpeg";
 
-interface Image {
-  url: string;
-}
-
 const DetailPreviewCard: React.FC = () => {
   const images: string[] = [xg, st, nw, sf, ta, xg, st, nw, sf, ta];
   const s = useRef<CarouselRef>(null);
@@ -45,6 +41,7 @@ const DetailPreviewCard: React.FC = () => {
       <div style={{ display: "flex" }} className="detail-preview-card__bottom">
         {images.map((item, index) => (
           <div
+            key={index}
             className={classNames("detail-preview-card__bottom__image", {
               "detail-preview-card__bottom__image--selected": index === current,
             })}

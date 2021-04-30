@@ -20,7 +20,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 
-import { useEffect, useState, useRef, memo } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
 import { HistoryOutlined } from "@ant-design/icons";
 import {
   historyAvatars,

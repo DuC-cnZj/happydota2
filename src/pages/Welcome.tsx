@@ -1,5 +1,5 @@
 import { Input, Button } from "antd";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { showLoginModal } from "../store/actionTypes";
@@ -77,13 +77,7 @@ interface StateImp {
   showLogin?: boolean;
 }
 
-interface State {
-  loginModal: {
-    visible: boolean;
-  };
-}
-
-const HomeGuestConnect = connect((state: State) => ({}), {
+const HomeGuestConnect = connect(() => ({}), {
   showLoginModal,
 })(HomeGuest);
 
