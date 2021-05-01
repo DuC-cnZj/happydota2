@@ -37,7 +37,7 @@ ajax.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error.response);
+    console.log(error);
     if (
       error.response &&
       error.response.status === 401 &&

@@ -1,10 +1,11 @@
-import { Card, Col, Row, Button, Tabs } from "antd";
+import { Progress, Card, Col, Row, Button, Tabs, Divider } from "antd";
 import React from "react";
 
 import classNames from "classnames";
 import { useState } from "react";
 import DetailPreviewCard from "../components/DetailPreview";
 import st from "../dota2/st.jpeg";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 
@@ -128,6 +129,333 @@ const Detail: React.FC = () => {
                   >
                     {more ? "收起来" : "显示全部"}
                   </Button>
+                </Card>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: "15rem" }}>
+              <Col span={24}>
+                <Card style={{ paddingBottom: "20rem" }}>
+                  <div className="detail-summary">
+                    <span className="detail-summary__title">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        style={{
+                          width: "20rem",
+                          height: "20rem",
+                          marginRight: "5rem",
+                        }}
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                        />
+                      </svg>
+                      <span>摘要</span>
+                    </span>
+                    <Row className="detail-summary__content" gutter={[16, 16]}>
+                      <Col md={6} sm={8} xs={8}>
+                        <div className="detail-summary__item">
+                          <span className="detail-summary__item-data">
+                            464万
+                          </span>
+                          <span className="detail-summary__item-title">
+                            本月场次
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} sm={8} xs={8}>
+                        <div className="detail-summary__item">
+                          <span
+                            className="detail-summary__item-data"
+                            style={{ fontWeight: "bolder" }}
+                          >
+                            1
+                          </span>
+                          <span className="detail-summary__item-title">
+                            场次排名
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} sm={8} xs={8}>
+                        <div className="detail-summary__item">
+                          <span className="detail-summary__item-data">
+                            50.1%
+                          </span>
+                          <span className="detail-summary__item-title">
+                            本月胜率
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} sm={8} xs={8}>
+                        <div className="detail-summary__item">
+                          <span className="detail-summary__item-data">61</span>
+                          <span className="detail-summary__item-title">
+                            胜率排名
+                          </span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+
+                  <Divider style={{ borderColor: "gray" }} />
+
+                  <div className="hero-attribute">
+                    <div className="hero-attribute__title">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        style={{
+                          width: "20rem",
+                          height: "20rem",
+                          marginRight: "5rem",
+                        }}
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>英雄属性</span>
+                    </div>
+                    <div className="hero-attribute__level-bar">
+                      <Button
+                        shape="circle"
+                        // onClick={this.decline}
+                        icon={<MinusOutlined />}
+                      />
+                      <Progress
+                        className="progress"
+                        percent={3.3}
+                        showInfo={false}
+                      />
+                      <Button
+                        shape="circle"
+                        // onClick={this.increase}
+                        icon={<PlusOutlined />}
+                      />
+                    </div>
+                    <Row gutter={[16, 4]} className="hero-attribute__body">
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            攻击力
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            67-73
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            护甲
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            2.2
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            移动速度
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            280
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            DPS(攻速)
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            47(1.49)
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            生命值
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            762
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            魔法值
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            267
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            转身速度
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            0.70
+                          </span>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={8}>
+                        <div className="hero-attribute__body__item">
+                          <span className="hero-attribute__body__item-title">
+                            攻击前摇
+                          </span>
+                          <span className="hero-attribute__body__item-data">
+                            0.50
+                          </span>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+
+                  <Divider style={{ borderColor: "gray" }} />
+
+                  <div className="hero-talent">
+                    <div className="hero-talent__title">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        style={{
+                          width: "20rem",
+                          height: "20rem",
+                          marginRight: "5rem",
+                        }}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                        />
+                      </svg>
+                      <span>英雄天赋</span>
+                    </div>
+                    <Card className="hero-talent-card">
+                      <div className="hero-talent__level-item">
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">
+                            -14%腐烂减速腐烂减速腐烂减速腐烂减速腐烂减速
+                          </span>
+                          <div className="item-content">
+                            <span>40.8%</span>
+                            <span>44.4%</span>
+                            <span>3.2%</span>
+                          </div>
+                        </div>
+
+                        <div className="hero-talent__level-item__level">
+                          <span className="level-number">10</span>
+                        </div>
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">+4护甲</span>
+                          <div className="item-content">
+                            <span>56.6%</span>
+                            <span>42.8%</span>
+                            <span>-2.0%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="hero-talent__level-item">
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">-14%腐烂减速</span>
+                          <div className="item-content">
+                            <span>40.8%</span>
+                            <span>44.4%</span>
+                            <span>3.2%</span>
+                          </div>
+                        </div>
+
+                        <div className="hero-talent__level-item__level">
+                          <div className="level-line"></div>
+                          <span className="level-number">15</span>
+                        </div>
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">+4护甲</span>
+                          <div className="item-content">
+                            <span>56.6%</span>
+                            <span>42.8%</span>
+                            <span>-2.0%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="hero-talent__level-item">
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">-14%腐烂减速</span>
+                          <div className="item-content">
+                            <span>40.8%</span>
+                            <span>44.4%</span>
+                            <span>3.2%</span>
+                          </div>
+                        </div>
+
+                        <div className="hero-talent__level-item__level">
+                          <div className="level-line"></div>
+                          <span className="level-number">20</span>
+                        </div>
+
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">+4护甲</span>
+                          <div className="item-content">
+                            <span>56.6%</span>
+                            <span>42.8%</span>
+                            <span>-2.0%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="hero-talent__level-item">
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">-14%腐烂减速</span>
+                          <div className="item-content">
+                            <span>40.8%</span>
+                            <span>44.4%</span>
+                            <span>3.2%</span>
+                          </div>
+                        </div>
+
+                        <div className="hero-talent__level-item__level">
+                          <div className="level-line"></div>
+                          <span className="level-number">25</span>
+                        </div>
+                        <div className="hero-talent__level-item__body">
+                          <span className="item-title">+4护甲</span>
+                          <div className="item-content">
+                            <span>56.6%</span>
+                            <span>42.8%</span>
+                            <span>-2.0%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
                 </Card>
               </Col>
             </Row>
